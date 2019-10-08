@@ -1,4 +1,4 @@
-package fr.excilys.databasecomputer.dao;
+package fr.excilys.databasecomputer.dao.entity;
 
 public class Company {
 	private int id;

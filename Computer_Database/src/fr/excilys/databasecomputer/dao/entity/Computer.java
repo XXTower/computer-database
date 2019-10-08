@@ -1,4 +1,4 @@
-package fr.excilys.databasecomputer.dao;
+package fr.excilys.databasecomputer.dao.entity;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ public class Computer {
 	private String name;
 	private Date introduced;
 	private Date discontinued;
-	private int idCompany;
+	private Company Company;
 	
 	
 	public int getId() {
