@@ -7,7 +7,7 @@ public class Computer {
 	private String name;
 	private Date introduced;
 	private Date discontinued;
-	private Company Company;
+	private Company company;
 	
 	
 	public int getId() {
@@ -34,12 +34,17 @@ public class Computer {
 	public void setDiscontinued(Date discontinued) {
 		this.discontinued = discontinued;
 	}
-	public int getIdCompany() {
-		return idCompany;
+	public Company getCompany() {
+		return company;
 	}
-	public void setIdCompany(int idCompany) {
-		this.idCompany = idCompany;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 	
+	@Override
+	public String toString() {
+		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
+				+ ", company=" + company.toString() + "]";
+	}	
 	
 }
