@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import fr.excilys.databasecomputer.dao.ComputerDAOAbstract;
+import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.dao.entity.Company;
 import fr.excilys.databasecomputer.dao.entity.Computer;
 
@@ -32,6 +33,8 @@ public class ComputerDAO extends ComputerDAOAbstract {
 			for(Throwable e : se) {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
+		}finally {
+			ConnextionDB.closeConnection();
 		}
 		
 		return computer;
@@ -43,7 +46,19 @@ public class ComputerDAO extends ComputerDAOAbstract {
 	}
 
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
+		try {
+			PreparedStatement stm = this.connet.prepareStatement("Delete from computer where id = ?");
+			stm.setInt(1, id);
+			int result = stm.executeUpdate();
+			return result==1;
+			
+		} catch (SQLException se) {
+			for(Throwable e : se) {
+				System.err.println("Problèmes rencontrés: " + e);
+			}
+		}finally {
+			ConnextionDB.closeConnection();
+		}
 		return false;
 	}
 
@@ -67,6 +82,8 @@ public class ComputerDAO extends ComputerDAOAbstract {
 			for(Throwable e : se) {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
+		}finally {
+			ConnextionDB.closeConnection();
 		}
 		
 		return computers;

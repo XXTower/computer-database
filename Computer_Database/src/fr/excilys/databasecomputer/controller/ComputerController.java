@@ -19,25 +19,88 @@ public class ComputerController {
 	}
 	
 	public void displayOneComputeur() {
-		Scanner sccomputer = new Scanner(System.in);
-		int idComputer;
-		System.out.println("Entrez l'id de l'ordinateur souhaitez");
+		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
 		
 		//Vérification valeur entrée  et un int 
-		boolean testID = sccomputer.hasNextInt();
-		while(true) {
-			if (testID) {
-				idComputer=sccomputer.nextInt();
-				break;
-			}
-			System.out.print("Veillez recommencer, vous n'avez pas rentrer un id correcte");
-			sccomputer.next();
-			testID = sccomputer.hasNextInt();
-		}
+		int idComputer= verificationEntreUserInt();
+		
 		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
 		Computer computer= computerDAO.find(idComputer);
 		System.out.println(computer.toString());
+
+	}
+	
+	public void deleteComputer() {
+		boolean result;
+		System.out.println("Entrez l'id de l'ordinateur souhaitez supprimer");
 		
-		sccomputer.close();
+		//Vérification valeur entrée  et un int 
+		int idComputer= verificationEntreUserInt();
+		
+		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
+		result= computerDAO.delete(idComputer);
+		if(result) {
+			System.out.println("Ordinateur supprimer");
+		}else {
+			System.out.println("Ordinateur non trouver ou opération compromise");
+		}
+	}
+	
+	public void updateComputer() {
+		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
+		
+		//Vérification valeur entrée  et un int 
+		int idComputer= verificationEntreUserInt();
+		
+		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
+		Computer computer= computerDAO.find(idComputer);
+		try(Scanner scNewComputer = new Scanner(System.in)){
+			System.out.println("Ancien nom: " + computer.getName());
+			System.out.print("Nouveau nom (Obligatoire): ");
+			computer.setName(verificationEntreUserString());
+			
+			System.out.println("Ancienne date d'introduction: " + computer.getName());
+			System.out.print("Nouvelle date d'introduction (Optionnel): ");
+			computer.setName(verificationEntreUserString());
+			
+			System.out.println("Ancien nom: " + computer.getName());
+			System.out.print("Nouveau nom (Optionnel): ");
+			computer.setName(verificationEntreUserString());
+			
+		}
+		
+		
+	}
+	
+	private int verificationEntreUserInt() {
+		int idComputer;
+		
+		try(Scanner scComputer = new Scanner(System.in)){
+			boolean testID = scComputer.hasNextInt();
+			while(true) {
+				if (testID) {
+					idComputer=scComputer.nextInt();
+					break;
+				}
+				System.out.println("Veillez recommencer, vous n'avez pas rentrer un id correcte");
+				scComputer.next();
+				testID = scComputer.hasNextInt();
+			}
+		}
+		return idComputer;
+	}
+	
+	private String verificationEntreUserString() {
+		String name=null;
+		
+		try(Scanner scComputer = new Scanner(System.in)){
+			scComputer.nextLine().isEmpty();
+			while(scComputer.nextLine().isEmpty()) {
+				System.out.println("Veillez recommencer, vous n'avez pas rentrer un id correcte");
+				scComputer.next();
+				name = scComputer.nextLine();
+			}
+		}
+		return name;
 	}
 }
