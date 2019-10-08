@@ -9,6 +9,7 @@ import fr.excilys.databasecomputer.dao.entity.Computer;
 import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
 
 public class ComputerController {
+	Scanner scComputer = new Scanner(System.in);
 	
 	public void displayAllComputer() {
 		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
@@ -47,7 +48,7 @@ public class ComputerController {
 	}
 	
 	public void updateComputer() {
-		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
+		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
 		
 		//Vérification valeur entrée  et un int 
 		int idComputer= verificationEntreUserInt();
@@ -75,17 +76,15 @@ public class ComputerController {
 	private int verificationEntreUserInt() {
 		int idComputer;
 		
-		try(Scanner scComputer = new Scanner(System.in)){
-			boolean testID = scComputer.hasNextInt();
-			while(true) {
-				if (testID) {
-					idComputer=scComputer.nextInt();
-					break;
-				}
-				System.out.println("Veillez recommencer, vous n'avez pas rentrer un id correcte");
-				scComputer.next();
-				testID = scComputer.hasNextInt();
+		boolean testID = scComputer.hasNextInt();
+		while(true) {
+			if (testID) {
+				idComputer=scComputer.nextInt();
+				break;
 			}
+			System.out.println("Veillez recommencer, vous n'avez pas rentrer un id correcte");
+			scComputer.next();
+			testID = scComputer.hasNextInt();
 		}
 		return idComputer;
 	}
@@ -93,13 +92,13 @@ public class ComputerController {
 	private String verificationEntreUserString() {
 		String name=null;
 		
-		try(Scanner scComputer = new Scanner(System.in)){
-			scComputer.nextLine().isEmpty();
-			while(scComputer.nextLine().isEmpty()) {
-				System.out.println("Veillez recommencer, vous n'avez pas rentrer un id correcte");
-				scComputer.next();
-				name = scComputer.nextLine();
+		name = scComputer.nextLine();
+		while(true) {	
+			if (name.length()!=0) {
+				break;
 			}
+			System.out.println("Veillez recommencer, vous n'avez pas rentrer un nom correcte");
+			name = scComputer.nextLine().trim();
 		}
 		return name;
 	}
