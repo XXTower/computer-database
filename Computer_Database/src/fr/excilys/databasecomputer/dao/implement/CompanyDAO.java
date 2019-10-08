@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import fr.excilys.databasecomputer.dao.CompanyDAOAbstract;
+import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.dao.entity.Company;
 
 public class CompanyDAO extends CompanyDAOAbstract{
@@ -31,6 +32,8 @@ public class CompanyDAO extends CompanyDAOAbstract{
 			for(Throwable e : se) {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
+		}finally {
+			ConnextionDB.closeConnection();
 		}
 		
 		return companys;
