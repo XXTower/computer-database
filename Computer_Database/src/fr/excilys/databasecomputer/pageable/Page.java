@@ -16,17 +16,18 @@ public class Page {
 	
 	
 	public void displayCompany() {
-		int reponse = 0;
+//		int reponse = 0;
 		int maxPage = nbPageMaxCompany();
-		do {
-			company.displayAllCompany(10);
-		}while(reponse!=-1);
+		System.out.println(maxPage);
+//		do {
+//			company.displayAllCompany(10);
+//		}while(reponse!=-1);
 	}
 	
 	private int nbPageMaxCompany() {
 		int nbCompany = company.nbCompany();
 		
-		return 0;
+		return (int)Math.ceil(((double)nbCompany/(double)this.limite));
 	}
 	
 }
