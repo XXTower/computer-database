@@ -13,6 +13,8 @@ public abstract class ComputerDAOAbstract {
 		this.connet =conn;
 	}
 	
+	public abstract boolean addComputer(Computer computer);
+	
 	public abstract Computer find(int id);
 	
 	public abstract boolean update(Computer computer);

@@ -1,17 +1,36 @@
 package fr.excilys.databasecomputer.controller;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import fr.excilys.databasecomputer.dao.ComputerDAOAbstract;
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.dao.entity.Computer;
 import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
+import fr.excilys.databasecomputer.warpper.DateWapper;
 
 public class ComputerController {
 	Scanner scComputer = new Scanner(System.in);
 	
-	public void displayAllComputer() {
+	public void addComputer() {
+		Computer computer= new Computer();
+		System.out.print("Nom (Obligatoire): ");
+		computer.setName(verificationEntreUserString());
+			
+		System.out.print("Date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
+		LocalDate dateintroduced = verificationEntreUserDate();
+		computer.setIntroduced(DateWapper.changeToSQLDate(dateintroduced));
+
+		System.out.print("Date d'interruption : (Optionnel, format: AAAAA-MM-JJ): ");
+		LocalDate dateinterruption = verificationEntreUserDate();
+			
+		verificationDateIntervale(computer,dateintroduced, dateinterruption);
+	}
+	
+ 	public void displayAllComputer() {
 		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
 		ArrayList<Computer> computers = computerDAO.findAll();
 		for(Computer computer : computers) {
@@ -55,21 +74,21 @@ public class ComputerController {
 		
 		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
 		Computer computer= computerDAO.find(idComputer);
-		try(Scanner scNewComputer = new Scanner(System.in)){
-			System.out.println("Ancien nom: " + computer.getName());
-			System.out.print("Nouveau nom (Obligatoire): ");
-			computer.setName(verificationEntreUserString());
+	
+		System.out.println("Ancien nom: " + computer.getName());
+		System.out.print("Nouveau nom (Obligatoire): ");
+		computer.setName(verificationEntreUserString());
 			
-			System.out.println("Ancienne date d'introduction: " + computer.getName());
-			System.out.print("Nouvelle date d'introduction (Optionnel): ");
-			computer.setName(verificationEntreUserString());
+		System.out.println("Ancienne date d'introduction: " + computer.getIntroduced());
+		System.out.print("Nouvelle date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
+		LocalDate dateintroduced = verificationEntreUserDate();
+		computer.setIntroduced(DateWapper.changeToSQLDate(dateintroduced));
 			
-			System.out.println("Ancien nom: " + computer.getName());
-			System.out.print("Nouveau nom (Optionnel): ");
-			computer.setName(verificationEntreUserString());
+		System.out.println("Ancienne date d'interruption : " + computer.getDiscontinued());
+		System.out.print("Nouvelle date d'interruption(Optionnel, format: AAAAA-MM-JJ): ");
+		LocalDate dateinterruption = verificationEntreUserDate();
 			
-		}
-		
+		verificationDateIntervale(computer,dateintroduced, dateinterruption);
 		
 	}
 	
@@ -93,6 +112,7 @@ public class ComputerController {
 		String name=null;
 		
 		name = scComputer.nextLine();
+		name = scComputer.nextLine();
 		while(true) {	
 			if (name.length()!=0) {
 				break;
@@ -101,5 +121,38 @@ public class ComputerController {
 			name = scComputer.nextLine().trim();
 		}
 		return name;
+	}
+	
+	private LocalDate verificationEntreUserDate() {
+		String date;
+		boolean verifRegex;
+		date = scComputer.nextLine().trim();
+		verifRegex = Pattern.matches("[1-2][0-9]{3}-(0[1-9]|1[1-2])-(0[1-9]|[1-2][0-9]|3[0-1])",date);
+		while(!verifRegex) {	
+			if (date.length()==0) {
+				return null;
+			}else if(date.length()!=0 && Pattern.matches("[1-9]{4}-(0[1-9]|1[1-2])-(0[1-9]|[1-2][0-9]|3[0-1])",date)) {
+				break;
+			}
+			System.out.println("Veillez recommencer, vous n'avez pas rentrer une date correcte");
+			date = scComputer.nextLine().trim();
+		}
+		return DateWapper.changeToLocalDate(date);
+		
+		
+	}
+	
+	private void verificationDateIntervale (Computer computer, LocalDate discontinuedDate, LocalDate dateinterruption) {
+		if ((!(discontinuedDate==null)) && (!(dateinterruption==null))) {
+			
+		    long diff = discontinuedDate.until(dateinterruption, ChronoUnit.DAYS);
+		    if(diff<0) {
+		    	System.out.println("La date d'interruption doit etre supérieur a la date d'introduction, la date vas donc etre initialiser a null");
+		    	System.out.println("Veillez remodifier l'ordinateur est entrez une date correcte après avoir terminer");
+		    	computer.setDiscontinued(null);
+		    }else {
+				computer.setDiscontinued(DateWapper.changeToSQLDate(dateinterruption));
+			}
+		}
 	}
 }

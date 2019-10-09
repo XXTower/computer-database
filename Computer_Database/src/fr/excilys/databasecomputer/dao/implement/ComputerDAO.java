@@ -88,6 +88,13 @@ public class ComputerDAO extends ComputerDAOAbstract {
 		
 		return computers;
 	}
+
+	
+	
+	public boolean addComputer(Computer computer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 }
