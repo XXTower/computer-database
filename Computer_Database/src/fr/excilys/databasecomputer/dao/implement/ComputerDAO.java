@@ -126,6 +126,25 @@ public class ComputerDAO extends ComputerDAOAbstract {
 		}
 		return false;
 	}
+
+	@Override
+	public int nbComputer() {
+		try {
+			PreparedStatement stm = this.connet.prepareStatement("Select count(*) as nbComputer from cumputer");
+			ResultSet result = stm.executeQuery();
+			if(result.first()) {
+				return result.getInt("nbComputer");
+			}
+		} catch (SQLException se) {
+			for(Throwable e : se) {
+				System.err.println("Problèmes rencontrés: " + e);
+			}
+		}finally {
+			ConnextionDB.closeConnection();
+		}
+		
+		return 0;
+	}
 	
 	
 }

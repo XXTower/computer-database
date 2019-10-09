@@ -55,7 +55,6 @@ public class ComputerController {
 	public void displayOneComputeur() {
 		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
 		
-		//Vérification valeur entrée  et un int 
 		int idComputer= verificationEntreUserInt();
 		
 		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
@@ -68,7 +67,6 @@ public class ComputerController {
 		boolean result;
 		System.out.println("Entrez l'id de l'ordinateur souhaitez supprimer");
 		
-		//Vérification valeur entrée  et un int 
 		int idComputer= verificationEntreUserInt();
 		
 		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
@@ -118,6 +116,11 @@ public class ComputerController {
 			System.out.println("Ordinateur non modifier");
 		}
 		
+	}
+	
+	public int nbComputer() {
+		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
+		return computerDAO.nbComputer();			
 	}
 	
 	private int verificationEntreUserInt() {

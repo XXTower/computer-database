@@ -22,4 +22,6 @@ public abstract class ComputerDAOAbstract {
 	public abstract boolean delete(int id);
 	
 	public abstract ArrayList<Computer> findAll();
+	
+	public abstract int nbComputer();
 }
