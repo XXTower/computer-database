@@ -16,6 +16,7 @@ public class ComputerController {
 	Scanner scComputer = new Scanner(System.in);
 	
 	public void addComputer() {
+		boolean result;
 		Computer computer= new Computer();
 		System.out.print("Nom (Obligatoire): ");
 		computer.setName(verificationEntreUserString());
@@ -28,6 +29,14 @@ public class ComputerController {
 		LocalDate dateinterruption = verificationEntreUserDate();
 			
 		verificationDateIntervale(computer,dateintroduced, dateinterruption);
+		
+		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
+		result= computerDAO.addComputer(computer);
+		if(result) {
+			System.out.println("Ordinateur ajouter");
+		}else {
+			System.out.println("Ordinateur non ajouter");
+		}
 	}
 	
  	public void displayAllComputer() {

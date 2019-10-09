@@ -1,6 +1,6 @@
 package fr.excilys.databasecomputer.dao.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Computer {
 	private int id;
