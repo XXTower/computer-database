@@ -38,4 +38,47 @@ public class CompanyDAO extends CompanyDAOAbstract{
 		
 		return companys;
 	}
+
+	@Override
+	public ArrayList<Company> findAll(int limite) {
+		ArrayList<Company> companys = new ArrayList<>();
+		try {
+			PreparedStatement stm = this.connet.prepareStatement("Select * from company Order by id Limit ?");
+			stm.setInt(1, limite);
+			ResultSet result = stm.executeQuery();
+			while(result.next()) {
+				Company company =new Company();
+				company.setId(result.getInt("id"));
+				company.setName(result.getString("name"));
+				companys.add(company);
+			}
+		} catch (SQLException se) {
+			for(Throwable e : se) {
+				System.err.println("Problèmes rencontrés: " + e);
+			}
+		}finally {
+			ConnextionDB.closeConnection();
+		}
+		
+		return companys;
+	}
+
+	@Override
+	public int nbCompany() {
+		try {
+			PreparedStatement stm = this.connet.prepareStatement("Select count(*) as nbCompany from company");
+			ResultSet result = stm.executeQuery();
+			if(result.first()) {
+				return result.getInt("nbCompany");
+			}
+		} catch (SQLException se) {
+			for(Throwable e : se) {
+				System.err.println("Problèmes rencontrés: " + e);
+			}
+		}finally {
+			ConnextionDB.closeConnection();
+		}
+		
+		return 0;
+	}
 }

@@ -14,4 +14,8 @@ protected Connection connet = null;
 	}
 	
 	public abstract ArrayList<Company> findAll();
+	
+	public abstract ArrayList<Company> findAll(int limite);
+	
+	public abstract int nbCompany();
 }

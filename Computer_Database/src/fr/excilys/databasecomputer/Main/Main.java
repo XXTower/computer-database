@@ -37,7 +37,8 @@ public class Main{
 				computer.displayAllComputer();
 				break;
 			case '2':
-				company.displayAllCompany();
+//				company.nbCompany();
+				company.displayAllCompany(10);
 				break;
 			case '3':
 				computer.displayOneComputeur();
@@ -67,6 +68,7 @@ public class Main{
 		}while(reponce == '2');
 		
 		sc.close();		
+		
 	}
 
 }

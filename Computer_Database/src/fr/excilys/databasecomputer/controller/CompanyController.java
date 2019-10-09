@@ -17,4 +17,17 @@ public class CompanyController{
 			System.out.println(company.toString());
 		}	
 	}
+	
+	public void displayAllCompany(int limite) {
+		CompanyDAOAbstract companyDAO = new CompanyDAO(ConnextionDB.getInstance());
+		ArrayList<Company> companys = companyDAO.findAll(limite);
+		for(Company company : companys) {
+			System.out.println(company.toString());
+		}	
+	}
+	
+	public int nbCompany() {
+		CompanyDAOAbstract companyDAO = new CompanyDAO(ConnextionDB.getInstance());
+		return companyDAO.nbCompany();			
+	}
 }
