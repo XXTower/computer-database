@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import fr.excilys.databasecomputer.dao.ComputerDAOAbstract;
 import fr.excilys.databasecomputer.dao.ConnextionDB;
+import fr.excilys.databasecomputer.dao.entity.Company;
 import fr.excilys.databasecomputer.dao.entity.Computer;
 import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
 import fr.excilys.databasecomputer.warpper.DateWapper;
@@ -29,6 +30,10 @@ public class ComputerController {
 		LocalDate dateinterruption = verificationEntreUserDate();
 			
 		verificationDateIntervale(computer,dateintroduced, dateinterruption);
+		
+		System.out.println("Si aucun nom ne correspond, le cahmps sera null");
+		System.out.print("Nouveaux nom company(Optionnel): ");
+		computer.setCompany(new Company(0, scComputer.nextLine()));
 		
 		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
 		result= computerDAO.addComputer(computer);
@@ -76,6 +81,7 @@ public class ComputerController {
 	}
 	
 	public void updateComputer() {
+		boolean result;
 		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
 		
 		//Vérification valeur entrée  et un int 
@@ -99,6 +105,19 @@ public class ComputerController {
 			
 		verificationDateIntervale(computer,dateintroduced, dateinterruption);
 		
+		System.out.println("Ancienne nom Company : " + computer.getCompany().getName());
+		System.out.println("Si aucun nom ne correspond, le champs sera null");
+		System.out.print("Nouveaux nom company(Optionnel): ");
+		computer.getCompany().setName(scComputer.nextLine());
+		
+		ComputerDAOAbstract computerDAO2 = new ComputerDAO(ConnextionDB.getInstance());
+		result= computerDAO2.update(computer);
+		if(result) {
+			System.out.println("Ordinateur modifier");
+		}else {
+			System.out.println("Ordinateur non modifier");
+		}
+		
 	}
 	
 	private int verificationEntreUserInt() {
@@ -120,7 +139,6 @@ public class ComputerController {
 	private String verificationEntreUserString() {
 		String name=null;
 		
-		name = scComputer.nextLine();
 		name = scComputer.nextLine();
 		while(true) {	
 			if (name.length()!=0) {

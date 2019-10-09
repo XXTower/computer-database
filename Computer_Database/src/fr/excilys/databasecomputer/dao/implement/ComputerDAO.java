@@ -41,7 +41,23 @@ public class ComputerDAO extends ComputerDAOAbstract {
 	}
 
 	public boolean update(Computer computer) {
-		// TODO Auto-generated method stub
+		try {
+			PreparedStatement stm = this.connet.prepareStatement("Update computer set name=?, introduced=?, discontinued=?, company_id=? Where id=?");
+			stm.setString(1, computer.getName());
+			stm.setDate(2, computer.getIntroduced());
+			stm.setDate(3, computer.getDiscontinued());
+			stm.setInt(4, computer.getCompany().getId());
+			stm.setInt(5, computer.getId());
+			int result = stm.executeUpdate();
+			return result==1;
+			
+		} catch (SQLException se) {
+			for(Throwable e : se) {
+				System.err.println("Problèmes rencontrés: " + e);
+			}
+		}finally {
+			ConnextionDB.closeConnection();
+		}
 		return false;
 	}
 
@@ -93,11 +109,11 @@ public class ComputerDAO extends ComputerDAOAbstract {
 	
 	public boolean addComputer(Computer computer) {
 		try {
-			PreparedStatement stm = this.connet.prepareStatement("Insert Into computer Values (?,?,?,?");
+			PreparedStatement stm = this.connet.prepareStatement("Insert Into computer (name,introduced,discontinued,company_id) Values (?,?,?,(Select id from company where name like ?))");
 			stm.setString(1, computer.getName());
 			stm.setDate(2, computer.getIntroduced());
 			stm.setDate(3, computer.getDiscontinued());
-			stm.setInt(4, 0);
+			stm.setString(4, computer.getCompany().getName());
 			int result = stm.executeUpdate();
 			return result==1;
 			
