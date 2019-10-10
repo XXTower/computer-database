@@ -1,9 +1,10 @@
 package fr.excilys.databasecomputer.pageable;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
-import fr.excilys.databasecomputer.controller.CompanyController;
-import fr.excilys.databasecomputer.controller.ComputerController;
+import fr.excilys.databasecomputer.service.CompanyController;
+import fr.excilys.databasecomputer.service.ComputerController;
 
 public class Page {
 	Scanner scPage = new Scanner(System.in);
@@ -13,16 +14,7 @@ public class Page {
 	private int limite =10;
 	private int offset = 0;
 
-	public int getLimite() {
-		return limite;
-	}
-
-	public void setLimite(int limite) {
-		this.limite = limite;
-	}
-	
-	
-	public void displayCompany() {
+	public void displayCompany() throws SQLException {
 		int reponse = 1;
 		int nbCompany = company.nbCompany();
 		int maxPage = nbPageMax(nbCompany);
@@ -35,7 +27,7 @@ public class Page {
 		}while(reponse!=-1);
 	}
 	
-	public void displayComputer() {
+	public void displayComputer() throws SQLException {
 		int reponse = 1;
 		int nbComputer = computer.nbComputer();
 		int maxPage = nbPageMax(nbComputer);
@@ -60,15 +52,14 @@ public class Page {
 		int page;
 		System.out.println("Sur quelle page voulez vous aller ?");
 		System.out.println("Pour quitter marquer -1");
-		boolean testID = scPage.hasNextInt();
 		while(true) {
-			if (testID) {
+			if (scPage.hasNextInt()) {
 				page=scPage.nextInt();
 				break;
 			}
-			System.out.println("Veillez recommencer, vous n'avez pas rentrer un id correcte");
+			System.out.println("Veillez recommencer, vous n'avez pas rentrer un nombre correcte");
 			scPage.next();
-			testID = scPage.hasNextInt();
+			
 		}
 		return page;
 	}

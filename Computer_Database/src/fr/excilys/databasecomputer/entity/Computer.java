@@ -1,4 +1,4 @@
-package fr.excilys.databasecomputer.dao.entity;
+package fr.excilys.databasecomputer.entity;
 
 import java.sql.Date;
 

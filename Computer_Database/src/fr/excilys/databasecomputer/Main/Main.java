@@ -1,17 +1,18 @@
 package fr.excilys.databasecomputer.Main;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
-import fr.excilys.databasecomputer.controller.ComputerController;
+import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.pageable.Page;
+import fr.excilys.databasecomputer.service.ComputerController;
 
 public class Main{
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) throws SQLException {		
 		Scanner sc = new Scanner(System.in);
 		Page pagination = new Page();
 		ComputerController computer = new ComputerController();
-		
 		
 		char reponce = ' ' , option = ' ';
 		do {
@@ -34,7 +35,7 @@ public class Main{
 			
 			switch (option) {
 			case '1':
-				pagination.displayComputer();;
+				pagination.displayComputer();
 				break;
 			case '2':
 				pagination.displayCompany();
@@ -43,7 +44,7 @@ public class Main{
 				computer.displayOneComputeur();
 				break;
 			case '4':
-				computer.addComputer();
+				computer.addComputer(new Computer());
 				break;
 			case '5':
 				computer.updateComputer();

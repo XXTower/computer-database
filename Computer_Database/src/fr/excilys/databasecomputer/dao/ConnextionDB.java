@@ -10,8 +10,11 @@ public class ConnextionDB {
 	private static String user = "admincdb";
 	private static String password = "qwerty1234";
 	private static Connection connect;
+	private static ConnextionDB instance;
 	
-	public static Connection getInstance() {
+	private ConnextionDB() {}
+	
+	public Connection getConnection() {
 		try {
 			connect = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
@@ -20,11 +23,11 @@ public class ConnextionDB {
 		return connect;
 	}
 	
-	public static void closeConnection() {
-		try {
-			connect.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public static ConnextionDB getInstance() {
+		if (instance==null) {
+			instance = new ConnextionDB();
 		}
+		return instance;
 	}
+	
 }

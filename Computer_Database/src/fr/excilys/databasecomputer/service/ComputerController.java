@@ -1,24 +1,23 @@
-package fr.excilys.databasecomputer.controller;
+package fr.excilys.databasecomputer.service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import fr.excilys.databasecomputer.dao.ComputerDAOAbstract;
-import fr.excilys.databasecomputer.dao.ConnextionDB;
-import fr.excilys.databasecomputer.dao.entity.Company;
-import fr.excilys.databasecomputer.dao.entity.Computer;
 import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
+import fr.excilys.databasecomputer.entity.Company;
+import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.warpper.DateWapper;
 
 public class ComputerController {
 	Scanner scComputer = new Scanner(System.in);
+	ComputerDAO computerDAO = new ComputerDAO();
 	
-	public void addComputer() {
+	public void addComputer(Computer computer) throws SQLException {
 		boolean result;
-		Computer computer= new Computer();
 		System.out.print("Nom (Obligatoire): ");
 		computer.setName(verificationEntreUserString());
 			
@@ -35,7 +34,7 @@ public class ComputerController {
 		System.out.print("Nouveaux nom company(Optionnel): ");
 		computer.setCompany(new Company(0, scComputer.nextLine()));
 		
-		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
+		
 		result= computerDAO.addComputer(computer);
 		if(result) {
 			System.out.println("Ordinateur ajouter");
@@ -44,40 +43,38 @@ public class ComputerController {
 		}
 	}
 	
- 	public void displayAllComputer() {
-		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
+ 	public void displayAllComputer() throws SQLException {
+		
 		ArrayList<Computer> computers = computerDAO.findAll();
 		for(Computer computer : computers) {
 			System.out.println(computer.toString());
 		}
 	}
  	
- 	public void displayAllComputer(int limite, int offset) {
-		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
+ 	public void displayAllComputer(int limite, int offset) throws SQLException {
+		
 		ArrayList<Computer> computers = computerDAO.findAll(limite,offset);
 		for(Computer computer : computers) {
 			System.out.println(computer.toString());
 		}
 	}
 	
-	public void displayOneComputeur() {
+	public void displayOneComputeur() throws SQLException {
 		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
 		
 		int idComputer= verificationEntreUserInt();
-		
-		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
+
 		Computer computer= computerDAO.find(idComputer);
 		System.out.println(computer.toString());
 
 	}
 	
-	public void deleteComputer() {
+	public void deleteComputer() throws SQLException {
 		boolean result;
 		System.out.println("Entrez l'id de l'ordinateur souhaitez supprimer");
 		
 		int idComputer= verificationEntreUserInt();
 		
-		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
 		result= computerDAO.delete(idComputer);
 		if(result) {
 			System.out.println("Ordinateur supprimer");
@@ -86,14 +83,12 @@ public class ComputerController {
 		}
 	}
 	
-	public void updateComputer() {
+	public void updateComputer() throws SQLException {
 		boolean result;
 		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
 		
-		//Vérification valeur entrée  et un int 
 		int idComputer= verificationEntreUserInt();
 		
-		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
 		Computer computer= computerDAO.find(idComputer);
 	
 		System.out.println("Ancien nom: " + computer.getName());
@@ -116,8 +111,7 @@ public class ComputerController {
 		System.out.print("Nouveaux nom company(Optionnel): ");
 		computer.getCompany().setName(scComputer.nextLine());
 		
-		ComputerDAOAbstract computerDAO2 = new ComputerDAO(ConnextionDB.getInstance());
-		result= computerDAO2.update(computer);
+		result= computerDAO.update(computer);
 		if(result) {
 			System.out.println("Ordinateur modifier");
 		}else {
@@ -126,23 +120,19 @@ public class ComputerController {
 		
 	}
 	
-	public int nbComputer() {
-		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
-		return computerDAO.nbComputer();			
+	public int nbComputer() throws SQLException {
+		return computerDAO.nbComputer();
 	}
 	
 	private int verificationEntreUserInt() {
 		int idComputer;
-		
-		boolean testID = scComputer.hasNextInt();
 		while(true) {
-			if (testID) {
+			if (scComputer.hasNextInt()) {
 				idComputer=scComputer.nextInt();
 				break;
 			}
 			System.out.println("Veillez recommencer, vous n'avez pas rentrer un id correcte");
 			scComputer.next();
-			testID = scComputer.hasNextInt();
 		}
 		return idComputer;
 	}
