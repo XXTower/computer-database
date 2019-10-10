@@ -23,23 +23,28 @@ public class Page {
 	
 	
 	public void displayCompany() {
-//		int reponse = 0;
+		int reponse = 1;
 		int nbCompany = company.nbCompany();
 		int maxPage = nbPageMax(nbCompany);
 		System.out.println(maxPage);
-//		do {
+		do {
 			company.displayAllCompany(this.limite,this.offset);
-//		}while(reponse!=-1);
+			System.out.println("Page " + reponse + " sur " + maxPage);
+			reponse = pageInRange(maxPage);
+			
+		}while(reponse!=-1);
 	}
 	
 	public void displayComputer() {
-//		int reponse = 0;
+		int reponse = 1;
 		int nbComputer = computer.nbComputer();
 		int maxPage = nbPageMax(nbComputer);
 		System.out.println(maxPage);
-//		do {
+		do {
 			computer.displayAllComputer(this.limite,this.offset);
-//		}while(reponse!=-1);
+			System.out.println("Page " + reponse + " sur " + maxPage);
+			reponse = pageInRange(maxPage);
+		}while(reponse!=-1);
 	}
 	
 	private int nbPageMax(int nbobject) {		
@@ -49,6 +54,40 @@ public class Page {
 	private void calculeNewOffset(int page) {
 		this.offset = page* this.limite - this.limite;
 		
+	}
+	
+	private int verificationEntreUserInt() {
+		int page;
+		System.out.println("Sur quelle page voulez vous aller ?");
+		System.out.println("Pour quitter marquer -1");
+		boolean testID = scPage.hasNextInt();
+		while(true) {
+			if (testID) {
+				page=scPage.nextInt();
+				break;
+			}
+			System.out.println("Veillez recommencer, vous n'avez pas rentrer un id correcte");
+			scPage.next();
+			testID = scPage.hasNextInt();
+		}
+		return page;
+	}
+	
+	private int pageInRange(int maxPage) {
+		int reponse =0;
+		do {
+			reponse = verificationEntreUserInt();
+			if(1 <= reponse && reponse <= maxPage) {
+				calculeNewOffset(reponse);
+				break;
+			} else if (reponse==-1) {
+				break;
+			}else {
+				System.out.println("Hors range");
+			}
+		}while(true);
+		
+		return reponse;
 	}
 	
 }

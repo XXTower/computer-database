@@ -104,8 +104,6 @@ public class ComputerDAO extends ComputerDAOAbstract {
 		
 		return computers;
 	}
-
-	
 	
 	public boolean addComputer(Computer computer) {
 		try {
@@ -130,7 +128,7 @@ public class ComputerDAO extends ComputerDAOAbstract {
 	@Override
 	public int nbComputer() {
 		try {
-			PreparedStatement stm = this.connet.prepareStatement("Select count(*) as nbComputer from cumputer");
+			PreparedStatement stm = this.connet.prepareStatement("Select count(*) as nbComputer from computer");
 			ResultSet result = stm.executeQuery();
 			if(result.first()) {
 				return result.getInt("nbComputer");

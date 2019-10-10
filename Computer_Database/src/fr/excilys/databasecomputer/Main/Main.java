@@ -34,7 +34,7 @@ public class Main{
 			
 			switch (option) {
 			case '1':
-				computer.displayAllComputer();
+				pagination.displayComputer();;
 				break;
 			case '2':
 				pagination.displayCompany();
