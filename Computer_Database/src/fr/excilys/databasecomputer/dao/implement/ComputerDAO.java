@@ -8,7 +8,16 @@ import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Computer;
 
 public class ComputerDAO {
-	
+	private final static String FIND_ALL = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
+			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmp.company_id = cmp.id ORDER BY cmt.id";
+	private final static String FIND_ALL_LIMIT_OFFSET = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
+			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmp.company_id = cmp.id ORDER BY cmt.id LIMIT ? OFFSET ?";
+	private final static String FIND_BY_ID ="SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
+			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmp.company_id = cmp.id ORDER BY cmt.id WHERE cmt.id = ?";
+	private final static String UPDATE ="UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
+	private final static String NB_COMPUTER ="SELECT COUNT(id) AS nbComputer FROM computer";
+	private final static String DELETE_COMPUTER ="DELETE FROM computer WHERE id = ?";
+	private final static String INSERT_COMPUTER ="INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,(SELECT id FROM company WHERE name LIKE ?))";
 	private Connection conn;
 	
 	public ComputerDAO(){
@@ -18,9 +27,7 @@ public class ComputerDAO {
 	public Computer find(int id) throws SQLException{
 		Computer computer = new Computer();
 		try {
-			PreparedStatement stm = this.conn.prepareStatement("Select * from computer "
-					+ "left join  company on computer.company_id = company.id "
-					+ "Where computer.id = ?");
+			PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);
 			stm.setInt(1, id);
 			ResultSet result = stm.executeQuery();
 			System.out.print(result.next());
@@ -46,7 +53,7 @@ public class ComputerDAO {
 
 	public boolean update(Computer computer) throws SQLException {
 		try {
-			PreparedStatement stm = this.conn.prepareStatement("Update computer set name=?, introduced=?, discontinued=?, company_id=? Where id=?");
+			PreparedStatement stm = this.conn.prepareStatement(UPDATE);
 			stm.setString(1, computer.getName());
 			stm.setDate(2, computer.getIntroduced());
 			stm.setDate(3, computer.getDiscontinued());
@@ -67,7 +74,7 @@ public class ComputerDAO {
 
 	public boolean delete(int id) throws SQLException {
 		try {
-			PreparedStatement stm = this.conn.prepareStatement("Delete from computer where id = ?");
+			PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPUTER);
 			stm.setInt(1, id);
 			int result = stm.executeUpdate();
 			return result!=0;
@@ -85,17 +92,16 @@ public class ComputerDAO {
 	public ArrayList<Computer> findAll() throws SQLException {
 		ArrayList<Computer> computers = new ArrayList<>();
 		try {
-			PreparedStatement stm = this.conn.prepareStatement("Select * from computer "
-					+ "left join  company on computer.company_id = company.id Order by computer.id");
+			PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);
 			ResultSet result = stm.executeQuery();
 			
 			while(result.next()) {
 				Computer computer = new Computer();
-				computer.setId(result.getInt("computer.id"));
-				computer.setName(result.getString("computer.name"));
-				computer.setIntroduced(result.getDate("computer.introduced"));
-				computer.setDiscontinued(result.getDate("computer.discontinued"));
-				computer.setCompany(new Company(result.getInt("company.id"),result.getString("company.name")));
+				computer.setId(result.getInt("cmt.id"));
+				computer.setName(result.getString("cmt.name"));
+				computer.setIntroduced(result.getDate("cmt.introduced"));
+				computer.setDiscontinued(result.getDate("cmt.discontinued"));
+				computer.setCompany(new Company(result.getInt("cmp.id"),result.getString("cmp.name")));
 				computers.add(computer);
 			}
 		} catch (SQLException se) {
@@ -111,7 +117,7 @@ public class ComputerDAO {
 	
 	public boolean addComputer(Computer computer) throws SQLException {
 		try {
-			PreparedStatement stm = this.conn.prepareStatement("Insert Into computer (name,introduced,discontinued,company_id) Values (?,?,?,(Select id from company where name like ?))");
+			PreparedStatement stm = this.conn.prepareStatement(INSERT_COMPUTER);
 			stm.setString(1, computer.getName());
 			stm.setDate(2, computer.getIntroduced());
 			stm.setDate(3, computer.getDiscontinued());
@@ -131,7 +137,7 @@ public class ComputerDAO {
 
 	public int nbComputer() throws SQLException {
 		try {
-			PreparedStatement stm = this.conn.prepareStatement("Select count(*) as nbComputer from computer");
+			PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER);
 			ResultSet result = stm.executeQuery();
 			if(result.first()) {
 				return result.getInt("nbComputer");
@@ -150,19 +156,18 @@ public class ComputerDAO {
 	public ArrayList<Computer> findAll(int limite, int offset) throws SQLException {
 		ArrayList<Computer> computers = new ArrayList<>();
 		try {
-			PreparedStatement stm = this.conn.prepareStatement("Select * from computer "
-					+ "left join  company on computer.company_id = company.id Order by computer.id Limit ? offset ?");
+			PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMIT_OFFSET);
 			stm.setInt(1, limite);
 			stm.setInt(2, offset);
 			ResultSet result = stm.executeQuery();
 			
 			while(result.next()) {
 				Computer computer = new Computer();
-				computer.setId(result.getInt("computer.id"));
-				computer.setName(result.getString("computer.name"));
-				computer.setIntroduced(result.getDate("computer.introduced"));
-				computer.setDiscontinued(result.getDate("computer.discontinued"));
-				computer.setCompany(new Company(result.getInt("company.id"),result.getString("company.name")));
+				computer.setId(result.getInt("cmt.id"));
+				computer.setName(result.getString("cmt.name"));
+				computer.setIntroduced(result.getDate("cmt.introduced"));
+				computer.setDiscontinued(result.getDate("cmt.discontinued"));
+				computer.setCompany(new Company(result.getInt("cmp.id"),result.getString("cmp.name")));
 				computers.add(computer);
 			}
 		} catch (SQLException se) {
