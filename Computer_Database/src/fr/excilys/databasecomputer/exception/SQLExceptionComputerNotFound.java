@@ -1,4 +1,4 @@
-package fr.excilys.datababecomputer.exception;
+package fr.excilys.databasecomputer.exception;
 
 public class SQLExceptionComputerNotFound extends Throwable{
 
