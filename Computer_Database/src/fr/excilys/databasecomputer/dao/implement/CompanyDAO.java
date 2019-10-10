@@ -40,11 +40,12 @@ public class CompanyDAO extends CompanyDAOAbstract{
 	}
 
 	@Override
-	public ArrayList<Company> findAll(int limite) {
+	public ArrayList<Company> findAll(int limite, int offset) {
 		ArrayList<Company> companys = new ArrayList<>();
 		try {
-			PreparedStatement stm = this.connet.prepareStatement("Select * from company Order by id Limit ?");
+			PreparedStatement stm = this.connet.prepareStatement("Select * from company Order by id Limit ? offset ?");
 			stm.setInt(1, limite);
+			stm.setInt(2, offset);
 			ResultSet result = stm.executeQuery();
 			while(result.next()) {
 				Company company =new Company();

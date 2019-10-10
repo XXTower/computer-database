@@ -23,5 +23,7 @@ public abstract class ComputerDAOAbstract {
 	
 	public abstract ArrayList<Computer> findAll();
 	
+	public abstract ArrayList<Computer> findAll(int limite, int offset);
+	
 	public abstract int nbComputer();
 }

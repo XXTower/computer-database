@@ -2,7 +2,6 @@ package fr.excilys.databasecomputer.Main;
 
 import java.util.Scanner;
 
-import fr.excilys.databasecomputer.controller.CompanyController;
 import fr.excilys.databasecomputer.controller.ComputerController;
 import fr.excilys.databasecomputer.pageable.Page;
 
@@ -11,7 +10,6 @@ public class Main{
 	public static void main(String[] args) {		
 		Scanner sc = new Scanner(System.in);
 		Page pagination = new Page();
-		CompanyController company= new CompanyController();
 		ComputerController computer = new ComputerController();
 		
 		
@@ -39,8 +37,6 @@ public class Main{
 				computer.displayAllComputer();
 				break;
 			case '2':
-//				company.nbCompany();
-//				company.displayAllCompany(10);
 				pagination.displayCompany();
 				break;
 			case '3':

@@ -18,9 +18,9 @@ public class CompanyController{
 		}	
 	}
 	
-	public void displayAllCompany(int limite) {
+	public void displayAllCompany(int limite, int offset) {
 		CompanyDAOAbstract companyDAO = new CompanyDAO(ConnextionDB.getInstance());
-		ArrayList<Company> companys = companyDAO.findAll(limite);
+		ArrayList<Company> companys = companyDAO.findAll(limite,offset);
 		for(Company company : companys) {
 			System.out.println(company.toString());
 		}	

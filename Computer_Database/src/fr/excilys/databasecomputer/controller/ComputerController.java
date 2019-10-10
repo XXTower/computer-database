@@ -51,6 +51,14 @@ public class ComputerController {
 			System.out.println(computer.toString());
 		}
 	}
+ 	
+ 	public void displayAllComputer(int limite, int offset) {
+		ComputerDAOAbstract computerDAO = new ComputerDAO(ConnextionDB.getInstance());
+		ArrayList<Computer> computers = computerDAO.findAll(limite,offset);
+		for(Computer computer : computers) {
+			System.out.println(computer.toString());
+		}
+	}
 	
 	public void displayOneComputeur() {
 		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");

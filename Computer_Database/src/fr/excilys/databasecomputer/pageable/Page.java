@@ -1,10 +1,17 @@
 package fr.excilys.databasecomputer.pageable;
 
+import java.util.Scanner;
+
 import fr.excilys.databasecomputer.controller.CompanyController;
+import fr.excilys.databasecomputer.controller.ComputerController;
 
 public class Page {
+	Scanner scPage = new Scanner(System.in);
 	CompanyController company= new CompanyController();
+	ComputerController computer = new ComputerController();
+	
 	private int limite =10;
+	private int offset = 0;
 
 	public int getLimite() {
 		return limite;
@@ -17,17 +24,31 @@ public class Page {
 	
 	public void displayCompany() {
 //		int reponse = 0;
-		int maxPage = nbPageMaxCompany();
+		int nbCompany = company.nbCompany();
+		int maxPage = nbPageMax(nbCompany);
 		System.out.println(maxPage);
 //		do {
-//			company.displayAllCompany(10);
+			company.displayAllCompany(this.limite,this.offset);
 //		}while(reponse!=-1);
 	}
 	
-	private int nbPageMaxCompany() {
-		int nbCompany = company.nbCompany();
+	public void displayComputer() {
+//		int reponse = 0;
+		int nbComputer = computer.nbComputer();
+		int maxPage = nbPageMax(nbComputer);
+		System.out.println(maxPage);
+//		do {
+			computer.displayAllComputer(this.limite,this.offset);
+//		}while(reponse!=-1);
+	}
+	
+	private int nbPageMax(int nbobject) {		
+		return (int)Math.ceil(((double)nbobject/(double)this.limite));
+	}
+	
+	private void calculeNewOffset(int page) {
+		this.offset = page* this.limite - this.limite;
 		
-		return (int)Math.ceil(((double)nbCompany/(double)this.limite));
 	}
 	
 }
