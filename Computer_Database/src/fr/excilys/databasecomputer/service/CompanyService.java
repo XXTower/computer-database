@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import fr.excilys.databasecomputer.dao.implement.CompanyDAO;
 import fr.excilys.databasecomputer.entity.Company;
 
-public class CompanyController{
+public class CompanyService{
 	
 	CompanyDAO companyDAO = new CompanyDAO();
 

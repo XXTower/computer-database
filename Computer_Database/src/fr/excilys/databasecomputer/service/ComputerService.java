@@ -12,7 +12,7 @@ import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.warpper.DateWapper;
 
-public class ComputerController {
+public class ComputerService {
 	Scanner scComputer = new Scanner(System.in);
 	ComputerDAO computerDAO = new ComputerDAO();
 	

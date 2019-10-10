@@ -5,14 +5,14 @@ import java.util.Scanner;
 
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.pageable.Page;
-import fr.excilys.databasecomputer.service.ComputerController;
+import fr.excilys.databasecomputer.service.ComputerService;
 
 public class Main{
 
 	public static void main(String[] args) throws SQLException {		
 		Scanner sc = new Scanner(System.in);
 		Page pagination = new Page();
-		ComputerController computer = new ComputerController();
+		ComputerService computer = new ComputerService();
 		
 		char reponce = ' ' , option = ' ';
 		do {

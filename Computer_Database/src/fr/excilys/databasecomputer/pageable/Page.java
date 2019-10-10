@@ -3,13 +3,13 @@ package fr.excilys.databasecomputer.pageable;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import fr.excilys.databasecomputer.service.CompanyController;
-import fr.excilys.databasecomputer.service.ComputerController;
+import fr.excilys.databasecomputer.service.CompanyService;
+import fr.excilys.databasecomputer.service.ComputerService;
 
 public class Page {
 	Scanner scPage = new Scanner(System.in);
-	CompanyController company= new CompanyController();
-	ComputerController computer = new ComputerController();
+	CompanyService company= new CompanyService();
+	ComputerService computer = new ComputerService();
 	
 	private int limite =10;
 	private int offset = 0;
