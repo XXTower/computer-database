@@ -26,17 +26,15 @@ public class ComputerDAO {
 	
 	public Computer find(int id) throws SQLException{
 		Computer computer = new Computer();
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);
+		try(PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);) {
 			stm.setInt(1, id);
 			ResultSet result = stm.executeQuery();
-			System.out.print(result.next());
 			if(result.next()) {
-				computer.setId(result.getInt("computer.id"));
-				computer.setName(result.getString("computer.name"));
-				computer.setIntroduced(result.getDate("computer.introduced"));
-				computer.setDiscontinued(result.getDate("computer.discontinued"));
-				computer.setCompany(new Company(result.getInt("company.id"),result.getString("company.name")));
+				computer.setId(result.getInt("cmt.id"));
+				computer.setName(result.getString("cmt.name"));
+//				computer.setIntroduced(result.getDate("cmt.introduced"));
+//				computer.setDiscontinued(result.getDate("cmt.discontinued"));
+				computer.setCompany(new Company(result.getInt("cmp.id"),result.getString("cmp.name")));
 			}else {
 				
 			}
@@ -52,11 +50,11 @@ public class ComputerDAO {
 	}
 
 	public boolean update(Computer computer) throws SQLException {
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(UPDATE);
+		try(PreparedStatement stm = this.conn.prepareStatement(UPDATE);) {
+			
 			stm.setString(1, computer.getName());
-			stm.setDate(2, computer.getIntroduced());
-			stm.setDate(3, computer.getDiscontinued());
+			stm.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
+			stm.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
 			stm.setInt(4, computer.getCompany().getId());
 			stm.setInt(5, computer.getId());
 			int result = stm.executeUpdate();
@@ -73,8 +71,8 @@ public class ComputerDAO {
 	}
 
 	public boolean delete(int id) throws SQLException {
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPUTER);
+		try(PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPUTER);) {
+			
 			stm.setInt(1, id);
 			int result = stm.executeUpdate();
 			return result!=0;
@@ -91,16 +89,16 @@ public class ComputerDAO {
 
 	public ArrayList<Computer> findAll() throws SQLException {
 		ArrayList<Computer> computers = new ArrayList<>();
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);
+		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
+			
 			ResultSet result = stm.executeQuery();
 			
 			while(result.next()) {
 				Computer computer = new Computer();
 				computer.setId(result.getInt("cmt.id"));
 				computer.setName(result.getString("cmt.name"));
-				computer.setIntroduced(result.getDate("cmt.introduced"));
-				computer.setDiscontinued(result.getDate("cmt.discontinued"));
+//				computer.setIntroduced(result.getDate("cmt.introduced"));
+//				computer.setDiscontinued(result.getDate("cmt.discontinued"));
 				computer.setCompany(new Company(result.getInt("cmp.id"),result.getString("cmp.name")));
 				computers.add(computer);
 			}
@@ -116,11 +114,11 @@ public class ComputerDAO {
 	}
 	
 	public boolean addComputer(Computer computer) throws SQLException {
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(INSERT_COMPUTER);
+		try(PreparedStatement stm = this.conn.prepareStatement(INSERT_COMPUTER);) {
+			
 			stm.setString(1, computer.getName());
-			stm.setDate(2, computer.getIntroduced());
-			stm.setDate(3, computer.getDiscontinued());
+			stm.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
+			stm.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
 			stm.setString(4, computer.getCompany().getName());
 			int result = stm.executeUpdate();
 			return result==1;
@@ -136,8 +134,8 @@ public class ComputerDAO {
 	}
 
 	public int nbComputer() throws SQLException {
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER);
+		try(PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER);) {
+			
 			ResultSet result = stm.executeQuery();
 			if(result.first()) {
 				return result.getInt("nbComputer");
@@ -155,8 +153,8 @@ public class ComputerDAO {
 
 	public ArrayList<Computer> findAll(int limite, int offset) throws SQLException {
 		ArrayList<Computer> computers = new ArrayList<>();
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMIT_OFFSET);
+		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMIT_OFFSET);) {
+			
 			stm.setInt(1, limite);
 			stm.setInt(2, offset);
 			ResultSet result = stm.executeQuery();
@@ -165,8 +163,8 @@ public class ComputerDAO {
 				Computer computer = new Computer();
 				computer.setId(result.getInt("cmt.id"));
 				computer.setName(result.getString("cmt.name"));
-				computer.setIntroduced(result.getDate("cmt.introduced"));
-				computer.setDiscontinued(result.getDate("cmt.discontinued"));
+//				computer.setIntroduced(result.getTimestamp("cmt.introduced"));
+//				computer.setDiscontinued(result.getTimestamp("cmt.discontinued"));
 				computer.setCompany(new Company(result.getInt("cmp.id"),result.getString("cmp.name")));
 				computers.add(computer);
 			}

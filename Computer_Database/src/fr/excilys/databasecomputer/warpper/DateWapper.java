@@ -2,6 +2,7 @@ package fr.excilys.databasecomputer.warpper;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class DateWapper {
 
@@ -14,9 +15,9 @@ public class DateWapper {
 		return dateSQL;
 	}
 	
-	public static LocalDate changeToLocalDate (String dateString) {
-		LocalDate date = null;
-		date =  LocalDate.parse(dateString);
+	public static LocalDateTime changeToLocalDateTime (String dateString) {
+		LocalDateTime date = null;
+		date =  LocalDateTime.parse(dateString);
 		return date;
 	}
 }

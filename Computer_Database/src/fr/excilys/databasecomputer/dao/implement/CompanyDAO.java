@@ -21,8 +21,8 @@ public class CompanyDAO {
 	
 	public ArrayList<Company> findAll() throws SQLException {
 		ArrayList<Company> companys = new ArrayList<>();
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);
+		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
+			
 			ResultSet result = stm.executeQuery();
 			
 			while(result.next()) {
@@ -44,8 +44,8 @@ public class CompanyDAO {
 
 	public ArrayList<Company> findAll(int limite, int offset) throws SQLException {
 		ArrayList<Company> companys = new ArrayList<>();
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMITE_OFFSET);
+		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMITE_OFFSET);) {
+			
 			stm.setInt(1, limite);
 			stm.setInt(2, offset);
 			ResultSet result = stm.executeQuery();
@@ -67,8 +67,8 @@ public class CompanyDAO {
 	}
 
 	public int nbCompany() throws SQLException {
-		try {
-			PreparedStatement stm = this.conn.prepareStatement(NB_COMPANY);
+		try(PreparedStatement stm = this.conn.prepareStatement(NB_COMPANY);) {
+			
 			ResultSet result = stm.executeQuery();
 			if(result.first()) {
 				return result.getInt("nbCompany");

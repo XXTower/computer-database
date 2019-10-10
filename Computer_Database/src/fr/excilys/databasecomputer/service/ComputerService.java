@@ -1,7 +1,7 @@
 package fr.excilys.databasecomputer.service;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -22,11 +22,11 @@ public class ComputerService {
 		computer.setName(verificationEntreUserString());
 			
 		System.out.print("Date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDate dateintroduced = verificationEntreUserDate();
-		computer.setIntroduced(DateWapper.changeToSQLDate(dateintroduced));
+		LocalDateTime dateintroduced = verificationEntreUserDate();
+		computer.setIntroduced(dateintroduced);
 
 		System.out.print("Date d'interruption : (Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDate dateinterruption = verificationEntreUserDate();
+		LocalDateTime dateinterruption = verificationEntreUserDate();
 			
 		verificationDateIntervale(computer,dateintroduced, dateinterruption);
 		
@@ -97,12 +97,12 @@ public class ComputerService {
 			
 		System.out.println("Ancienne date d'introduction: " + computer.getIntroduced());
 		System.out.print("Nouvelle date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDate dateintroduced = verificationEntreUserDate();
-		computer.setIntroduced(DateWapper.changeToSQLDate(dateintroduced));
+		LocalDateTime dateintroduced = verificationEntreUserDate();
+		computer.setIntroduced(dateintroduced);
 			
 		System.out.println("Ancienne date d'interruption : " + computer.getDiscontinued());
 		System.out.print("Nouvelle date d'interruption(Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDate dateinterruption = verificationEntreUserDate();
+		LocalDateTime dateinterruption = verificationEntreUserDate();
 			
 		verificationDateIntervale(computer,dateintroduced, dateinterruption);
 		
@@ -151,7 +151,7 @@ public class ComputerService {
 		return name;
 	}
 	
-	private LocalDate verificationEntreUserDate() {
+	private LocalDateTime verificationEntreUserDate() {
 		String date;
 		boolean verifRegex;
 		date = scComputer.nextLine().trim();
@@ -165,12 +165,12 @@ public class ComputerService {
 			System.out.println("Veillez recommencer, vous n'avez pas rentrer une date correcte");
 			date = scComputer.nextLine().trim();
 		}
-		return DateWapper.changeToLocalDate(date);
+		return DateWapper.changeToLocalDateTime(date);
 		
 		
 	}
 	
-	private void verificationDateIntervale (Computer computer, LocalDate discontinuedDate, LocalDate dateinterruption) {
+	private void verificationDateIntervale (Computer computer, LocalDateTime discontinuedDate, LocalDateTime dateinterruption) {
 		if ((!(discontinuedDate==null)) && (!(dateinterruption==null))) {
 			
 		    long diff = discontinuedDate.until(dateinterruption, ChronoUnit.DAYS);
@@ -179,7 +179,7 @@ public class ComputerService {
 		    	System.out.println("Veillez remodifier l'ordinateur est entrez une date correcte après avoir terminer");
 		    	computer.setDiscontinued(null);
 		    }else {
-				computer.setDiscontinued(DateWapper.changeToSQLDate(dateinterruption));
+				computer.setDiscontinued(dateinterruption);
 			}
 		}
 	}
