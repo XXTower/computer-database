@@ -8,7 +8,7 @@ import fr.excilys.databasecomputer.entity.Company;
 
 public class CompanyService{
 	
-	CompanyDAO companyDAO = new CompanyDAO();
+	private CompanyDAO companyDAO = new CompanyDAO();
 
 	public void displayAllCompany() throws SQLException {
 		ArrayList<Company> companys = companyDAO.findAll();

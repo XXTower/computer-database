@@ -14,26 +14,13 @@ public class Main{
 		Page pagination = new Page();
 		ComputerService computer = new ComputerService();
 		
-		char reponce = ' ' , option = ' ';
+		char reponce = ' ';
 		do {
 			System.out.println("Bonjour que vouslez-vous faire ?");
 			
-			do {
-				System.out.println("1 - Liste Ordinateurs");
-				System.out.println("2 - List Companies");
-				System.out.println("3 - Voir detail d'un ordinateur");
-				System.out.println("4 - Creer un ordinateur");
-				System.out.println("5 - Mettre a jour un ordinateur");
-				System.out.println("6 - Supprimmer un ordinateur");
-				System.out.println("7 - Quitter");
-				option = sc.nextLine().charAt(0);
-				
-				if(option != '1' && option != '2' && option != '3' && option != '4' && option != '5' && option != '6' && option != '7') {
-					System.out.println("Option inconnu, veillez choisir une option correcte");
-				}
-			}while(option != '1' && option != '2' && option != '3' && option != '4' && option != '5' && option != '6' && option != '7');
+			afficherMenu();
 			
-			switch (option) {
+			switch (sc.nextLine().charAt(0)) {
 			case '1':
 				pagination.displayComputer();
 				break;
@@ -52,6 +39,9 @@ public class Main{
 			case '6':
 				computer.deleteComputer();
 				break;
+			default:
+				System.out.println("Option inconnu, veillez choisir une option correcte");
+				break;
 			}
 			
 			do {
@@ -69,6 +59,16 @@ public class Main{
 		
 		sc.close();		
 		
+	}
+	
+	public static void afficherMenu() {
+		System.out.println("1 - Liste Ordinateurs");
+		System.out.println("2 - List Companies");
+		System.out.println("3 - Voir detail d'un ordinateur");
+		System.out.println("4 - Creer un ordinateur");
+		System.out.println("5 - Mettre a jour un ordinateur");
+		System.out.println("6 - Supprimmer un ordinateur");
+		System.out.println("7 - Quitter");
 	}
 
 }
