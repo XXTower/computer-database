@@ -1,6 +1,5 @@
 package fr.excilys.databasecomputer.pageable;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 import fr.excilys.databasecomputer.service.CompanyService;
@@ -14,11 +13,11 @@ public class Page {
 	private int limite =10;
 	private int offset = 0;
 
-	public void displayCompany() throws SQLException {
+	public void displayCompany() {
 		int reponse = 1;
 		int nbCompany = company.nbCompany();
 		int maxPage = nbPageMax(nbCompany);
-		System.out.println(maxPage);
+
 		do {
 			company.displayAllCompany(this.limite,this.offset);
 			System.out.println("Page " + reponse + " sur " + maxPage);
@@ -27,7 +26,7 @@ public class Page {
 		}while(reponse!=-1);
 	}
 	
-	public void displayComputer() throws SQLException {
+	public void displayComputer() {
 		int reponse = 1;
 		int nbComputer = computer.nbComputer();
 		int maxPage = nbPageMax(nbComputer);

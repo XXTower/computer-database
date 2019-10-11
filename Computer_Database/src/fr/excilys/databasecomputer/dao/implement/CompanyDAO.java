@@ -16,9 +16,7 @@ public class CompanyDAO {
 	private Connection conn;
 	private static CompanyDAO instance;
 	
-	private CompanyDAO(){
-		 this.conn = ConnextionDB.getInstance().getConnection();
-	}
+	private CompanyDAO(){}
 	
 	public static CompanyDAO getInstance() {
 		if(instance==null) {
@@ -27,7 +25,8 @@ public class CompanyDAO {
 		return instance;
 	}
 	
-	public ArrayList<Company> findAll() throws SQLException {
+	public ArrayList<Company> findAll() {
+		this.conn = ConnextionDB.getInstance().getConnection();
 		ArrayList<Company> companys = new ArrayList<>();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
 			
@@ -44,13 +43,14 @@ public class CompanyDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		
 		return companys;
 	}
 
-	public ArrayList<Company> findAll(int limite, int offset) throws SQLException {
+	public ArrayList<Company> findAll(int limite, int offset) {
+		this.conn = ConnextionDB.getInstance().getConnection();
 		ArrayList<Company> companys = new ArrayList<>();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMITE_OFFSET);) {
 			
@@ -68,13 +68,14 @@ public class CompanyDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		
 		return companys;
 	}
 
-	public int nbCompany() throws SQLException {
+	public int nbCompany() {
+		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(NB_COMPANY);) {
 			
 			ResultSet result = stm.executeQuery();
@@ -86,7 +87,7 @@ public class CompanyDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		
 		return 0;

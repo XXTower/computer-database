@@ -32,4 +32,18 @@ public class ConnextionDB {
 		return instance;
 	}
 	
+	public static Connection disconnectDB() {
+		if(connect!=null) {
+			try {
+				connect.close();
+				connect=null;
+			} catch (SQLException se) {
+				for(Throwable e : se) {
+					System.err.println("Problèmes rencontrés: " + e);
+				}
+			}
+		}
+		return connect;
+	}
+	
 }

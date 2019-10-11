@@ -1,6 +1,5 @@
 package fr.excilys.databasecomputer.Main;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
@@ -12,7 +11,7 @@ import fr.excilys.databasecomputer.validator.Validator;
 
 public class Main{
 		
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		Page pagination = new Page();
 		
@@ -63,7 +62,7 @@ public class Main{
 		System.out.println("7 - Quitter");
 	}
 	
-	public static void ajouterComputer(Computer computer,Scanner sc) throws SQLException {
+	public static void ajouterComputer(Computer computer,Scanner sc) {
 		Validator valid = new Validator();
 		ComputerService computerSrv = new ComputerService();
 		
@@ -90,7 +89,7 @@ public class Main{
 		}
 	}
 	
-	public static void trouverComputer(Scanner sc) throws SQLException {
+	public static void trouverComputer(Scanner sc) {
 		ComputerService computerSrv = new ComputerService();
 		Validator valid = new Validator();
 		
@@ -101,7 +100,7 @@ public class Main{
 		System.out.println(computer.toString());
 	}
 	
-	public static void supprimerComputer(Scanner sc) throws SQLException {
+	public static void supprimerComputer(Scanner sc) {
 		Validator valid = new Validator();
 		ComputerService computerSrv = new ComputerService();
 		
@@ -116,7 +115,7 @@ public class Main{
 		}
 	}
 	
-	public static void majComputer(Computer computer, Scanner sc) throws SQLException {
+	public static void majComputer(Computer computer, Scanner sc) {
 		Validator valid = new Validator();
 		ComputerService computerSrv = new ComputerService();
 		

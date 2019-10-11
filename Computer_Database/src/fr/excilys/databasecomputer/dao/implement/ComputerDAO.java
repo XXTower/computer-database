@@ -21,9 +21,7 @@ public class ComputerDAO {
 	private Connection conn;
 	private static ComputerDAO instance;
 	
-	private ComputerDAO(){
-	 this.conn = ConnextionDB.getInstance().getConnection();
-	}
+	private ComputerDAO(){	}
 		
 	public static ComputerDAO getInstance() {
 		if(instance==null) {
@@ -32,7 +30,8 @@ public class ComputerDAO {
 		return instance;
 	}
 
-	public Computer find(int id) throws SQLException{
+	public Computer find(int id) {
+		this.conn = ConnextionDB.getInstance().getConnection();
 		Computer computer = new Computer();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);) {
 			stm.setInt(1, id);
@@ -51,13 +50,14 @@ public class ComputerDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		
 		return computer;
 	}
 
-	public boolean update(Computer computer) throws SQLException {
+	public boolean update(Computer computer) {
+		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(UPDATE);) {
 			
 			stm.setString(1, computer.getName());
@@ -73,12 +73,13 @@ public class ComputerDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		return false;
 	}
 
-	public boolean delete(int id) throws SQLException {
+	public boolean delete(int id) {
+		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPUTER);) {
 			
 			stm.setInt(1, id);
@@ -90,13 +91,14 @@ public class ComputerDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		return false;
 	}
 
-	public ArrayList<Computer> findAll() throws SQLException {
+	public ArrayList<Computer> findAll() {
 		ArrayList<Computer> computers = new ArrayList<>();
+		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
 			
 			ResultSet result = stm.executeQuery();
@@ -115,13 +117,14 @@ public class ComputerDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		
 		return computers;
 	}
 	
-	public boolean addComputer(Computer computer) throws SQLException {
+	public boolean addComputer(Computer computer) {
+		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(INSERT_COMPUTER);) {
 			
 			stm.setString(1, computer.getName());
@@ -136,12 +139,13 @@ public class ComputerDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		return false;
 	}
 
-	public int nbComputer() throws SQLException {
+	public int nbComputer() {
+		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER);) {
 			
 			ResultSet result = stm.executeQuery();
@@ -153,16 +157,16 @@ public class ComputerDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		
 		return 0;
 	}
 
-	public ArrayList<Computer> findAll(int limite, int offset) throws SQLException {
+	public ArrayList<Computer> findAll(int limite, int offset) {
 		ArrayList<Computer> computers = new ArrayList<>();
+		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMIT_OFFSET);) {
-			
 			stm.setInt(1, limite);
 			stm.setInt(2, offset);
 			ResultSet result = stm.executeQuery();
@@ -181,7 +185,7 @@ public class ComputerDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-			this.conn.close();
+//			this.conn=ConnextionDB.disconnectDB();
 		}
 		
 		return computers;
