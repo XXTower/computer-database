@@ -3,6 +3,7 @@ package fr.excilys.databasecomputer.Main;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.pageable.Page;
@@ -12,9 +13,9 @@ import fr.excilys.databasecomputer.validator.Validator;
 public class Main{
 		
 	public static void main(String[] args) {
+
 		Scanner sc = new Scanner(System.in);
 		Page pagination = new Page();
-		
 		
 		String reponce ="";
 		System.out.println("Bonjour que vouslez-vous faire ?");
@@ -32,10 +33,10 @@ public class Main{
 				trouverComputer(sc);
 				break;
 			case "4":
-				ajouterComputer(new Computer(),sc);
+				ajouterComputer(sc);
 				break;
 			case "5":
-				majComputer(new Computer(), sc);
+				majComputer(sc);
 				break;
 			case "6":
 				supprimerComputer(sc);
@@ -62,27 +63,28 @@ public class Main{
 		System.out.println("7 - Quitter");
 	}
 	
-	public static void ajouterComputer(Computer computer,Scanner sc) {
+	public static void ajouterComputer(Scanner sc) {
 		Validator valid = new Validator();
+		ComputerBuilder newComputer = new ComputerBuilder();
 		ComputerService computerSrv = new ComputerService();
 		
 		System.out.print("Nom (Obligatoire): ");
-		computer.setName(valid.verificationEntreUserString(sc));
+		newComputer.name(valid.verificationEntreUserString(sc));
 			
 		System.out.print("Date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
 		LocalDateTime dateintroduced = valid.verificationEntreUserDate(sc);
-		computer.setIntroduced(dateintroduced);
+		newComputer.introduced(dateintroduced);
 
 		System.out.print("Date d'interruption : (Optionnel, format: AAAAA-MM-JJ): ");
 		LocalDateTime dateinterruption = valid.verificationEntreUserDate(sc);
 			
-		valid.verificationDateIntervale(computer,dateintroduced, dateinterruption);
+		valid.verificationDateIntervale(newComputer,dateintroduced, dateinterruption);
 		
 		System.out.println("Si aucun nom ne correspond, le cahmps sera null");
 		System.out.print("Nouveaux nom company(Optionnel): ");
-		computer.setCompany(new CompanyBuilder().name(sc.nextLine()).build());
+		newComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
 		
-		if(computerSrv.addComputer(computer)) {
+		if(computerSrv.addComputer(newComputer.build())) {
 			System.out.println("Ordinateur ajouter");
 		}else {
 			System.out.println("Ordinateur non ajouter");
@@ -115,36 +117,37 @@ public class Main{
 		}
 	}
 	
-	public static void majComputer(Computer computer, Scanner sc) {
+	public static void majComputer(Scanner sc) {
 		Validator valid = new Validator();
+		ComputerBuilder updateComputer = new ComputerBuilder();
 		ComputerService computerSrv = new ComputerService();
 		
 		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
 		int idComputer= valid.verificationEntreUserInt(sc);
 		
-		computer= computerSrv.displayOneComputeur(idComputer);
+		Computer computer= computerSrv.displayOneComputeur(idComputer);
 		
 		System.out.println("Ancien nom: " + computer.getName());
 		System.out.print("Nouveau nom (Obligatoire): ");
-		computer.setName(valid.verificationEntreUserString(sc));
+		updateComputer.name(valid.verificationEntreUserString(sc));
 		
 		System.out.println("Ancienne date d'introduction: " + computer.getIntroduced());
 		System.out.print("Nouvelle date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
 		LocalDateTime dateintroduced = valid.verificationEntreUserDate(sc);
-		computer.setIntroduced(dateintroduced);
+		updateComputer.introduced(dateintroduced);
 		
 		System.out.println("Ancienne date d'interruption : " + computer.getDiscontinued());
 		System.out.print("Nouvelle date d'interruption(Optionnel, format: AAAAA-MM-JJ): ");
 		LocalDateTime dateinterruption = valid.verificationEntreUserDate(sc);
 			
-		valid.verificationDateIntervale(computer,dateintroduced, dateinterruption);
+		valid.verificationDateIntervale(updateComputer,dateintroduced, dateinterruption);
 		
 		System.out.println("Ancienne nom Company : " + computer.getCompany().getName());
 		System.out.println("Si aucun nom ne correspond, le champs sera null");
 		System.out.print("Nouveaux nom company(Optionnel): ");
-//		computer.getCompany().setName(sc.nextLine());
+		updateComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
 		
-		if(computerSrv.updateComputer(computer)) {
+		if(computerSrv.updateComputer(updateComputer.build())) {
 			System.out.println("Ordinateur modifier");
 		}else {
 			System.out.println("Ordinateur non modifier");

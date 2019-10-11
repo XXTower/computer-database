@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
+import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
 
 public class ComputerDAO {
 	private final static String FIND_ALL = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
@@ -32,18 +33,20 @@ public class ComputerDAO {
 
 	public Computer find(int id) {
 		this.conn = ConnextionDB.getInstance().getConnection();
-		Computer computer = new Computer();
+		ComputerBuilder computer = new ComputerBuilder();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);) {
 			stm.setInt(1, id);
 			ResultSet result = stm.executeQuery();
 			if(result.next()) {
-				computer.setId(result.getInt("cmt.id"));
-				computer.setName(result.getString("cmt.name"));
-				computer.setIntroduced(result.getTimestamp("cmt.introduced").toLocalDateTime());
-				computer.setDiscontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime());
-				computer.setCompany(new CompanyBuilder().id(result.getInt("cmp.id")).name(result.getString("cmp.name")).build());
-			}else {
 				
+			return	computer.id(result.getInt("cmt.id"))
+				.name(result.getString("cmt.name"))
+				.introduced(result.getTimestamp("cmt.introduced").toLocalDateTime())
+				.discontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime())
+				.company(new CompanyBuilder().id(result.getInt("cmp.id")).name(result.getString("cmp.name")).build())
+				.build();
+			}else {
+				return computer.build();
 			}
 		} catch (SQLException se) {
 			for(Throwable e : se) {
@@ -53,7 +56,7 @@ public class ComputerDAO {
 			this.conn=ConnextionDB.disconnectDB();
 		}
 		
-		return computer;
+		return null;
 	}
 
 	public boolean update(Computer computer) {
@@ -100,17 +103,19 @@ public class ComputerDAO {
 		ArrayList<Computer> computers = new ArrayList<>();
 		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
-			
 			ResultSet result = stm.executeQuery();
-			
-			while(result.next()) {
-				Computer computer = new Computer();
-				computer.setId(result.getInt("cmt.id"));
-				computer.setName(result.getString("cmt.name"));
-				computer.setIntroduced(result.getTimestamp("cmt.introduced").toLocalDateTime());
-				computer.setDiscontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime());
-				computer.setCompany( new CompanyBuilder().id(result.getInt("cmp.id")).name(result.getString("cmp.name")).build());
-				computers.add(computer);
+			while(result.next()) {				
+				computers.add( new ComputerBuilder()
+						.id(result.getInt("cmt.id"))
+						.name(result.getString("cmt.name"))
+						.introduced(result.getTimestamp("cmt.introduced").toLocalDateTime())
+						.discontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime())
+						.company(new CompanyBuilder().
+								id(result.getInt("cmp.id"))
+								.name(result.getString("cmp.name"))
+								.build())
+						.build()
+						);
 			}
 		} catch (SQLException se) {
 			for(Throwable e : se) {
@@ -172,20 +177,24 @@ public class ComputerDAO {
 			ResultSet result = stm.executeQuery();
 			
 			while(result.next()) {
-				Computer computer = new Computer();
-				computer.setId(result.getInt("cmt.id"));
-				computer.setName(result.getString("cmt.name"));
-				computer.setIntroduced(result.getTimestamp("cmt.introduced").toLocalDateTime());
-				computer.setDiscontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime());
-				computer.setCompany(new CompanyBuilder().id(result.getInt("cmp.id")).name(result.getString("cmp.name")).build());
-				computers.add(computer);
+				computers.add( new ComputerBuilder()
+						.id(result.getInt("cmt.id"))
+						.name(result.getString("cmt.name"))
+						.introduced(result.getTimestamp("cmt.introduced").toLocalDateTime())
+						.discontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime())
+						.company(new CompanyBuilder().
+								id(result.getInt("cmp.id"))
+								.name(result.getString("cmp.name"))
+								.build())
+						.build()
+						);
 			}
 		} catch (SQLException se) {
 			for(Throwable e : se) {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}finally {
-//			this.conn=ConnextionDB.disconnectDB();
+			this.conn=ConnextionDB.disconnectDB();
 		}
 		
 		return computers;
