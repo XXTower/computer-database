@@ -7,8 +7,12 @@ import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
 import fr.excilys.databasecomputer.entity.Computer;
 
 public class ComputerService {
-	ComputerDAO computerDAO = new ComputerDAO();
+	ComputerDAO computerDAO;
 	
+	public ComputerService() {
+		this.computerDAO = ComputerDAO.getInstance();
+	}
+
 	public Boolean addComputer(Computer computer) throws SQLException {
 		return computerDAO.addComputer(computer);
 	}

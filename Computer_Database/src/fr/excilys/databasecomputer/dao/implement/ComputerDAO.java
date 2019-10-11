@@ -19,11 +19,19 @@ public class ComputerDAO {
 	private final static String DELETE_COMPUTER ="DELETE FROM computer WHERE id = ?";
 	private final static String INSERT_COMPUTER ="INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,(SELECT id FROM company WHERE name LIKE ?))";
 	private Connection conn;
+	private static ComputerDAO instance;
 	
-	public ComputerDAO(){
+	private ComputerDAO(){
 	 this.conn = ConnextionDB.getInstance().getConnection();
 	}
-	
+		
+	public static ComputerDAO getInstance() {
+		if(instance==null) {
+			instance= new ComputerDAO();
+		}
+		return instance;
+	}
+
 	public Computer find(int id) throws SQLException{
 		Computer computer = new Computer();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);) {

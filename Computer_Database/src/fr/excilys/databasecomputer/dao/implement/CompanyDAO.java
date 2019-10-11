@@ -14,9 +14,17 @@ public class CompanyDAO {
 	private final static String FIND_ALL_LIMITE_OFFSET = "SELECT id, name FROM company ORDER BY id LIMIT ? OFFSET ?";
 	private final static String NB_COMPANY ="SELECT COUNT(id) AS nbCompany FROM company";
 	private Connection conn;
+	private static CompanyDAO instance;
 	
-	public CompanyDAO(){
+	private CompanyDAO(){
 		 this.conn = ConnextionDB.getInstance().getConnection();
+	}
+	
+	public static CompanyDAO getInstance() {
+		if(instance==null) {
+			instance= new CompanyDAO();
+		}
+		return instance;
 	}
 	
 	public ArrayList<Company> findAll() throws SQLException {
