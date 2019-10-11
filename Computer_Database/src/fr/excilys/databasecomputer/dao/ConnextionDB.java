@@ -17,14 +17,16 @@ public class ConnextionDB {
 	public Connection getConnection() {
 		try {
 			connect = DriverManager.getConnection(url, user, password);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException se) {
+			for(Throwable e : se) {
+				System.err.println("Problèmes rencontrés: " + e);
+			}
 		}
 		return connect;
 	}
 	
 	public static ConnextionDB getInstance() {
-		if (instance==null) {
+		if (instance==null ) {
 			instance = new ConnextionDB();
 		}
 		return instance;

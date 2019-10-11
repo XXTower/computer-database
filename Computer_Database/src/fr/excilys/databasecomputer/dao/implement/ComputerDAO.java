@@ -9,11 +9,11 @@ import fr.excilys.databasecomputer.entity.Computer;
 
 public class ComputerDAO {
 	private final static String FIND_ALL = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
-			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmp.company_id = cmp.id ORDER BY cmt.id";
+			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmt.company_id = cmp.id ORDER BY cmt.id";
 	private final static String FIND_ALL_LIMIT_OFFSET = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
 			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmp.company_id = cmp.id ORDER BY cmt.id LIMIT ? OFFSET ?";
 	private final static String FIND_BY_ID ="SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
-			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmp.company_id = cmp.id ORDER BY cmt.id WHERE cmt.id = ?";
+			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmp.company_id = cmp.id WHERE cmt.id = ? ORDER BY cmt.id ";
 	private final static String UPDATE ="UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
 	private final static String NB_COMPUTER ="SELECT COUNT(id) AS nbComputer FROM computer";
 	private final static String DELETE_COMPUTER ="DELETE FROM computer WHERE id = ?";
@@ -32,7 +32,7 @@ public class ComputerDAO {
 			if(result.next()) {
 				computer.setId(result.getInt("cmt.id"));
 				computer.setName(result.getString("cmt.name"));
-//				computer.setIntroduced(result.getDate("cmt.introduced"));
+//				computer.setIntroduced(result.getTimestamp("cmt.introduced"));
 //				computer.setDiscontinued(result.getDate("cmt.discontinued"));
 				computer.setCompany(new Company(result.getInt("cmp.id"),result.getString("cmp.name")));
 			}else {
