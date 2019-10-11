@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class DateWapper {
+public class DateMapper {
 
 	public static Date changeToSQLDate (LocalDate date) {
 		Date dateSQL=null;
