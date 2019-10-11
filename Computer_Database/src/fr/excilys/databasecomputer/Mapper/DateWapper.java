@@ -1,4 +1,4 @@
-package fr.excilys.databasecomputer.warpper;
+package fr.excilys.databasecomputer.Mapper;
 
 import java.sql.Date;
 import java.time.LocalDate;

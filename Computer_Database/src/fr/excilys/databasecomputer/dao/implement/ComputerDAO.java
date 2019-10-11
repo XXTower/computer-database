@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import fr.excilys.databasecomputer.dao.ConnextionDB;
-import fr.excilys.databasecomputer.entity.Company;
+import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
 
 public class ComputerDAO {
@@ -39,9 +39,9 @@ public class ComputerDAO {
 			if(result.next()) {
 				computer.setId(result.getInt("cmt.id"));
 				computer.setName(result.getString("cmt.name"));
-//				computer.setIntroduced(result.getTimestamp("cmt.introduced"));
-//				computer.setDiscontinued(result.getDate("cmt.discontinued"));
-				computer.setCompany(new Company(result.getInt("cmp.id"),result.getString("cmp.name")));
+				computer.setIntroduced(result.getTimestamp("cmt.introduced").toLocalDateTime());
+				computer.setDiscontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime());
+				computer.setCompany(new CompanyBuilder().id(result.getInt("cmp.id")).name(result.getString("cmp.name")).build());
 			}else {
 				
 			}
@@ -107,9 +107,9 @@ public class ComputerDAO {
 				Computer computer = new Computer();
 				computer.setId(result.getInt("cmt.id"));
 				computer.setName(result.getString("cmt.name"));
-//				computer.setIntroduced(result.getDate("cmt.introduced"));
-//				computer.setDiscontinued(result.getDate("cmt.discontinued"));
-				computer.setCompany(new Company(result.getInt("cmp.id"),result.getString("cmp.name")));
+				computer.setIntroduced(result.getTimestamp("cmt.introduced").toLocalDateTime());
+				computer.setDiscontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime());
+				computer.setCompany( new CompanyBuilder().id(result.getInt("cmp.id")).name(result.getString("cmp.name")).build());
 				computers.add(computer);
 			}
 		} catch (SQLException se) {
@@ -175,9 +175,9 @@ public class ComputerDAO {
 				Computer computer = new Computer();
 				computer.setId(result.getInt("cmt.id"));
 				computer.setName(result.getString("cmt.name"));
-//				computer.setIntroduced(result.getTimestamp("cmt.introduced"));
-//				computer.setDiscontinued(result.getTimestamp("cmt.discontinued"));
-				computer.setCompany(new Company(result.getInt("cmp.id"),result.getString("cmp.name")));
+				computer.setIntroduced(result.getTimestamp("cmt.introduced").toLocalDateTime());
+				computer.setDiscontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime());
+				computer.setCompany(new CompanyBuilder().id(result.getInt("cmp.id")).name(result.getString("cmp.name")).build());
 				computers.add(computer);
 			}
 		} catch (SQLException se) {

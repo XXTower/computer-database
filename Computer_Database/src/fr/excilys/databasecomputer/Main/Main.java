@@ -3,7 +3,7 @@ package fr.excilys.databasecomputer.Main;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
-import fr.excilys.databasecomputer.entity.Company;
+import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.pageable.Page;
 import fr.excilys.databasecomputer.service.ComputerService;
@@ -80,7 +80,7 @@ public class Main{
 		
 		System.out.println("Si aucun nom ne correspond, le cahmps sera null");
 		System.out.print("Nouveaux nom company(Optionnel): ");
-		computer.setCompany(new Company(0, sc.nextLine()));
+		computer.setCompany(new CompanyBuilder().name(sc.nextLine()).build());
 		
 		if(computerSrv.addComputer(computer)) {
 			System.out.println("Ordinateur ajouter");
@@ -142,7 +142,7 @@ public class Main{
 		System.out.println("Ancienne nom Company : " + computer.getCompany().getName());
 		System.out.println("Si aucun nom ne correspond, le champs sera null");
 		System.out.print("Nouveaux nom company(Optionnel): ");
-		computer.getCompany().setName(sc.nextLine());
+//		computer.getCompany().setName(sc.nextLine());
 		
 		if(computerSrv.updateComputer(computer)) {
 			System.out.println("Ordinateur modifier");

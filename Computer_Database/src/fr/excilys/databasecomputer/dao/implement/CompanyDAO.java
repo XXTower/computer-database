@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.entity.Company;
+import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 
 public class CompanyDAO {
 	private final static String FIND_ALL = "SELECT id, name FROM company ORDER BY id";
@@ -33,10 +34,12 @@ public class CompanyDAO {
 			ResultSet result = stm.executeQuery();
 			
 			while(result.next()) {
-				Company company =new Company();
-				company.setId(result.getInt("id"));
-				company.setName(result.getString("name"));
-				companys.add(company);
+				companys.add(
+						new CompanyBuilder()
+						.id(result.getInt("id"))
+						.name(result.getString("name"))
+						.build()
+						);
 			}
 		} catch (SQLException se) {
 			for(Throwable e : se) {
@@ -58,10 +61,12 @@ public class CompanyDAO {
 			stm.setInt(2, offset);
 			ResultSet result = stm.executeQuery();
 			while(result.next()) {
-				Company company =new Company();
-				company.setId(result.getInt("id"));
-				company.setName(result.getString("name"));
-				companys.add(company);
+				companys.add(
+						new CompanyBuilder()
+						.id(result.getInt("id"))
+						.name(result.getString("name"))
+						.build()
+						);
 			}
 		} catch (SQLException se) {
 			for(Throwable e : se) {
