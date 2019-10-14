@@ -22,7 +22,6 @@ public class CompanyService{
 	}
 
 
-
 	public void displayAllCompany() {
 		ArrayList<Company> companys = companyDAO.findAll();
 		for(Company company : companys) {

@@ -15,6 +15,7 @@ import fr.excilys.databasecomputer.validator.Validator;
 public class Main{
 	private static ComputerService computerService;
 	private static CompanyService companyService;
+	private static Validator validator;
 	private static Page page;
 	
 	
@@ -60,7 +61,7 @@ public class Main{
 	public static void afficherComputer(Scanner sc) {
 		page = Page.getInstance();
 		computerService = ComputerService.getInstance();
-		Validator valid = new Validator();
+		validator = Validator.getInstance();
 		int reponse = 1;
 		int offset = 0;
 		int nbComputer = computerService.nbComputer();
@@ -71,7 +72,7 @@ public class Main{
 			System.out.println("Sur quelle page voulez vous aller ?");
 			System.out.println("Pour quitter marquer -1");
 			do {
-				reponse = valid.verificationEntreUserInt(sc);
+				reponse = validator.verificationEntreUserInt(sc);
 				if(1 <= reponse && reponse <= maxPage) {
 					offset = page.calculeNewOffset(reponse);
 					break;
@@ -87,7 +88,7 @@ public class Main{
 	public static void afficherCompany(Scanner sc) {
 		page = Page.getInstance();
 		companyService = CompanyService.getInstance();
-		Validator valid = new Validator();
+		validator = Validator.getInstance();
 		int reponse = 1;
 		int offset = 0;
 		int nbCompany = companyService.nbCompany();
@@ -98,7 +99,7 @@ public class Main{
 			System.out.println("Sur quelle page voulez vous aller ?");
 			System.out.println("Pour quitter marquer -1");
 			do {
-				reponse = valid.verificationEntreUserInt(sc);
+				reponse = validator.verificationEntreUserInt(sc);
 				if(1 <= reponse && reponse <= maxPage) {
 					offset = page.calculeNewOffset(reponse);
 					break;
@@ -122,21 +123,21 @@ public class Main{
 	}
 	
 	public static void ajouterComputer(Scanner sc) {
-		Validator valid = new Validator();
+		validator = Validator.getInstance();
 		ComputerBuilder newComputer = new ComputerBuilder();
 		computerService = ComputerService.getInstance();
 		
 		System.out.print("Nom (Obligatoire): ");
-		newComputer.name(valid.verificationEntreUserString(sc));
+		newComputer.name(validator.verificationEntreUserString(sc));
 			
 		System.out.print("Date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDate dateintroduced = valid.verificationEntreUserDate(sc);
+		LocalDate dateintroduced = validator.verificationEntreUserDate(sc);
 		newComputer.introduced(dateintroduced);
 
 		System.out.print("Date d'interruption : (Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDate dateinterruption = valid.verificationEntreUserDate(sc);
+		LocalDate dateinterruption = validator.verificationEntreUserDate(sc);
 			
-		valid.verificationDateIntervale(newComputer,dateintroduced, dateinterruption);
+		validator.verificationDateIntervale(newComputer,dateintroduced, dateinterruption);
 		
 		System.out.println("Si aucun nom ne correspond, le cahmps sera null");
 		System.out.print("Nouveaux nom company(Optionnel): ");
@@ -151,13 +152,13 @@ public class Main{
 	
 	public static void trouverComputer(Scanner sc) {
 		computerService = ComputerService.getInstance();
-		Validator valid = new Validator();
+		validator = Validator.getInstance();
 		
 		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
 		
 		Computer computer;
 		try {
-			computer = computerService.displayOneComputeur(valid.verificationEntreUserInt(sc));
+			computer = computerService.displayOneComputeur(validator.verificationEntreUserInt(sc));
 			System.out.println(computer.toString());
 		} catch (SQLExceptionComputerNotFound e) {
 			System.err.println(e);
@@ -165,12 +166,12 @@ public class Main{
 	}
 	
 	public static void supprimerComputer(Scanner sc) {
-		Validator valid = new Validator();
+		validator = Validator.getInstance();
 		computerService = ComputerService.getInstance();
 		
 		System.out.println("Entrez l'id de l'ordinateur souhaitez supprimer");
 		
-		int idComputer= valid.verificationEntreUserInt(sc);
+		int idComputer= validator.verificationEntreUserInt(sc);
 		
 		if(computerService.deleteComputer(idComputer)) {
 			System.out.println("Ordinateur supprimer");
@@ -180,12 +181,12 @@ public class Main{
 	}
 	
 	public static void majComputer(Scanner sc){
-		Validator valid = new Validator();
+		validator = Validator.getInstance();
 		ComputerBuilder updateComputer = new ComputerBuilder();
 		computerService = ComputerService.getInstance();
 		
 		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
-		int idComputer= valid.verificationEntreUserInt(sc);
+		int idComputer= validator.verificationEntreUserInt(sc);
 		
 		Computer computer;
 		try {
@@ -194,18 +195,18 @@ public class Main{
 			updateComputer.id(computer.getId());
 			System.out.println("Ancien nom: " + computer.getName());
 			System.out.print("Nouveau nom (Obligatoire): ");
-			updateComputer.name(valid.verificationEntreUserString(sc));
+			updateComputer.name(validator.verificationEntreUserString(sc));
 			
 			System.out.println("Ancienne date d'introduction: " + computer.getIntroduced());
 			System.out.print("Nouvelle date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
-			LocalDate dateintroduced = valid.verificationEntreUserDate(sc);
+			LocalDate dateintroduced = validator.verificationEntreUserDate(sc);
 			updateComputer.introduced(dateintroduced);
 			
 			System.out.println("Ancienne date d'interruption : " + computer.getDiscontinued());
 			System.out.print("Nouvelle date d'interruption(Optionnel, format: AAAAA-MM-JJ): ");
-			LocalDate dateinterruption = valid.verificationEntreUserDate(sc);
+			LocalDate dateinterruption = validator.verificationEntreUserDate(sc);
 				
-			valid.verificationDateIntervale(updateComputer,dateintroduced, dateinterruption);
+			validator.verificationDateIntervale(updateComputer,dateintroduced, dateinterruption);
 			
 			System.out.println("Ancienne nom Company : " + computer.getCompany().getName());
 			System.out.println("Si aucun nom ne correspond, le champs sera null");
