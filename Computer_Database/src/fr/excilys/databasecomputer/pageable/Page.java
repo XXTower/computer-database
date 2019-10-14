@@ -15,6 +15,7 @@ public class Page {
 
 	public void displayCompany() {
 		int reponse = 1;
+		this.offset=0;
 		int nbCompany = company.nbCompany();
 		int maxPage = nbPageMax(nbCompany);
 
@@ -28,6 +29,7 @@ public class Page {
 	
 	public void displayComputer() {
 		int reponse = 1;
+		this.offset=0;
 		int nbComputer = computer.nbComputer();
 		int maxPage = nbPageMax(nbComputer);
 		do {

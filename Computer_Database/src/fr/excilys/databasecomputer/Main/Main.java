@@ -1,6 +1,6 @@
 package fr.excilys.databasecomputer.Main;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
@@ -73,11 +73,11 @@ public class Main{
 		newComputer.name(valid.verificationEntreUserString(sc));
 			
 		System.out.print("Date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDateTime dateintroduced = valid.verificationEntreUserDate(sc);
+		LocalDate dateintroduced = valid.verificationEntreUserDate(sc);
 		newComputer.introduced(dateintroduced);
 
 		System.out.print("Date d'interruption : (Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDateTime dateinterruption = valid.verificationEntreUserDate(sc);
+		LocalDate dateinterruption = valid.verificationEntreUserDate(sc);
 			
 		valid.verificationDateIntervale(newComputer,dateintroduced, dateinterruption);
 		
@@ -134,12 +134,12 @@ public class Main{
 		
 		System.out.println("Ancienne date d'introduction: " + computer.getIntroduced());
 		System.out.print("Nouvelle date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDateTime dateintroduced = valid.verificationEntreUserDate(sc);
+		LocalDate dateintroduced = valid.verificationEntreUserDate(sc);
 		updateComputer.introduced(dateintroduced);
 		
 		System.out.println("Ancienne date d'interruption : " + computer.getDiscontinued());
 		System.out.print("Nouvelle date d'interruption(Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDateTime dateinterruption = valid.verificationEntreUserDate(sc);
+		LocalDate dateinterruption = valid.verificationEntreUserDate(sc);
 			
 		valid.verificationDateIntervale(updateComputer,dateintroduced, dateinterruption);
 		

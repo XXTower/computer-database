@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import fr.excilys.databasecomputer.Mapper.ComputerMapper;
 import fr.excilys.databasecomputer.dao.ConnextionDB;
-import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
 
@@ -44,15 +43,10 @@ public class ComputerDAO {
 		ComputerBuilder computer = new ComputerBuilder();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);) {
 			stm.setInt(1, id);
+			ComputerMapper computerMapper = new ComputerMapper();
 			ResultSet result = stm.executeQuery();
-			if(result.next()) {
-				
-			return	computer.id(result.getInt("cmt.id"))
-				.name(result.getString("cmt.name"))
-				.introduced(result.getTimestamp("cmt.introduced").toLocalDateTime())
-				.discontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime())
-				.company(new CompanyBuilder().id(result.getInt("cmp.id")).name(result.getString("cmp.name")).build())
-				.build();
+			if(result.next()) {	
+				return	computerMapper.SQLToComputer(result);
 			}else {
 				return computer.build();
 			}
@@ -72,8 +66,8 @@ public class ComputerDAO {
 		try(PreparedStatement stm = this.conn.prepareStatement(UPDATE);) {
 			
 			stm.setString(1, computer.getName());
-			stm.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
-			stm.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
+			stm.setDate(2, Date.valueOf(computer.getIntroduced()));
+			stm.setDate(3, Date.valueOf(computer.getDiscontinued()));
 			stm.setInt(4, computer.getCompany().getId());
 			stm.setInt(5, computer.getId());
 			int result = stm.executeUpdate();
@@ -132,8 +126,8 @@ public class ComputerDAO {
 		try(PreparedStatement stm = this.conn.prepareStatement(INSERT_COMPUTER);) {
 			
 			stm.setString(1, computer.getName());
-			stm.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
-			stm.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
+			stm.setDate(2, Date.valueOf(computer.getIntroduced()));
+			stm.setDate(3, Date.valueOf(computer.getDiscontinued()));
 			stm.setString(4, computer.getCompany().getName());
 			int result = stm.executeUpdate();
 			return result==1;

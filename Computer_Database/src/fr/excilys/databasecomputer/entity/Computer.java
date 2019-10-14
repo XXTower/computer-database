@@ -1,12 +1,12 @@
 package fr.excilys.databasecomputer.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Computer {
 	private int id;
 	private String name;
-	private LocalDateTime introduced;
-	private LocalDateTime discontinued;
+	private LocalDate introduced;
+	private LocalDate discontinued;
 	private Company company;	
 	
 	private Computer(ComputerBuilder builder) {
@@ -20,39 +20,29 @@ public class Computer {
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
+
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public LocalDateTime getIntroduced() {
+
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(LocalDateTime introduced) {
-		this.introduced = introduced;
-	}
-	public LocalDateTime getDiscontinued() {
+
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinued(LocalDateTime discontinued) {
-		this.discontinued = discontinued;
-	}
+
 	public Company getCompany() {
 		return company;
 	}
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+
 	
 	public static class ComputerBuilder {
 		private int id;
 		private String name;
-		private LocalDateTime introduced;
-		private LocalDateTime discontinued;
+		private LocalDate introduced;
+		private LocalDate discontinued;
 		private Company company;
 		
 		public ComputerBuilder() {}
@@ -67,12 +57,12 @@ public class Computer {
 			return this;
 		}
 		
-		public ComputerBuilder introduced(LocalDateTime introduced) {
+		public ComputerBuilder introduced(LocalDate introduced) {
 			this.introduced = introduced;
 			return this;
 		}
 		
-		public ComputerBuilder discontinued(LocalDateTime discontinued) {
+		public ComputerBuilder discontinued(LocalDate discontinued) {
 			this.discontinued = discontinued;
 			return this;
 		}
