@@ -13,7 +13,7 @@ import fr.excilys.databasecomputer.validator.Validator;
 public class Main{
 		
 	public static void main(String[] args) {
-
+//		ComputerService computerSrv = new ComputerService();
 		Scanner sc = new Scanner(System.in);
 		Page pagination = new Page();
 		
@@ -24,6 +24,7 @@ public class Main{
 			reponce=sc.nextLine().trim();
 			switch (reponce) {
 			case "1":
+//				computerSrv.displayAllComputer();
 				pagination.displayComputer();
 				break;
 			case "2":

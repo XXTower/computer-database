@@ -3,6 +3,7 @@ package fr.excilys.databasecomputer.dao.implement;
 import java.sql.*;
 import java.util.ArrayList;
 
+import fr.excilys.databasecomputer.Mapper.ComputerMapper;
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
@@ -11,14 +12,21 @@ import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
 public class ComputerDAO {
 	private final static String FIND_ALL = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
 			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmt.company_id = cmp.id ORDER BY cmt.id";
+	
 	private final static String FIND_ALL_LIMIT_OFFSET = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
 			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmt.company_id = cmp.id ORDER BY cmt.id LIMIT ? OFFSET ?";
+	
 	private final static String FIND_BY_ID ="SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
 			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmt.company_id = cmp.id WHERE cmt.id = ? ORDER BY cmt.id ";
+	
 	private final static String UPDATE ="UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
+	
 	private final static String NB_COMPUTER ="SELECT COUNT(id) AS nbComputer FROM computer";
+	
 	private final static String DELETE_COMPUTER ="DELETE FROM computer WHERE id = ?";
+	
 	private final static String INSERT_COMPUTER ="INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,(SELECT id FROM company WHERE name LIKE ?))";
+	
 	private Connection conn;
 	private static ComputerDAO instance;
 	
@@ -104,18 +112,9 @@ public class ComputerDAO {
 		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
 			ResultSet result = stm.executeQuery();
-			while(result.next()) {				
-				computers.add( new ComputerBuilder()
-						.id(result.getInt("cmt.id"))
-						.name(result.getString("cmt.name"))
-						.introduced(result.getTimestamp("cmt.introduced").toLocalDateTime())
-						.discontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime())
-						.company(new CompanyBuilder().
-								id(result.getInt("cmp.id"))
-								.name(result.getString("cmp.name"))
-								.build())
-						.build()
-						);
+			ComputerMapper computerMapper = new ComputerMapper();
+			while(result.next()) {	
+				computers.add(computerMapper.SQLToComputer(result));
 			}
 		} catch (SQLException se) {
 			for(Throwable e : se) {
@@ -175,19 +174,9 @@ public class ComputerDAO {
 			stm.setInt(1, limite);
 			stm.setInt(2, offset);
 			ResultSet result = stm.executeQuery();
-			
+			ComputerMapper computerMapper = new ComputerMapper();
 			while(result.next()) {
-				computers.add( new ComputerBuilder()
-						.id(result.getInt("cmt.id"))
-						.name(result.getString("cmt.name"))
-						.introduced(result.getTimestamp("cmt.introduced").toLocalDateTime())
-						.discontinued(result.getTimestamp("cmt.discontinued").toLocalDateTime())
-						.company(new CompanyBuilder().
-								id(result.getInt("cmp.id"))
-								.name(result.getString("cmp.name"))
-								.build())
-						.build()
-						);
+				computers.add(computerMapper.SQLToComputer(result));
 			}
 		} catch (SQLException se) {
 			for(Throwable e : se) {

@@ -30,7 +30,6 @@ public class Page {
 		int reponse = 1;
 		int nbComputer = computer.nbComputer();
 		int maxPage = nbPageMax(nbComputer);
-		System.out.println(maxPage);
 		do {
 			computer.displayAllComputer(this.limite,this.offset);
 			System.out.println("Page " + reponse + " sur " + maxPage);
