@@ -1,17 +1,18 @@
 package fr.excilys.databasecomputer.pageable;
 
-import java.util.Scanner;
-
-import fr.excilys.databasecomputer.service.CompanyService;
-import fr.excilys.databasecomputer.service.ComputerService;
-
 public class Page {
-	Scanner scPage = new Scanner(System.in);
-	CompanyService company= new CompanyService();
-	ComputerService computer = new ComputerService();
-	
+	private static Page instance;
 	private int limite =10;
 
+	private Page() {}
+	
+	public static Page getInstance() {
+		if(instance==null) {
+			instance = new Page();
+		}
+		return instance;
+	}
+	
 	public int getLimite() {
 		return limite;
 	}

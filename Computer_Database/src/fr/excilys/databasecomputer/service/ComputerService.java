@@ -7,11 +7,20 @@ import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 
 public class ComputerService {
-	ComputerDAO computerDAO;
+	private static ComputerService instance;
+	private ComputerDAO computerDAO;
 	
-	public ComputerService() {
+	private ComputerService() {
 		this.computerDAO = ComputerDAO.getInstance();
 	}
+	
+	public static ComputerService getInstance() {
+		if(instance==null) {
+			instance= new ComputerService();
+		}
+		return instance;
+	}
+	
 
 	public Boolean addComputer(Computer computer)  {
 		return computerDAO.addComputer(computer);

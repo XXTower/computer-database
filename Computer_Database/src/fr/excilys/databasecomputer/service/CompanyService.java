@@ -8,10 +8,21 @@ import fr.excilys.databasecomputer.entity.Company;
 public class CompanyService{
 	
 	private CompanyDAO companyDAO;
+	private static CompanyService instance;
 
-	public CompanyService() {
+	private CompanyService() {
 		this.companyDAO=CompanyDAO.getInstance();
 	}
+		
+	public static CompanyService getInstance() {
+		if(instance==null) {
+			instance = new CompanyService();
+		}
+		return instance;
+	}
+
+
+
 	public void displayAllCompany() {
 		ArrayList<Company> companys = companyDAO.findAll();
 		for(Company company : companys) {
