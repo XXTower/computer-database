@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
 import fr.excilys.databasecomputer.entity.Computer;
+import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 
 public class ComputerService {
 	ComputerDAO computerDAO;
@@ -32,7 +33,7 @@ public class ComputerService {
 		}
 	}
 	
-	public Computer displayOneComputeur(int idComputer)  {
+	public Computer displayOneComputeur(int idComputer) throws SQLExceptionComputerNotFound  {
 		return computerDAO.find(idComputer);
 	}
 	

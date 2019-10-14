@@ -4,18 +4,18 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
+import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.pageable.Page;
+import fr.excilys.databasecomputer.service.CompanyService;
 import fr.excilys.databasecomputer.service.ComputerService;
 import fr.excilys.databasecomputer.validator.Validator;
 
 public class Main{
 		
-	public static void main(String[] args) {
-//		ComputerService computerSrv = new ComputerService();
+	public static void main(String[] args){
 		Scanner sc = new Scanner(System.in);
-		Page pagination = new Page();
 		
 		String reponce ="";
 		System.out.println("Bonjour que vouslez-vous faire ?");
@@ -24,11 +24,10 @@ public class Main{
 			reponce=sc.nextLine().trim();
 			switch (reponce) {
 			case "1":
-//				computerSrv.displayAllComputer();
-				pagination.displayComputer();
+				afficherComputer(sc);
 				break;
 			case "2":
-				pagination.displayCompany();
+				afficherCompany(sc);
 				break;
 			case "3":
 				trouverComputer(sc);
@@ -52,6 +51,60 @@ public class Main{
 		}while(!reponce.equals("7"));
 		
 		sc.close();		
+	}
+	
+	public static void afficherComputer(Scanner sc) {
+		Page pagination = new Page();
+		ComputerService computer = new ComputerService();
+		Validator valid = new Validator();
+		int reponse = 1;
+		int offset = 0;
+		int nbComputer = computer.nbComputer();
+		int maxPage = pagination.nbPageMax(nbComputer);
+		do {
+			computer.displayAllComputer(pagination.getLimite(),offset);
+			System.out.println("Page " + reponse + " sur " + maxPage);
+			System.out.println("Sur quelle page voulez vous aller ?");
+			System.out.println("Pour quitter marquer -1");
+			do {
+				reponse = valid.verificationEntreUserInt(sc);
+				if(1 <= reponse && reponse <= maxPage) {
+					offset = pagination.calculeNewOffset(reponse);
+					break;
+				} else if (reponse==-1) {
+					break;
+				}else {
+					System.out.println("Hors range");
+				}
+			}while(true);			
+		}while(reponse!=-1);
+	}
+	
+	public static void afficherCompany(Scanner sc) {
+		Page pagination = new Page();
+		CompanyService company= new CompanyService();
+		Validator valid = new Validator();
+		int reponse = 1;
+		int offset = 0;
+		int nbCompany = company.nbCompany();
+		int maxPage = pagination.nbPageMax(nbCompany);
+		do {
+			company.displayAllCompany(pagination.getLimite(),offset);
+			System.out.println("Page " + reponse + " sur " + maxPage);
+			System.out.println("Sur quelle page voulez vous aller ?");
+			System.out.println("Pour quitter marquer -1");
+			do {
+				reponse = valid.verificationEntreUserInt(sc);
+				if(1 <= reponse && reponse <= maxPage) {
+					offset = pagination.calculeNewOffset(reponse);
+					break;
+				} else if (reponse==-1) {
+					break;
+				}else {
+					System.out.println("Hors range");
+				}
+			}while(true);			
+		}while(reponse!=-1);
 	}
 	
 	public static void afficherMenu() {
@@ -98,9 +151,13 @@ public class Main{
 		
 		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
 		
-		Computer computer = computerSrv.displayOneComputeur(valid.verificationEntreUserInt(sc));
-		
-		System.out.println(computer.toString());
+		Computer computer;
+		try {
+			computer = computerSrv.displayOneComputeur(valid.verificationEntreUserInt(sc));
+			System.out.println(computer.toString());
+		} catch (SQLExceptionComputerNotFound e) {
+			System.err.println(e);
+		}
 	}
 	
 	public static void supprimerComputer(Scanner sc) {
@@ -118,7 +175,7 @@ public class Main{
 		}
 	}
 	
-	public static void majComputer(Scanner sc) {
+	public static void majComputer(Scanner sc){
 		Validator valid = new Validator();
 		ComputerBuilder updateComputer = new ComputerBuilder();
 		ComputerService computerSrv = new ComputerService();
@@ -126,33 +183,40 @@ public class Main{
 		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
 		int idComputer= valid.verificationEntreUserInt(sc);
 		
-		Computer computer= computerSrv.displayOneComputeur(idComputer);
+		Computer computer;
+		try {
+			computer = computerSrv.displayOneComputeur(idComputer);
 		
-		System.out.println("Ancien nom: " + computer.getName());
-		System.out.print("Nouveau nom (Obligatoire): ");
-		updateComputer.name(valid.verificationEntreUserString(sc));
-		
-		System.out.println("Ancienne date d'introduction: " + computer.getIntroduced());
-		System.out.print("Nouvelle date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDate dateintroduced = valid.verificationEntreUserDate(sc);
-		updateComputer.introduced(dateintroduced);
-		
-		System.out.println("Ancienne date d'interruption : " + computer.getDiscontinued());
-		System.out.print("Nouvelle date d'interruption(Optionnel, format: AAAAA-MM-JJ): ");
-		LocalDate dateinterruption = valid.verificationEntreUserDate(sc);
+			updateComputer.id(computer.getId());
+			System.out.println("Ancien nom: " + computer.getName());
+			System.out.print("Nouveau nom (Obligatoire): ");
+			updateComputer.name(valid.verificationEntreUserString(sc));
 			
-		valid.verificationDateIntervale(updateComputer,dateintroduced, dateinterruption);
-		
-		System.out.println("Ancienne nom Company : " + computer.getCompany().getName());
-		System.out.println("Si aucun nom ne correspond, le champs sera null");
-		System.out.print("Nouveaux nom company(Optionnel): ");
-		updateComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
-		
-		if(computerSrv.updateComputer(updateComputer.build())) {
-			System.out.println("Ordinateur modifier");
-		}else {
-			System.out.println("Ordinateur non modifier");
+			System.out.println("Ancienne date d'introduction: " + computer.getIntroduced());
+			System.out.print("Nouvelle date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
+			LocalDate dateintroduced = valid.verificationEntreUserDate(sc);
+			updateComputer.introduced(dateintroduced);
+			
+			System.out.println("Ancienne date d'interruption : " + computer.getDiscontinued());
+			System.out.print("Nouvelle date d'interruption(Optionnel, format: AAAAA-MM-JJ): ");
+			LocalDate dateinterruption = valid.verificationEntreUserDate(sc);
+				
+			valid.verificationDateIntervale(updateComputer,dateintroduced, dateinterruption);
+			
+			System.out.println("Ancienne nom Company : " + computer.getCompany().getName());
+			System.out.println("Si aucun nom ne correspond, le champs sera null");
+			System.out.print("Nouveaux nom company(Optionnel): ");
+			updateComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
+			
+			if(computerSrv.updateComputer(updateComputer.build())) {
+				System.out.println("Ordinateur modifier");
+			}else {
+				System.out.println("Ordinateur non modifier");
+			}
+		} catch (SQLExceptionComputerNotFound e) {
+			System.err.println(e);
 		}
 	}
+
 
 }

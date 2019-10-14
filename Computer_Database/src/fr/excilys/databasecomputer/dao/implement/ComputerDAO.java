@@ -4,9 +4,10 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import fr.excilys.databasecomputer.Mapper.ComputerMapper;
+import fr.excilys.databasecomputer.Mapper.DateMapper;
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.entity.Computer;
-import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
+import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 
 public class ComputerDAO {
 	private final static String FIND_ALL = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
@@ -18,7 +19,7 @@ public class ComputerDAO {
 	private final static String FIND_BY_ID ="SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
 			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmt.company_id = cmp.id WHERE cmt.id = ? ORDER BY cmt.id ";
 	
-	private final static String UPDATE ="UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
+	private final static String UPDATE ="UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=(SELECT id FROM company WHERE name LIKE ?) WHERE id=?";
 	
 	private final static String NB_COMPUTER ="SELECT COUNT(id) AS nbComputer FROM computer";
 	
@@ -38,9 +39,8 @@ public class ComputerDAO {
 		return instance;
 	}
 
-	public Computer find(int id) {
+	public Computer find(int id) throws SQLExceptionComputerNotFound {
 		this.conn = ConnextionDB.getInstance().getConnection();
-		ComputerBuilder computer = new ComputerBuilder();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);) {
 			stm.setInt(1, id);
 			ComputerMapper computerMapper = new ComputerMapper();
@@ -48,7 +48,7 @@ public class ComputerDAO {
 			if(result.next()) {	
 				return	computerMapper.SQLToComputer(result);
 			}else {
-				return computer.build();
+				throw new SQLExceptionComputerNotFound("Aucun ordinateur trouver a pour cette id");
 			}
 		} catch (SQLException se) {
 			for(Throwable e : se) {
@@ -66,9 +66,9 @@ public class ComputerDAO {
 		try(PreparedStatement stm = this.conn.prepareStatement(UPDATE);) {
 			
 			stm.setString(1, computer.getName());
-			stm.setDate(2, Date.valueOf(computer.getIntroduced()));
-			stm.setDate(3, Date.valueOf(computer.getDiscontinued()));
-			stm.setInt(4, computer.getCompany().getId());
+			stm.setDate(2, DateMapper.changeToDateSQL(computer.getIntroduced()));
+			stm.setDate(3, DateMapper.changeToDateSQL(computer.getDiscontinued()));
+			stm.setString(4, computer.getCompany().getName());
 			stm.setInt(5, computer.getId());
 			int result = stm.executeUpdate();
 			return result==1;
@@ -126,8 +126,8 @@ public class ComputerDAO {
 		try(PreparedStatement stm = this.conn.prepareStatement(INSERT_COMPUTER);) {
 			
 			stm.setString(1, computer.getName());
-			stm.setDate(2, Date.valueOf(computer.getIntroduced()));
-			stm.setDate(3, Date.valueOf(computer.getDiscontinued()));
+			stm.setDate(2, DateMapper.changeToDateSQL(computer.getIntroduced()));
+			stm.setDate(3, DateMapper.changeToDateSQL(computer.getDiscontinued()));
 			stm.setString(4, computer.getCompany().getName());
 			int result = stm.executeUpdate();
 			return result==1;
