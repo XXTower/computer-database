@@ -23,7 +23,7 @@ public class Main{
 		Scanner sc = new Scanner(System.in);
 		
 		String reponce ="";
-		System.out.println("Bonjour que vouslez-vous faire ?");
+		System.out.println("Bonjour que voulez-vous faire ?");
 		do {
 			afficherMenu();
 			reponce=sc.nextLine().trim();
@@ -70,7 +70,7 @@ public class Main{
 			computerService.displayAllComputer(page.getLimite(),offset);
 			System.out.println("Page " + reponse + " sur " + maxPage);
 			System.out.println("Sur quelle page voulez vous aller ?");
-			System.out.println("Pour quitter marquer -1");
+			System.out.println("Pour quitter marqué -1");
 			do {
 				reponse = validator.verificationEntreUserInt(sc);
 				if(1 <= reponse && reponse <= maxPage) {
@@ -79,7 +79,7 @@ public class Main{
 				} else if (reponse==-1) {
 					break;
 				}else {
-					System.out.println("Hors range");
+					System.out.println("Hors porter");
 				}
 			}while(true);			
 		}while(reponse!=-1);
@@ -97,7 +97,7 @@ public class Main{
 			companyService.displayAllCompany(page.getLimite(),offset);
 			System.out.println("Page " + reponse + " sur " + maxPage);
 			System.out.println("Sur quelle page voulez vous aller ?");
-			System.out.println("Pour quitter marquer -1");
+			System.out.println("Pour quitter marqué -1");
 			do {
 				reponse = validator.verificationEntreUserInt(sc);
 				if(1 <= reponse && reponse <= maxPage) {
@@ -114,11 +114,11 @@ public class Main{
 	
 	public static void afficherMenu() {
 		System.out.println("1 - Liste Ordinateurs");
-		System.out.println("2 - List Companies");
+		System.out.println("2 - Liste Companies");
 		System.out.println("3 - Voir detail d'un ordinateur");
 		System.out.println("4 - Creer un ordinateur");
-		System.out.println("5 - Mettre a jour un ordinateur");
-		System.out.println("6 - Supprimmer un ordinateur");
+		System.out.println("5 - Mettre à jour un ordinateur");
+		System.out.println("6 - Supprimer un ordinateur");
 		System.out.println("7 - Quitter");
 	}
 	

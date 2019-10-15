@@ -29,6 +29,7 @@ public class ComputerDAO {
 	
 	private Connection conn;
 	private static ComputerDAO instance;
+	private ComputerMapper computerMapper;
 	
 	private ComputerDAO(){	}
 		
@@ -43,7 +44,7 @@ public class ComputerDAO {
 		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);) {
 			stm.setInt(1, id);
-			ComputerMapper computerMapper = new ComputerMapper();
+			computerMapper = ComputerMapper.getInstance();
 			ResultSet result = stm.executeQuery();
 			if(result.next()) {	
 				return	computerMapper.SQLToComputer(result);
@@ -106,7 +107,7 @@ public class ComputerDAO {
 		this.conn = ConnextionDB.getInstance().getConnection();
 		try(PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
 			ResultSet result = stm.executeQuery();
-			ComputerMapper computerMapper = new ComputerMapper();
+			computerMapper = ComputerMapper.getInstance();
 			while(result.next()) {	
 				computers.add(computerMapper.SQLToComputer(result));
 			}
@@ -168,7 +169,7 @@ public class ComputerDAO {
 			stm.setInt(1, limite);
 			stm.setInt(2, offset);
 			ResultSet result = stm.executeQuery();
-			ComputerMapper computerMapper = new ComputerMapper();
+			computerMapper = ComputerMapper.getInstance();
 			while(result.next()) {
 				computers.add(computerMapper.SQLToComputer(result));
 			}
