@@ -47,7 +47,7 @@ public class CompanyDAO {
 		
 		return companys;
 	}
-
+	
 	public ArrayList<Company> findAll(int limite, int offset) {
 		this.conn = ConnextionDB.getInstance().getConnection();
 		ArrayList<Company> companys = new ArrayList<>();

@@ -10,14 +10,14 @@ import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 
 public class ComputerDAO {
-	private final static String FIND_ALL = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
-			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmt.company_id = cmp.id ORDER BY cmt.id";
+	private final static String FIND_ALL = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
+			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY computer.id";
 	
-	private final static String FIND_ALL_LIMIT_OFFSET = "SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
-			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmt.company_id = cmp.id ORDER BY cmt.id LIMIT ? OFFSET ?";
+	private final static String FIND_ALL_LIMIT_OFFSET = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
+			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY computer.id LIMIT ? OFFSET ?";
 	
-	private final static String FIND_BY_ID ="SELECT cmt.id, cmt.name, cmt.introduced, cmt.discontinued, cmp.id, cmp.name "
-			+ "FROM computer AS cmt LEFT JOIN  company AS cmp ON cmt.company_id = cmp.id WHERE cmt.id = ? ORDER BY cmt.id ";
+	private final static String FIND_BY_ID ="SELECT computer.id, computer.name, computer.introduced, computer.discontinued, cmp.id, cmp.name "
+			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = ? ORDER BY computer.id ";
 	
 	private final static String UPDATE ="UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=(SELECT id FROM company WHERE name LIKE ?) WHERE id=?";
 	
@@ -101,7 +101,7 @@ public class ComputerDAO {
 		}
 		return false;
 	}
-
+	
 	public ArrayList<Computer> findAll() {
 		ArrayList<Computer> computers = new ArrayList<>();
 		this.conn = ConnextionDB.getInstance().getConnection();
