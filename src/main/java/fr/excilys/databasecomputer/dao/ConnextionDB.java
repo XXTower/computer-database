@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnextionDB {
 
-	private static String url = "jdbc:mysql://localhost:3306/computer-database-db?useSSL=false";
+	private String url = "jdbc:mysql://localhost:3306/computer-database-db?useSSL=false";
 	private static String user = "admincdb";
 	private static String password = "qwerty1234";
 	private static Connection connect;
@@ -44,6 +44,10 @@ public class ConnextionDB {
 			}
 		}
 		return connect;
+	}
+	
+	public void testURL() {
+		this.url="jdbc:h2:mem:computer-database-db;INIT=RUNSCRIPT FROM '~/Documents/SQLH2/1-SCHEMA.sql'";
 	}
 	
 }
