@@ -12,21 +12,20 @@ import fr.excilys.databasecomputer.service.CompanyService;
 import fr.excilys.databasecomputer.service.ComputerService;
 import fr.excilys.databasecomputer.validator.Validator;
 
-public class Main{
+public class Main {
 	private static ComputerService computerService;
 	private static CompanyService companyService;
 	private static Validator validator;
 	private static Page page;
-	
-	
-	public static void main(String[] args){
+
+	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		
-		String reponce ="";
+
+		String reponce = "";
 		System.out.println("Bonjour que voulez-vous faire ?");
 		do {
 			afficherMenu();
-			reponce=sc.nextLine().trim();
+			reponce = sc.nextLine().trim();
 			switch (reponce) {
 			case "1":
 				afficherComputer(sc);
@@ -52,12 +51,11 @@ public class Main{
 			default:
 				System.out.println("Option inconnu, veuillez choisir une option correcte");
 				break;
-			}		
-		}while(!reponce.equals("7"));
-		
-		sc.close();		
+			}
+		} while (!reponce.equals("7"));
+		sc.close();
 	}
-	
+
 	public static void afficherComputer(Scanner sc) {
 		page = Page.getInstance();
 		computerService = ComputerService.getInstance();
@@ -67,24 +65,24 @@ public class Main{
 		int nbComputer = computerService.nbComputer();
 		int maxPage = page.nbPageMax(nbComputer);
 		do {
-			computerService.displayAllComputer(page.getLimite(),offset);
+			computerService.displayAllComputer(page.getLimite(), offset);
 			System.out.println("Page " + reponse + " sur " + maxPage);
 			System.out.println("Sur quelle page voulez vous aller ?");
 			System.out.println("Pour quitter marqué -1");
 			do {
 				reponse = validator.verificationEntreUserInt(sc);
-				if(1 <= reponse && reponse <= maxPage) {
+				if (1 <= reponse && reponse <= maxPage) {
 					offset = page.calculeNewOffset(reponse);
 					break;
-				} else if (reponse==-1) {
+				} else if (reponse == -1) {
 					break;
-				}else {
+				} else {
 					System.out.println("Hors porter");
 				}
-			}while(true);			
-		}while(reponse!=-1);
+			} while (true);
+		} while (reponse != -1);
 	}
-	
+
 	public static void afficherCompany(Scanner sc) {
 		page = Page.getInstance();
 		companyService = CompanyService.getInstance();
@@ -94,24 +92,24 @@ public class Main{
 		int nbCompany = companyService.nbCompany();
 		int maxPage = page.nbPageMax(nbCompany);
 		do {
-			companyService.displayAllCompany(page.getLimite(),offset);
+			companyService.displayAllCompany(page.getLimite(), offset);
 			System.out.println("Page " + reponse + " sur " + maxPage);
 			System.out.println("Sur quelle page voulez vous aller ?");
 			System.out.println("Pour quitter marqué -1");
 			do {
 				reponse = validator.verificationEntreUserInt(sc);
-				if(1 <= reponse && reponse <= maxPage) {
+				if (1 <= reponse && reponse <= maxPage) {
 					offset = page.calculeNewOffset(reponse);
 					break;
-				} else if (reponse==-1) {
+				} else if (reponse == -1) {
 					break;
-				}else {
+				} else {
 					System.out.println("Hors range");
 				}
-			}while(true);			
-		}while(reponse!=-1);
+			} while (true);
+		} while (reponse != -1);
 	}
-	
+
 	public static void afficherMenu() {
 		System.out.println("1 - Liste Ordinateurs");
 		System.out.println("2 - Liste Companies");
@@ -121,41 +119,41 @@ public class Main{
 		System.out.println("6 - Supprimer un ordinateur");
 		System.out.println("7 - Quitter");
 	}
-	
+
 	public static void ajouterComputer(Scanner sc) {
 		validator = Validator.getInstance();
 		ComputerBuilder newComputer = new ComputerBuilder();
 		computerService = ComputerService.getInstance();
-		
+
 		System.out.print("Nom (Obligatoire): ");
 		newComputer.name(validator.verificationEntreUserString(sc));
-			
+
 		System.out.print("Date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
 		LocalDate dateintroduced = validator.verificationEntreUserDate(sc);
 		newComputer.introduced(dateintroduced);
 
 		System.out.print("Date d'interruption : (Optionnel, format: AAAAA-MM-JJ): ");
 		LocalDate dateinterruption = validator.verificationEntreUserDate(sc);
-			
-		validator.verificationDateIntervale(newComputer,dateintroduced, dateinterruption);
-		
+
+		validator.verificationDateIntervale(newComputer, dateintroduced, dateinterruption);
+
 		System.out.println("Si aucun nom ne correspond, le cahmps sera null");
 		System.out.print("Nouveaux nom company(Optionnel): ");
 		newComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
-		
-		if(computerService.addComputer(newComputer.build())) {
+
+		if (computerService.addComputer(newComputer.build())) {
 			System.out.println("Ordinateur ajouter");
-		}else {
+		} else {
 			System.out.println("Ordinateur non ajouter");
 		}
 	}
-	
+
 	public static void trouverComputer(Scanner sc) {
 		computerService = ComputerService.getInstance();
 		validator = Validator.getInstance();
-		
+
 		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
-		
+
 		Computer computer;
 		try {
 			computer = computerService.displayOneComputeur(validator.verificationEntreUserInt(sc));
@@ -164,64 +162,62 @@ public class Main{
 			System.err.println(e);
 		}
 	}
-	
+
 	public static void supprimerComputer(Scanner sc) {
 		validator = Validator.getInstance();
 		computerService = ComputerService.getInstance();
-		
+
 		System.out.println("Entrez l'id de l'ordinateur souhaitez supprimer");
-		
-		int idComputer= validator.verificationEntreUserInt(sc);
-		
-		if(computerService.deleteComputer(idComputer)) {
+
+		int idComputer = validator.verificationEntreUserInt(sc);
+
+		if (computerService.deleteComputer(idComputer)) {
 			System.out.println("Ordinateur supprimer");
-		}else {
+		} else {
 			System.out.println("Ordinateur non trouver ou opération compromise");
 		}
 	}
-	
-	public static void majComputer(Scanner sc){
+
+	public static void majComputer(Scanner sc) {
 		validator = Validator.getInstance();
 		ComputerBuilder updateComputer = new ComputerBuilder();
 		computerService = ComputerService.getInstance();
-		
+
 		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
-		int idComputer= validator.verificationEntreUserInt(sc);
-		
+		int idComputer = validator.verificationEntreUserInt(sc);
+
 		Computer computer;
 		try {
 			computer = computerService.displayOneComputeur(idComputer);
-		
+
 			updateComputer.id(computer.getId());
 			System.out.println("Ancien nom: " + computer.getName());
 			System.out.print("Nouveau nom (Obligatoire): ");
 			updateComputer.name(validator.verificationEntreUserString(sc));
-			
+
 			System.out.println("Ancienne date d'introduction: " + computer.getIntroduced());
 			System.out.print("Nouvelle date d'introduction (Optionnel, format: AAAAA-MM-JJ): ");
 			LocalDate dateintroduced = validator.verificationEntreUserDate(sc);
 			updateComputer.introduced(dateintroduced);
-			
+
 			System.out.println("Ancienne date d'interruption : " + computer.getDiscontinued());
 			System.out.print("Nouvelle date d'interruption(Optionnel, format: AAAAA-MM-JJ): ");
 			LocalDate dateinterruption = validator.verificationEntreUserDate(sc);
-				
-			validator.verificationDateIntervale(updateComputer,dateintroduced, dateinterruption);
-			
+
+			validator.verificationDateIntervale(updateComputer, dateintroduced, dateinterruption);
+
 			System.out.println("Ancienne nom Company : " + computer.getCompany().getName());
 			System.out.println("Si aucun nom ne correspond, le champs sera null");
 			System.out.print("Nouveaux nom company(Optionnel): ");
 			updateComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
-			
-			if(computerService.updateComputer(updateComputer.build())) {
+
+			if (computerService.updateComputer(updateComputer.build())) {
 				System.out.println("Ordinateur modifier");
-			}else {
+			} else {
 				System.out.println("Ordinateur non modifier");
 			}
 		} catch (SQLExceptionComputerNotFound e) {
 			System.err.println(e);
 		}
 	}
-
-
 }

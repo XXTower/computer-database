@@ -7,8 +7,8 @@ public class Computer {
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private Company company;	
-	
+	private Company company;
+
 	private Computer(ComputerBuilder builder) {
 		this.id = builder.id;
 		this.name = builder.name;
@@ -16,7 +16,7 @@ public class Computer {
 		this.discontinued = builder.discontinued;
 		this.company = builder.company;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -37,46 +37,45 @@ public class Computer {
 		return company;
 	}
 
-	
 	public static class ComputerBuilder {
 		private int id;
 		private String name;
 		private LocalDate introduced;
 		private LocalDate discontinued;
 		private Company company;
-		
-		public ComputerBuilder() {}
-		
+
+		public ComputerBuilder() { }
+
 		public ComputerBuilder id(int id) {
 			this.id = id;
 			return this;
 		}
-		
-		public ComputerBuilder name (String name) {
+
+		public ComputerBuilder name(String name) {
 			this.name = name;
 			return this;
 		}
-		
+
 		public ComputerBuilder introduced(LocalDate introduced) {
 			this.introduced = introduced;
 			return this;
 		}
-		
+
 		public ComputerBuilder discontinued(LocalDate discontinued) {
 			this.discontinued = discontinued;
 			return this;
 		}
-		
+
 		public ComputerBuilder company(Company company) {
 			this.company = company;
 			return this;
 		}
-		
+
 		public Computer build() {
 			return new Computer(this);
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
@@ -97,36 +96,48 @@ public class Computer {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Computer other = (Computer) obj;
 		if (company == null) {
-			if (other.company != null)
+			if (other.company != null) {
 				return false;
-		} else if (!company.equals(other.company))
+			}
+		} else if (!company.equals(other.company)) {
 			return false;
+		}
 		if (discontinued == null) {
-			if (other.discontinued != null)
+			if (other.discontinued != null) {
 				return false;
-		} else if (!discontinued.equals(other.discontinued))
+			}
+		} else if (!discontinued.equals(other.discontinued)) {
 			return false;
-		if (id != other.id)
+		}
+		if (id != other.id) {
 			return false;
+		}
 		if (introduced == null) {
-			if (other.introduced != null)
+			if (other.introduced != null) {
 				return false;
-		} else if (!introduced.equals(other.introduced))
+			}
+		} else if (!introduced.equals(other.introduced)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
-	}	
-		
+	}
+
 }

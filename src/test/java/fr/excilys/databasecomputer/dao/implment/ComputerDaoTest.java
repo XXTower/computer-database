@@ -57,7 +57,7 @@ public class ComputerDaoTest extends TestCase {
 		int number = computerDAO.nbComputer();
 		assertEquals(5, number);
 	}
-	
+
 	@Test
 	public final void testFindOne() {
 		Computer computers =new ComputerBuilder().id(1).name("MacBook Pro 15.4 inch").introduced(null).discontinued(null).company(new CompanyBuilder().id(1).name("Apple Inc.").build()).build();

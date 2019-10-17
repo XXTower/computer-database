@@ -3,13 +3,13 @@ package fr.excilys.databasecomputer.entity;
 public class Company {
 	private int id;
 	private String name;
-	
-	
+
+
 	private Company(CompanyBuilder builder) {
 		this.id = builder.id;
 		this.name = builder.name;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -17,23 +17,23 @@ public class Company {
 	public String getName() {
 		return name;
 	}
-	
+
 	public static class CompanyBuilder {
 		private int id;
 		private String name;
-		
-		public CompanyBuilder() {}
-		
+
+		public CompanyBuilder() { }
+
 		public CompanyBuilder id(int id) {
-			this.id=id;
+			this.id = id;
 			return this;
 		}
-		
+
 		public CompanyBuilder name(String name) {
-			this.name=name;
+			this.name = name;
 			return this;
 		}
-		
+
 		public Company build() {
 			return new Company(this);
 		}
@@ -55,24 +55,26 @@ public class Company {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Company other = (Company) obj;
-		if (id != other.id)
+		if (id != other.id) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
-	
-	
-	
 }
-

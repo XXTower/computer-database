@@ -11,43 +11,43 @@ public class ConnextionDB {
 	private static String password = "qwerty1234";
 	private static Connection connect;
 	private static ConnextionDB instance;
-	
-	private ConnextionDB() {}
-	
+
+	private ConnextionDB() { }
+
 	public Connection getConnection() {
 		try {
 			connect = DriverManager.getConnection(url, user, password);
 		} catch (SQLException se) {
-			for(Throwable e : se) {
+			for (Throwable e : se) {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		}
 		return connect;
 	}
-	
+
 	public static ConnextionDB getInstance() {
-		if (instance==null ) {
+		if (instance == null) {
 			instance = new ConnextionDB();
 		}
 		return instance;
 	}
-	
+
 	public static Connection disconnectDB() {
-		if(connect!=null) {
+		if (connect != null) {
 			try {
 				connect.close();
-				connect=null;
+				connect = null;
 			} catch (SQLException se) {
-				for(Throwable e : se) {
+				for (Throwable e : se) {
 					System.err.println("Problèmes rencontrés: " + e);
 				}
 			}
 		}
 		return connect;
 	}
-	
+
 	public void testURL() {
-		this.url="jdbc:h2:mem:computer-database-db;INIT=RUNSCRIPT FROM '~/Documents/SQLH2/1-SCHEMA.sql'";
+		this.url = "jdbc:h2:mem:computer-database-db;INIT=RUNSCRIPT FROM '~/Documents/SQLH2/1-SCHEMA.sql'";
 	}
-	
+
 }

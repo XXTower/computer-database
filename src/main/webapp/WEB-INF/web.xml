@@ -3,15 +3,5 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-	<servlet>
-		<servlet-name>Dashboard</servlet-name>
-		<display-name>Dashboard</display-name>
-		<description></description>
-		<servlet-class>fr.excilys.databasecomputer.servelet.Dashboard</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Dashboard</servlet-name>
-		<url-pattern>/Dashboard</url-pattern>
-	</servlet-mapping>
-
+	
 </web-app>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="6.18">
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/service/ComputerService.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/service/CompanyService.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/servelet/Dashboard.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/pageable/Page.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dtos/ComputerDTO.java">
+<error line="13" severity="error" message="Line has trailing spaces." source="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineCheck"/>
+<error line="15" severity="error" message="Line has trailing spaces." source="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineCheck"/>
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dtos/CompanyDTO.java">
+<error line="6" severity="error" message="Line has trailing spaces." source="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineCheck"/>
+<error line="7" severity="error" message="Line has trailing spaces." source="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineCheck"/>
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/validator/Validator.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dao/implement/ComputerDAO.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dao/implement/CompanyDAO.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dao/ConnextionDB.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/Main/Main.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/Mapper/DateMapper.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/Mapper/CompanyMapper.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/Mapper/ComputerMapper.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/entity/Computer.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/entity/Company.java">
+</file>
+<file name="/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/exception/SQLExceptionComputerNotFound.java">
+</file>
+</checkstyle>
