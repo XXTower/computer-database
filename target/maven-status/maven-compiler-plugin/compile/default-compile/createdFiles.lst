@@ -1,11 +1,14 @@
 fr/excilys/databasecomputer/pageable/Page.class
 fr/excilys/databasecomputer/validator/Validator.class
+fr/excilys/databasecomputer/Mapper/CompanyMapper.class
 fr/excilys/databasecomputer/dao/ConnextionDB.class
 fr/excilys/databasecomputer/entity/Company$1.class
 fr/excilys/databasecomputer/Mapper/DateMapper.class
 fr/excilys/databasecomputer/entity/Computer.class
 fr/excilys/databasecomputer/entity/Computer$ComputerBuilder.class
+fr/excilys/databasecomputer/servelet/AddComputerServelet.class
 fr/excilys/databasecomputer/dao/implement/CompanyDAO.class
+fr/excilys/databasecomputer/dtos/CompanyDTO.class
 fr/excilys/databasecomputer/exception/SQLExceptionComputerNotFound.class
 fr/excilys/databasecomputer/Mapper/ComputerMapper.class
 fr/excilys/databasecomputer/entity/Company$CompanyBuilder.class
@@ -13,5 +16,7 @@ fr/excilys/databasecomputer/service/CompanyService.class
 fr/excilys/databasecomputer/service/ComputerService.class
 fr/excilys/databasecomputer/dao/implement/ComputerDAO.class
 fr/excilys/databasecomputer/entity/Company.class
+fr/excilys/databasecomputer/servelet/DashboardServelet.class
+fr/excilys/databasecomputer/dtos/ComputerDTO.class
 fr/excilys/databasecomputer/Main/Main.class
 fr/excilys/databasecomputer/entity/Computer$1.class
