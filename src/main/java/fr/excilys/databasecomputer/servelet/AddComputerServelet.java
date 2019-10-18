@@ -8,13 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/addcomputer")
-public class AddComputer extends HttpServlet {
+public class AddComputerServelet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddComputer() {
+    public AddComputerServelet() {
         super();
         // TODO Auto-generated constructor stub
     }
