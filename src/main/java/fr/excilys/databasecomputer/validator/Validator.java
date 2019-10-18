@@ -5,8 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import fr.excilys.databasecomputer.Mapper.DateMapper;
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
+import fr.excilys.databasecomputer.mapper.DateMapper;
 
 public class Validator {
 	private static Validator instance;

@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import fr.excilys.databasecomputer.Mapper.ComputerMapper;
-import fr.excilys.databasecomputer.Mapper.DateMapper;
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
+import fr.excilys.databasecomputer.mapper.ComputerMapper;
+import fr.excilys.databasecomputer.mapper.DateMapper;
 
 public class ComputerDAO {
 	private static final String FIND_ALL = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "

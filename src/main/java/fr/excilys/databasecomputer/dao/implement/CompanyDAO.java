@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import fr.excilys.databasecomputer.Mapper.CompanyMapper;
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.entity.Company;
+import fr.excilys.databasecomputer.mapper.CompanyMapper;
 
 public class CompanyDAO {
 	private CompanyMapper companyMapper;
