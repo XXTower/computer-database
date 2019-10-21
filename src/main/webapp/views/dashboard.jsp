@@ -89,7 +89,6 @@
                         <td><c:out value="${computer.introduced}"/></td>
                         <td><c:out value="${computer.discontinued}"/></td>
                         <td><c:out value="${computer.company.name}"/></td>
-
                     </tr>
                     </c:forEach>
                 </tbody>
@@ -100,29 +99,62 @@
     <footer class="navbar-fixed-bottom">
         <div class="container text-center">
             <ul class="pagination">
-                <li class="page-item">
-                    <a href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                  </a>
-              </li>
-              <li class="page-item"><a href="dashboard"><c:out value="1"/></a></li>
-<%--               <c:forEach var="i" begin="1" end="${nbPage}" > --%>
-<%--               	<li class="page-item"><a href=#><c:out value="${i}"/></a></li> --%>
-<%--               </c:forEach> --%>
-			<li class="page-item"><a href="dashboard?page=${nbPage}"><c:out value="${nbPage}"/></a></li>
-            <li class="page-item">
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-	
-        <div class="btn-group btn-group-sm pull-right" role="group" >
-            <a type="submit" class="btn btn-default" href="dashboard?limite=10">10</a>
-            <a type="submit" class="btn btn-default" href="dashboard?limite=50">50</a>
-            <a type="submit" class="btn btn-default" href="dashboard?limite=100">100</a>
-        </div>
-	</div>
+	        	<c:if test="${actPage+1>2}">
+		            <li class="page-item">
+		               	<a href="dashboard?page=${actPage-1}" aria-label="Previous">
+		               	<span aria-hidden="true">&laquo;</span>
+		            	</a>
+		            </li>
+	            </c:if>
+	             
+	            <c:if test="${actPage > 1 }">
+	            	<li class="page-item"><a href="dashboard"><c:out value="1"/></a></li>
+	            </c:if>
+	              
+	            <c:if test="${actPage >4}">
+	            	<li class="page-item"><a>...</a></li>
+	            </c:if>
+	              
+	            <c:if test="${actPage-2 > 1 }">
+	            	<li class="page-item"><a href="dashboard?page=${actPage-2}"><c:out value="${actPage-2}"/></a></li>
+	            </c:if>
+	              
+	            <c:if test="${actPage-1 > 1 }">
+	            	<li class="page-item"><a href="dashboard?page=${actPage-1}"><c:out value="${actPage-1}"/></a></li>
+	            </c:if>
+	              
+	            <li class="page-item active"><a href="dashboard?page=${actPage}"><c:out value="${actPage}"/></a></li>
+	              
+	            <c:if test="${actPage+1 < nbPage }">
+	            	<li class="page-item"><a href="dashboard?page=${actPage+1}"><c:out value="${actPage+1}"/></a></li>
+	            </c:if>
+	              
+	            <c:if test="${actPage+2 < nbPage }">
+              	<li class="page-item"><a href="dashboard?page=${actPage+2}"><c:out value="${actPage+2}"/></a></li>
+				</c:if>
+				<c:if test="${actPage+4 < nbPage}">
+              		<li class="page-item"><a>...</a></li>
+              	</c:if>
+              	
+              	<c:if test="${actPage < nbPage }">
+	            	<li class="page-item"><a href="dashboard?page=${nbPage}"><c:out value="${nbPage}"/></a></li>
+	            </c:if>
+
+				<c:if test="${actPage< nbPage }">
+		            <li class="page-item">
+		                <a href="dashboard?page=${actPage+1}" aria-label="Next">
+		                    <span aria-hidden="true">&raquo;</span>
+		                </a>
+		            </li>
+	            </c:if>
+	        </ul>
+		
+	        <div class="btn-group btn-group-sm pull-right" role="group" >
+	            <a type="submit" class="btn btn-default" href="dashboard?limite=10">10</a>
+	            <a type="submit" class="btn btn-default" href="dashboard?limite=50">50</a>
+	            <a type="submit" class="btn btn-default" href="dashboard?limite=100">100</a>
+	        </div>
+		</div>
     </footer>
 <script src="../js/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
