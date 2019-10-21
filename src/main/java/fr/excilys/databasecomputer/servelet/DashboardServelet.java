@@ -17,7 +17,7 @@ public class DashboardServelet extends HttpServlet {
 	private static ComputerService computerService;
 	private static Page page;
 
-    public DashboardServelet() { 
+    public DashboardServelet() {
     	page = Page.getInstance();
     	computerService = ComputerService.getInstance();
     }
@@ -26,17 +26,17 @@ public class DashboardServelet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int offset = 0;
 		int actpage = 1;
-		if(request.getParameter("limite")!=null) {
+		if (request.getParameter("limite") != null) {
 			try {
 				int limite = Integer.parseInt(request.getParameter("limite"));
 				if (limite == 10 || limite == 50 || limite == 100) {
 					page.setLimite(limite);
 				}
 			} catch (NumberFormatException e) {
-				
-			}					
+				this.getServletContext().getRequestDispatcher("/views/500.jsp").forward(request, response);
+			}
 		}
-		
+
 		if (request.getParameter("page") != null) {
 			try {
 				actpage = Integer.parseInt(request.getParameter("page"));

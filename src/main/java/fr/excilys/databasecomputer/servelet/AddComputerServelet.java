@@ -7,23 +7,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.excilys.databasecomputer.service.CompanyService;
+import fr.excilys.databasecomputer.service.ComputerService;
+
 @WebServlet("/addComputer")
 public class AddComputerServelet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static ComputerService computerService;
+	private static CompanyService companyService;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public AddComputerServelet() {
-        super();
-        
+        computerService = ComputerService.getInstance();
+        companyService = CompanyService.getInstance();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.setAttribute("listCompany", companyService.displayAllCompany());
 		this.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 	}
 
