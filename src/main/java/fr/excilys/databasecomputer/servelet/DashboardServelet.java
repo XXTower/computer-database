@@ -7,24 +7,53 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/dashboard")
+import fr.excilys.databasecomputer.pageable.Page;
+import fr.excilys.databasecomputer.service.ComputerService;
+
+
+@WebServlet(name = "Dashboard", urlPatterns = "/dashboard")
 public class DashboardServelet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static ComputerService computerService;
+	private static Page page;
 
-    public DashboardServelet() { }
+    public DashboardServelet() { 
+    	page = Page.getInstance();
+    	computerService = ComputerService.getInstance();
+    }
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
-		int test = 7;
-		request.setAttribute("nb_computer", test);
+		int offset = 0;
+		if(request.getParameter("limite")!=null) {
+			try {
+				int limite = Integer.parseInt(request.getParameter("limite"));
+				if (limite == 10 || limite == 50 || limite == 100) {
+					page.setLimite(limite);
+				}
+			} catch (NumberFormatException e) {
+				
+			}					
+		}
+		
+		if (request.getParameter("page") != null) {
+			try {
+				offset = page.calculeNewOffset(Integer.parseInt(request.getParameter("page")));
+			} catch (NumberFormatException e) {
+				this.getServletContext().getRequestDispatcher("/views/500.jsp").forward(request, response);
+			}
+			
+		}
+
+		int nbComputer = computerService.nbComputer();
+		request.setAttribute("nbPage", page.nbPageMax(nbComputer));
+		request.setAttribute("listComputer", computerService.displayAllComputer(page.getLimite(), offset));
+		request.setAttribute("nbcomputer", nbComputer);
 		this.getServletContext().getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
