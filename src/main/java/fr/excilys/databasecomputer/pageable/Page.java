@@ -17,6 +17,10 @@ public class Page {
 		return limite;
 	}
 
+	public void setLimite(int limite) {
+		this.limite = limite;
+	}
+
 	public int nbPageMax(int nbobject) {
 		return (int) Math.ceil(((double) nbobject / (double) this.limite));
 	}

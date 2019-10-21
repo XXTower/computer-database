@@ -65,7 +65,9 @@ public class Main {
 		int nbComputer = computerService.nbComputer();
 		int maxPage = page.nbPageMax(nbComputer);
 		do {
-			computerService.displayAllComputer(page.getLimite(), offset);
+			for (Computer computer : computerService.displayAllComputer(page.getLimite(), offset)) {
+				System.out.println(computer.toString());
+			}
 			System.out.println("Page " + reponse + " sur " + maxPage);
 			System.out.println("Sur quelle page voulez vous aller ?");
 			System.out.println("Pour quitter marqué -1");

@@ -25,18 +25,12 @@ public class ComputerService {
 		return computerDAO.addComputer(computer);
 	}
 
- 	public void displayAllComputer()  {
-		ArrayList<Computer> computers = computerDAO.findAll();
-		for (Computer computer : computers) {
-			System.out.println(computer.toString());
-		}
+ 	public ArrayList<Computer> displayAllComputer()  {
+		return computerDAO.findAll();
 	}
 
- 	public void displayAllComputer(int limite, int offset)  {
-		ArrayList<Computer> computers = computerDAO.findAll(limite, offset);
-		for (Computer computer : computers) {
-			System.out.println(computer.toString());
-		}
+ 	public ArrayList<Computer> displayAllComputer(int limite, int offset)  {
+		return computerDAO.findAll(limite, offset);
 	}
 
 	public Computer displayOneComputeur(int idComputer) throws SQLExceptionComputerNotFound  {
