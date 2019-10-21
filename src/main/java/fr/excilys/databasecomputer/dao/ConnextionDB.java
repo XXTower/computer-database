@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnextionDB {
 
-	private String url = "jdbc:mysql://localhost:3306/computer-database-db?useSSL=false";
+	private String url = "jdbc:mysql://localhost:3306/computer-database-db?serverTimezone=UTC";
 	private static String user = "admincdb";
 	private static String password = "qwerty1234";
 	private static Connection connect;
@@ -16,11 +16,14 @@ public class ConnextionDB {
 
 	public Connection getConnection() {
 		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			connect = DriverManager.getConnection(url, user, password);
 		} catch (SQLException se) {
 			for (Throwable e : se) {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 		return connect;
 	}
