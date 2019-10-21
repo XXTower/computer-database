@@ -29,7 +29,7 @@ public class AddComputerServelet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("listCompany", companyService.displayAllCompany());
-		this.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
 
 	/**

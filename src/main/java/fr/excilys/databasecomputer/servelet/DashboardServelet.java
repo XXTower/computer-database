@@ -33,7 +33,7 @@ public class DashboardServelet extends HttpServlet {
 					page.setLimite(limite);
 				}
 			} catch (NumberFormatException e) {
-				this.getServletContext().getRequestDispatcher("/views/500.jsp").forward(request, response);
+				this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 			}
 		}
 
@@ -42,7 +42,7 @@ public class DashboardServelet extends HttpServlet {
 				actpage = Integer.parseInt(request.getParameter("page"));
 				offset = page.calculeNewOffset(actpage);
 			} catch (NumberFormatException e) {
-				this.getServletContext().getRequestDispatcher("/views/500.jsp").forward(request, response);
+				this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 			}
 		} else {
 			offset = page.calculeNewOffset(actpage);
@@ -53,7 +53,7 @@ public class DashboardServelet extends HttpServlet {
 		request.setAttribute("listComputer", computerService.displayAllComputer(page.getLimite(), offset));
 		request.setAttribute("nbcomputer", nbComputer);
 		request.setAttribute("actPage", actpage);
-		this.getServletContext().getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}
 
 
