@@ -6,6 +6,7 @@ import java.util.Scanner;
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
+import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.pageable.Page;
 import fr.excilys.databasecomputer.service.CompanyService;
@@ -94,7 +95,9 @@ public class Main {
 		int nbCompany = companyService.nbCompany();
 		int maxPage = page.nbPageMax(nbCompany);
 		do {
-			companyService.displayAllCompany(page.getLimite(), offset);
+			for (Company company : companyService.displayAllCompany(page.getLimite(), offset)) {
+				System.out.println(company.toString());
+			}
 			System.out.println("Page " + reponse + " sur " + maxPage);
 			System.out.println("Sur quelle page voulez vous aller ?");
 			System.out.println("Pour quitter marqué -1");

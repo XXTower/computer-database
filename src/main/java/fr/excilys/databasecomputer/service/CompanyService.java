@@ -20,17 +20,12 @@ public class CompanyService {
 		return instance;
 	}
 
-	public void displayAllCompany() {
-		ArrayList<Company> companys = companyDAO.findAll();
-		for (Company company : companys) {
-			System.out.println(company.toString());
-		}
+	public ArrayList<Company> displayAllCompany() {
+		return companyDAO.findAll();
 	}
 
-	public void displayAllCompany(int limite, int offset) {
-		for (Company company : companyDAO.findAll(limite, offset)) {
-			System.out.println(company.toString());
-		}
+	public ArrayList<Company> displayAllCompany(int limite, int offset) {
+		return companyDAO.findAll(limite, offset);
 	}
 
 	public int nbCompany() {
