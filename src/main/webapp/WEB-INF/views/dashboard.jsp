@@ -132,7 +132,7 @@
 	            <c:if test="${actPage+2 < nbPage }">
               	<li class="page-item"><a href="dashboard?page=${actPage+2}"><c:out value="${actPage+2}"/></a></li>
 				</c:if>
-				<c:if test="${actPage+4 < nbPage}">
+				<c:if test="${actPage+3 < nbPage}">
               		<li class="page-item"><a>...</a></li>
               	</c:if>
               	

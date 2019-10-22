@@ -40,14 +40,14 @@ public class ComputerMapper {
 		}
 		return new ComputerBuilder().id(id).name(name).introduced(introduced).discontinued(discontinued).company(company).build();
 	}
-	
+
 	public Computer computerDtoToComputer(ComputerDTO computerDto) {
 		ComputerBuilder computer = new ComputerBuilder();
 		computer.name(computerDto.getName())
 		.introduced(computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getIntroduced()) : null)
 		.discontinued(computerDto.getDiscontinued() != "" ? LocalDate.parse(computerDto.getDiscontinued()) : null)
 		.company(new CompanyBuilder().name(computerDto.getCompany()).build());
-		
+
 		return computer.build();
 	}
 }

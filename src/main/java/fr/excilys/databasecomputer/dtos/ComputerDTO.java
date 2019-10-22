@@ -8,7 +8,7 @@ public class ComputerDTO {
 	private String discontinued;
 	private String companyId;
 
-	private ComputerDTO(ComputerDTOBuilder builder) {	
+	private ComputerDTO(ComputerDTOBuilder builder) {
 		this.id = builder.id;
 		this.name = builder.name;
 		this.introduced = builder.introduced;
@@ -74,6 +74,4 @@ public class ComputerDTO {
 			return new ComputerDTO(this);
 		}
 	}
-	
-	
 }

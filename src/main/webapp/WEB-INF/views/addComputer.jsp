@@ -19,7 +19,10 @@
     </header>
 
     <section id="main">
-        <div class="container">
+        <div class="container">	
+			<div class="alert alert-danger">
+				<c:out value="${response}"/>
+			</div>
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>

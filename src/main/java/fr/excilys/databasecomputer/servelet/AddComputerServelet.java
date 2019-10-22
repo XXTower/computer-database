@@ -50,7 +50,7 @@ public class AddComputerServelet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Map<String,String> errors = new HashMap<String, String>();
+		Map<String, String> errors = new HashMap<String, String>();
 		String name = request.getParameter("computerName");
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
@@ -58,29 +58,29 @@ public class AddComputerServelet extends HttpServlet {
 
 		ComputerDTO computerDto = new ComputerDTOBuilder().name(name).introduced(introduced).discontinued(discontinued).company(company).build();
 		Computer computer = computerMapper.computerDtoToComputer(computerDto);
-		
+
 		try {
 			validator.checkNameComputer(computer.getName());
 		} catch (NameCheckException e) {
-			errors.put("computerName",e.getMessage());
+			errors.put("computerName", e.getMessage());
 		}
-		
+
 		try {
 			validator.checkDateIntervale(computer.getDiscontinued(), computer.getIntroduced());
 		} catch (DateIntevaleExecption e) {
-			errors.put("discontinued",e.getMessage());
+			errors.put("discontinued", e.getMessage());
 		}
-		
-		
+
 		if (errors.isEmpty()) {
-			computerService.addComputer(computer);
-			response.sendRedirect("dashboard");
+			if (computerService.addComputer(computer)) {
+				response.sendRedirect("dashboard");
+			} else {
+				request.setAttribute("response", "Errors whith the save");
+				doGet(request, response);
+			}
 		} else {
 			request.setAttribute("errors", errors);
 			doGet(request, response);
 		}
-
-		
 	}
-
 }
