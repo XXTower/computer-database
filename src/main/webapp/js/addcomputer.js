@@ -1,12 +1,7 @@
 
+$('#discontinued').change(function (){checkIntervalDate()})
 
-$('#discontinued').change(function (){
-	checkIntervalDate()
-})
-
-$('#introduced').change(function (){
-	checkIntervalDate()
-})
+$('#introduced').change(function (){checkIntervalDate()})
 
 function checkIntervalDate(){
 	if ($('#introduced').val()!= "" && $('#discontinued').val()!= ""){
@@ -16,6 +11,9 @@ function checkIntervalDate(){
 		} else {
 			$('#validButton').attr('disabled',false)
 			$('#checkdate').css('display','none')
-		}
+		} 
+	} else {
+		$('#validButton').attr('disabled',false)
+		$('#checkdate').css('display','none')
 	}
 }
