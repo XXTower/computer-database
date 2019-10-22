@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -11,6 +10,9 @@
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
+<style>
+.error{color: #900;}
+</style>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -20,9 +22,6 @@
 
     <section id="main">
         <div class="container">	
-			<div class="alert alert-danger">
-				<c:out value="${response}"/>
-			</div>
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
@@ -31,7 +30,7 @@
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
                                 <input required type="text" class="form-control" name="computerName" id="computerName" placeholder="Computer name" value='<c:out value="${param.computerName}"/>'>
-                            	<div class="is-invalid">${errors['computerName'] }</div>
+                            	<div class="error">${errors['computerName'] }</div>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
@@ -40,7 +39,8 @@
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
                                 <input type="date" class="form-control" name="discontinued" id="discontinued" placeholder="Discontinued date" <c:out value="${param.discontinued}"/>>
-                                <div class="is-invalid">${errors['discontinued'] }</div>
+                                <div class="error">${errors['discontinued'] }</div>
+                                <div class="error" id="checkdate" style="display:none">The discontinued date must be before the introduced date  </div>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -53,7 +53,7 @@
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary">
+                            <input type="submit" value="Add" class="btn btn-primary" id="validButton">
                             or
                             <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>
@@ -63,4 +63,9 @@
         </div>
     </section>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/addcomputer.js"></script>
+
 </html>
