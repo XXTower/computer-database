@@ -74,7 +74,7 @@ public class AddComputerServelet extends HttpServlet {
 		
 		if (errors.isEmpty()) {
 			computerService.addComputer(computer);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+			response.sendRedirect("dashboard");
 		} else {
 			request.setAttribute("errors", errors);
 			doGet(request, response);
