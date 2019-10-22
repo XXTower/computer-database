@@ -11,12 +11,12 @@ import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.pageable.Page;
 import fr.excilys.databasecomputer.service.CompanyService;
 import fr.excilys.databasecomputer.service.ComputerService;
-import fr.excilys.databasecomputer.validator.Validator;
+import fr.excilys.databasecomputer.validator.ValidatorCLI;
 
 public class Main {
 	private static ComputerService computerService;
 	private static CompanyService companyService;
-	private static Validator validator;
+	private static ValidatorCLI validator;
 	private static Page page;
 
 	public static void main(String[] args) {
@@ -60,7 +60,7 @@ public class Main {
 	public static void afficherComputer(Scanner sc) {
 		page = Page.getInstance();
 		computerService = ComputerService.getInstance();
-		validator = Validator.getInstance();
+		validator = ValidatorCLI.getInstance();
 		int reponse = 1;
 		int offset = 0;
 		int nbComputer = computerService.nbComputer();
@@ -89,7 +89,7 @@ public class Main {
 	public static void afficherCompany(Scanner sc) {
 		page = Page.getInstance();
 		companyService = CompanyService.getInstance();
-		validator = Validator.getInstance();
+		validator = ValidatorCLI.getInstance();
 		int reponse = 1;
 		int offset = 0;
 		int nbCompany = companyService.nbCompany();
@@ -126,7 +126,7 @@ public class Main {
 	}
 
 	public static void ajouterComputer(Scanner sc) {
-		validator = Validator.getInstance();
+		validator = ValidatorCLI.getInstance();
 		ComputerBuilder newComputer = new ComputerBuilder();
 		computerService = ComputerService.getInstance();
 
@@ -155,7 +155,7 @@ public class Main {
 
 	public static void trouverComputer(Scanner sc) {
 		computerService = ComputerService.getInstance();
-		validator = Validator.getInstance();
+		validator = ValidatorCLI.getInstance();
 
 		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
 
@@ -169,7 +169,7 @@ public class Main {
 	}
 
 	public static void supprimerComputer(Scanner sc) {
-		validator = Validator.getInstance();
+		validator = ValidatorCLI.getInstance();
 		computerService = ComputerService.getInstance();
 
 		System.out.println("Entrez l'id de l'ordinateur souhaitez supprimer");
@@ -184,7 +184,7 @@ public class Main {
 	}
 
 	public static void majComputer(Scanner sc) {
-		validator = Validator.getInstance();
+		validator = ValidatorCLI.getInstance();
 		ComputerBuilder updateComputer = new ComputerBuilder();
 		computerService = ComputerService.getInstance();
 
