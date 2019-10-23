@@ -57,7 +57,7 @@ public class EditComputerServelet extends HttpServlet {
 		} else {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
-		
+
 		request.setAttribute("listCompany", companyService.displayAllCompany());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
 	}
@@ -72,10 +72,10 @@ public class EditComputerServelet extends HttpServlet {
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		String company = request.getParameter("company");
-		
+
 		ComputerDTO computerDto = new ComputerDTOBuilder().id(id).name(name).introduced(introduced).discontinued(discontinued).company(company).build();
 		Computer computer = computerMapper.computerDtoToComputer(computerDto);
-		
+
 		try {
 			validator.checkNameComputer(computer.getName());
 		} catch (NameCheckException e) {
@@ -87,7 +87,7 @@ public class EditComputerServelet extends HttpServlet {
 		} catch (DateIntevaleExecption e) {
 			errors.put("discontinued", e.getMessage());
 		}
-		
+
 		if (errors.isEmpty()) {
 			if (computerService.updateComputer(computer)) {
 				response.sendRedirect("dashboard");
@@ -100,5 +100,4 @@ public class EditComputerServelet extends HttpServlet {
 			doGet(request, response);
 		}
 	}
-
 }

@@ -24,6 +24,13 @@
             <h1 id="homeTitle">
                 <c:out value="${nbcomputer}"></c:out> Computers found 
             </h1>
+            <c:if test="${not empty response}">
+	            <div class="alert alert-danger">
+					<c:out value="${response}"/>
+					<br/>
+					<!-- stacktrace -->
+				</div>
+			</c:if>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="#" method="GET" class="form-inline">
@@ -81,7 +88,7 @@
                 <c:forEach items="${listComputer}" var="computer">
                     <tr>
                         <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
+                            <input type="checkbox" name="cb" class="cb" value='<c:out value="${computer.id}"/>'>
                         </td>
                         <td>
                             <a href="editComputer?computer=${computer.id}" onclick=""><c:out value="${computer.name}"/></a>
