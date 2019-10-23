@@ -17,13 +17,18 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <junit.version>4.11</junit.version>
+    <hikari.version>3.4.1</hikari.version>
+    <mysql.version>8.0.18</mysql.version>
+    <mockito.version>3.1.0</mockito.version>
+    <h2.version>1.4.200</h2.version>
   </properties>
 
   <dependencies>
 	  <dependency>
 	    <groupId>com.zaxxer</groupId>
 	    <artifactId>HikariCP</artifactId>
-	    <version>3.4.1</version>
+	    <version>${hikari.version}</version>
 	</dependency>
     <dependency>
 	    <groupId>org.slf4j</groupId>
@@ -33,7 +38,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.18</version>
+      <version>${mysql.version}</version>
     </dependency>
     <dependency>
 	    <groupId>org.apache.taglibs</groupId>
@@ -69,19 +74,19 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
 	    <groupId>org.mockito</groupId>
 	    <artifactId>mockito-core</artifactId>
-	    <version>3.1.0</version>
+	    <version>${mockito.version}</version>
 	    <scope>test</scope>
 	</dependency>
 	<dependency>
 	    <groupId>com.h2database</groupId>
 	    <artifactId>h2</artifactId>
-	    <version>1.4.200</version>
+	    <version>${h2.version}</version>
 	    <scope>test</scope>
 	</dependency>   
   </dependencies>
