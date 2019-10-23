@@ -10,9 +10,9 @@ public class ConnextionDB {
 
 	private static Connection connect;
 	private static ConnextionDB instance;
-	
+
 	private static HikariConfig config = new HikariConfig("/database.properties");
-    private static HikariDataSource ds = new HikariDataSource( config );
+    private static HikariDataSource ds = new HikariDataSource(config);
 
 	private ConnextionDB() { }
 
