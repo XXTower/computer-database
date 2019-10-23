@@ -1,13 +1,16 @@
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/Main/Main.java
+/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/exception/NameCheckException.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dtos/CompanyDTO.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dao/implement/ComputerDAO.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/exception/SQLExceptionComputerNotFound.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/servelet/AddComputerServelet.java
+/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/validator/ValidatorCLI.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/mapper/DateMapper.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/mapper/CompanyMapper.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/service/ComputerService.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/servelet/DashboardServelet.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/entity/Computer.java
+/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/exception/DateIntevaleExecption.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/validator/Validator.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/mapper/ComputerMapper.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/service/CompanyService.java

@@ -48,9 +48,4 @@ public class ConnextionDB {
 		}
 		return connect;
 	}
-
-	public void testURL() {
-//		ConnextionDB.url = "jdbc:h2:mem:computer-database-db;INIT=RUNSCRIPT FROM '~/Documents/SQLH2/1-SCHEMA.sql'";
-	}
-
 }

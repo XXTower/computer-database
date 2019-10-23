@@ -23,7 +23,6 @@ public class ComputerDaoTest extends TestCase {
 	@Before
 	public void setUp() {
 		connextion = ConnextionDB.getInstance();
-		connextion.testURL();
 		computerDAO = ComputerDAO.getInstance();
 	}
 	
@@ -55,7 +54,7 @@ public class ComputerDaoTest extends TestCase {
 	@Test
 	public final void testNbComputer() {
 		int number = computerDAO.nbComputer();
-		assertEquals(5, number);
+		assertEquals(4, number);
 	}
 
 	@Test
@@ -70,7 +69,7 @@ public class ComputerDaoTest extends TestCase {
 	
 	@Test
 	public final void testDelete() {
-		assertEquals(true, computerDAO.delete(1));
+		assertEquals(true, computerDAO.delete(2));
 	}
 	
 	@Test

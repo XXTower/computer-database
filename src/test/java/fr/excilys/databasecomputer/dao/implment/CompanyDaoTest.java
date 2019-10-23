@@ -13,14 +13,13 @@ import fr.excilys.databasecomputer.entity.Company;
 import junit.framework.TestCase;
 
 public class CompanyDaoTest extends TestCase {
-//jdbc:h2:mem:computer-database-db;INIT=RUNSCRIPT FROM '~/resources/1-SCHEMA.sql'
 	ConnextionDB connextion;
 	CompanyDAO companyDAO;
 	
 	@Before
 	public void setUp() {
 		connextion = ConnextionDB.getInstance();
-		connextion.testURL();
+//		connextion.testURL();
 		companyDAO = CompanyDAO.getInstance();
 	}
 	
