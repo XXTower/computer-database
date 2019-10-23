@@ -1,29 +1,29 @@
 package fr.excilys.databasecomputer.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 public class ConnextionDB {
 
-	private String url = "jdbc:mysql://localhost:3306/computer-database-db?serverTimezone=UTC";
-	private static String user = "admincdb";
-	private static String password = "qwerty1234";
 	private static Connection connect;
 	private static ConnextionDB instance;
+	
+	private static HikariConfig config = new HikariConfig("/database.properties");
+    private static HikariDataSource ds = new HikariDataSource( config );
 
 	private ConnextionDB() { }
 
 	public Connection getConnection() {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connect = DriverManager.getConnection(url, user, password);
+			connect = ds.getConnection();
 		} catch (SQLException se) {
 			for (Throwable e : se) {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+
 		}
 		return connect;
 	}
@@ -50,7 +50,7 @@ public class ConnextionDB {
 	}
 
 	public void testURL() {
-		this.url = "jdbc:h2:mem:computer-database-db;INIT=RUNSCRIPT FROM '~/Documents/SQLH2/1-SCHEMA.sql'";
+//		ConnextionDB.url = "jdbc:h2:mem:computer-database-db;INIT=RUNSCRIPT FROM '~/Documents/SQLH2/1-SCHEMA.sql'";
 	}
 
 }
