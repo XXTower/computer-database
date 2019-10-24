@@ -50,6 +50,7 @@ public class DashboardServelet extends HttpServlet {
 		}
 
 		if (request.getParameter("search") != null) {
+			request.setAttribute("search", request.getParameter("search"));
 			nbComputer = computerService.nbComputerCompanyFindByName(request.getParameter("search"));
 			request.setAttribute("listComputer", computerService.findComputerCompanyByName(request.getParameter("search"), page.getLimite(), offset));
 		} else {
