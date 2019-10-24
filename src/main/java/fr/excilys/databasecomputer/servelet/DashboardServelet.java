@@ -26,6 +26,7 @@ public class DashboardServelet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int offset = 0;
 		int actpage = 1;
+		int nbComputer = 0;
 		if (request.getParameter("limite") != null) {
 			try {
 				int limite = Integer.parseInt(request.getParameter("limite"));
@@ -48,11 +49,19 @@ public class DashboardServelet extends HttpServlet {
 			offset = page.calculeNewOffset(actpage);
 		}
 
-		int nbComputer = computerService.nbComputer();
+		if (request.getParameter("search") != null) {
+			nbComputer = computerService.nbComputerCompanyFindByName(request.getParameter("search"));
+			request.setAttribute("listComputer", computerService.findComputerCompanyByName(request.getParameter("search"), page.getLimite(), offset));
+		} else {
+			nbComputer = computerService.nbComputer();
+			request.setAttribute("listComputer", computerService.displayAllComputer(page.getLimite(), offset));
+		}
+
+		request.setAttribute("limite", page.getLimite());
 		request.setAttribute("nbPage", page.nbPageMax(nbComputer));
-		request.setAttribute("listComputer", computerService.displayAllComputer(page.getLimite(), offset));
 		request.setAttribute("nbcomputer", nbComputer);
 		request.setAttribute("actPage", actpage);
+
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}
 

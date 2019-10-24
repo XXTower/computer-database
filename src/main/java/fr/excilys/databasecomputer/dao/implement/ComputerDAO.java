@@ -21,16 +21,18 @@ public class ComputerDAO {
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = ? ORDER BY computer.id ";
 	private static final String UPDATE = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=(SELECT id FROM company WHERE name LIKE ?) WHERE id=?";
 	private static final String NB_COMPUTER = "SELECT COUNT(id) AS nbComputer FROM computer";
+	private static final String NB_COMPUTER_FIND_BY_NAME = "SELECT COUNT(id) AS nbComputer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE %?% OR computer.name LIKE %?%";
 	private static final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
 	private static final String INSERT_COMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,(SELECT id FROM company WHERE name LIKE ?))";
 	private static final String DELETE_COMPUTER_NAME_COMPANY = "DELETE computer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ?";
+	private static final String SEARCH_COMPUTER_COMPANY_BY_NAME = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
+			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE %?% OR computer.name LIKE %?% ORDER BY computer.id LIMIT ? OFFSET ?";
 	private Connection conn;
 	private static ComputerDAO instance;
 	private ComputerMapper computerMapper;
 	private ConnextionDB connectionDB;
-	
 
-	private ComputerDAO() {	
+	private ComputerDAO() {
 		connectionDB = ConnextionDB.getInstance();
 	}
 
@@ -188,5 +190,47 @@ public class ComputerDAO {
 			this.conn = connectionDB.disconnectDB();
 		}
 		return false;
+	}
+
+	public ArrayList<Computer> findComputerByName(String name, int limite, int offset) {
+		ArrayList<Computer> computers = new ArrayList<>();
+		this.conn = connectionDB.getConnection();
+		try (PreparedStatement stm = this.conn.prepareStatement(SEARCH_COMPUTER_COMPANY_BY_NAME);) {
+			stm.setString(1, name);
+			stm.setString(2, name);
+			stm.setInt(3, limite);
+			stm.setInt(4, offset);
+			ResultSet result = stm.executeQuery();
+			computerMapper = ComputerMapper.getInstance();
+			while (result.next()) {
+				computers.add(computerMapper.sqlToComputer(result));
+			}
+		} catch (SQLException se) {
+			for (Throwable e : se) {
+				System.err.println("Problèmes rencontrés: " + e);
+			}
+		} finally {
+			this.conn = connectionDB.disconnectDB();
+		}
+		return computers;
+	}
+
+	public int nbComputerFindByName(String name) {
+		this.conn = connectionDB.getConnection();
+		try (PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER_FIND_BY_NAME);) {
+			stm.setString(1, name);
+			stm.setString(2, name);
+			ResultSet result = stm.executeQuery();
+			if (result.first()) {
+				return result.getInt("nbComputer");
+			}
+		} catch (SQLException se) {
+			for (Throwable e : se) {
+				System.err.println("Problèmes rencontrés: " + e);
+			}
+		} finally {
+			this.conn = connectionDB.disconnectDB();
+		}
+		return 0;
 	}
 }

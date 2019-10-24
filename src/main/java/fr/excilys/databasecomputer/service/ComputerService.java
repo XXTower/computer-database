@@ -52,4 +52,12 @@ public class ComputerService {
 	public boolean deleteComputerByCompanyName(String companyName) {
 		return computerDAO.deleteComputerByCompanyName(companyName);
 	}
+
+	public ArrayList<Computer> findComputerCompanyByName(String name, int limite, int offset)  {
+		return computerDAO.findComputerByName(name, limite, offset);
+	}
+
+	public int nbComputerCompanyFindByName(String name) {
+		return computerDAO.nbComputerFindByName(name);
+	}
 }

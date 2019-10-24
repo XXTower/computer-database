@@ -33,7 +33,7 @@
 			</c:if>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
-                    <form id="searchForm" action="#" method="GET" class="form-inline">
+                    <form id="searchForm" method="GET" class="form-inline">
 
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
@@ -108,14 +108,14 @@
             <ul class="pagination">
 	        	<c:if test="${actPage+1>2}">
 		            <li class="page-item">
-		               	<a href="dashboard?page=${actPage-1}" aria-label="Previous">
+		               	<a href="dashboard?page=${actPage-1}&limite=${limite}" aria-label="Previous">
 		               	<span aria-hidden="true">&laquo;</span>
 		            	</a>
 		            </li>
 	            </c:if>
 	             
 	            <c:if test="${actPage > 1 }">
-	            	<li class="page-item"><a href="dashboard"><c:out value="1"/></a></li>
+	            	<li class="page-item"><a href="dashboard?limite=${limite}"><c:out value="1"/></a></li>
 	            </c:if>
 	              
 	            <c:if test="${actPage >4}">
@@ -123,33 +123,33 @@
 	            </c:if>
 	              
 	            <c:if test="${actPage-2 > 1 }">
-	            	<li class="page-item"><a href="dashboard?page=${actPage-2}"><c:out value="${actPage-2}"/></a></li>
+	            	<li class="page-item"><a href="dashboard?page=${actPage-2}&limite=${limite}"><c:out value="${actPage-2}"/></a></li>
 	            </c:if>
 	              
 	            <c:if test="${actPage-1 > 1 }">
-	            	<li class="page-item"><a href="dashboard?page=${actPage-1}"><c:out value="${actPage-1}"/></a></li>
+	            	<li class="page-item"><a href="dashboard?page=${actPage-1}&limite=${limite}"><c:out value="${actPage-1}"/></a></li>
 	            </c:if>
 	              
 	            <li class="page-item active"><a href="dashboard?page=${actPage}"><c:out value="${actPage}"/></a></li>
 	              
 	            <c:if test="${actPage+1 < nbPage }">
-	            	<li class="page-item"><a href="dashboard?page=${actPage+1}"><c:out value="${actPage+1}"/></a></li>
+	            	<li class="page-item"><a href="dashboard?page=${actPage+1}&limite=${limite}"><c:out value="${actPage+1}"/></a></li>
 	            </c:if>
 	              
 	            <c:if test="${actPage+2 < nbPage }">
-              	<li class="page-item"><a href="dashboard?page=${actPage+2}"><c:out value="${actPage+2}"/></a></li>
+              	<li class="page-item"><a href="dashboard?page=${actPage+2}&limite=${limite}"><c:out value="${actPage+2}"/></a></li>
 				</c:if>
 				<c:if test="${actPage+3 < nbPage}">
               		<li class="page-item"><a>...</a></li>
               	</c:if>
               	
               	<c:if test="${actPage < nbPage }">
-	            	<li class="page-item"><a href="dashboard?page=${nbPage}"><c:out value="${nbPage}"/></a></li>
+	            	<li class="page-item"><a href="dashboard?page=${nbPage}&limite=${limite}"><c:out value="${nbPage}"/></a></li>
 	            </c:if>
 
 				<c:if test="${actPage< nbPage }">
 		            <li class="page-item">
-		                <a href="dashboard?page=${actPage+1}" aria-label="Next">
+		                <a href="dashboard?page=${actPage+1}&limite=${limite}" aria-label="Next">
 		                    <span aria-hidden="true">&raquo;</span>
 		                </a>
 		            </li>

@@ -20,7 +20,7 @@ public class CompanyDAO {
 	private static CompanyDAO instance;
 	private static ConnextionDB connectionDB;
 
-	private CompanyDAO() { 
+	private CompanyDAO() {
 		connectionDB = ConnextionDB.getInstance();
 	}
 

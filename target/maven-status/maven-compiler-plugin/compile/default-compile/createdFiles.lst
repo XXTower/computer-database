@@ -12,6 +12,7 @@ fr/excilys/databasecomputer/dao/implement/ComputerDAO.class
 fr/excilys/databasecomputer/mapper/CompanyMapper.class
 fr/excilys/databasecomputer/mapper/DateMapper.class
 fr/excilys/databasecomputer/servelet/DashboardServelet.class
+fr/excilys/databasecomputer/servelet/EditComputerServelet.class
 fr/excilys/databasecomputer/dtos/ComputerDTO.class
 fr/excilys/databasecomputer/pageable/Page.class
 fr/excilys/databasecomputer/exception/DateIntevaleExecption.class

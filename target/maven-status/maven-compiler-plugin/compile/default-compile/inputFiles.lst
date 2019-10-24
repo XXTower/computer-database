@@ -1,5 +1,6 @@
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/Main/Main.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/exception/NameCheckException.java
+/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/servelet/EditComputerServelet.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dtos/CompanyDTO.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dao/implement/ComputerDAO.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/exception/SQLExceptionComputerNotFound.java
