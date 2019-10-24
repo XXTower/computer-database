@@ -35,7 +35,7 @@ public class ConnextionDB {
 		return instance;
 	}
 
-	public static Connection disconnectDB() {
+	public Connection disconnectDB() {
 		if (connect != null) {
 			try {
 				connect.close();

@@ -47,13 +47,16 @@ public class Main {
 				supprimerComputer(sc);
 				break;
 			case "7":
+				deleteComputer(sc);
+				break;
+			case "8":
 				System.out.print("Au revoir");
 				break;
 			default:
 				System.out.println("Option inconnu, veuillez choisir une option correcte");
 				break;
 			}
-		} while (!reponce.equals("7"));
+		} while (!reponce.equals("8"));
 		sc.close();
 	}
 
@@ -122,7 +125,8 @@ public class Main {
 		System.out.println("4 - Creer un ordinateur");
 		System.out.println("5 - Mettre à jour un ordinateur");
 		System.out.println("6 - Supprimer un ordinateur");
-		System.out.println("7 - Quitter");
+		System.out.println("7 - Supprimer une company et tout les ordinateur associer");
+		System.out.println("8 - Quitter");
 	}
 
 	public static void ajouterComputer(Scanner sc) {
@@ -223,6 +227,20 @@ public class Main {
 			}
 		} catch (SQLExceptionComputerNotFound e) {
 			System.err.println(e);
+		}
+	}
+
+	public static void deleteComputer(Scanner sc) {
+		computerService = ComputerService.getInstance();
+		companyService = CompanyService.getInstance();
+		System.out.println("Reinseingner le nom de la companie que vous voulez supprimer");
+		String companyName = sc.nextLine().trim();
+		System.out.println(companyName);
+		if (computerService.deleteComputerByCompanyName(companyName)) {
+			companyService.deleteCopany(companyName);
+			System.out.println("La companie et les ordinateur associer ont été supprimer");
+		} else {
+			System.out.println("Mauvvais nom reinseigner ou aucune companie trouver sous la nom reinseigner");
 		}
 	}
 }

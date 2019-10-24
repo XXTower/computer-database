@@ -16,9 +16,13 @@ public class CompanyDAO {
 	private static final String FIND_ALL = "SELECT id, name FROM company ORDER BY id";
 	private static final String FIND_ALL_LIMITE_OFFSET = "SELECT id, name FROM company ORDER BY id LIMIT ? OFFSET ?";
 	private static final String NB_COMPANY = "SELECT COUNT(id) AS nbCompany FROM company";
+	private static final String DELETE_COMPANY = "DELETE FROM company WHERE name LIKE ?";
 	private static CompanyDAO instance;
+	private static ConnextionDB connectionDB;
 
-	private CompanyDAO() { }
+	private CompanyDAO() { 
+		connectionDB = ConnextionDB.getInstance();
+	}
 
 	public static CompanyDAO getInstance() {
 		if (instance == null) {
@@ -28,7 +32,7 @@ public class CompanyDAO {
 	}
 
 	public ArrayList<Company> findAll() {
-		this.conn = ConnextionDB.getInstance().getConnection();
+		this.conn = connectionDB.getConnection();
 		ArrayList<Company> companys = new ArrayList<>();
 		try (PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
 			companyMapper = CompanyMapper.getInstance();
@@ -42,13 +46,13 @@ public class CompanyDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		} finally {
-			this.conn = ConnextionDB.disconnectDB();
+			this.conn = connectionDB.disconnectDB();
 		}
 		return companys;
 	}
 
 	public ArrayList<Company> findAll(int limite, int offset) {
-		this.conn = ConnextionDB.getInstance().getConnection();
+		this.conn = connectionDB.getConnection();
 		ArrayList<Company> companys = new ArrayList<>();
 		try (PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMITE_OFFSET);) {
 			companyMapper = CompanyMapper.getInstance();
@@ -63,13 +67,13 @@ public class CompanyDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		} finally {
-			this.conn = ConnextionDB.disconnectDB();
+			this.conn = connectionDB.disconnectDB();
 		}
 		return companys;
 	}
 
 	public int nbCompany() {
-		this.conn = ConnextionDB.getInstance().getConnection();
+		this.conn = connectionDB.getConnection();
 		try (PreparedStatement stm = this.conn.prepareStatement(NB_COMPANY);) {
 
 			ResultSet result = stm.executeQuery();
@@ -81,8 +85,24 @@ public class CompanyDAO {
 				System.err.println("Problèmes rencontrés: " + e);
 			}
 		} finally {
-			this.conn = ConnextionDB.disconnectDB();
+			this.conn = connectionDB.disconnectDB();
 		}
 		return 0;
+	}
+
+	public boolean deleteCompany(String companyName) {
+		this.conn = connectionDB.getConnection();
+		try (PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPANY);) {
+			stm.setString(1, companyName);
+			int result = stm.executeUpdate();
+			return result != 0;
+		} catch (SQLException se) {
+			for (Throwable e : se) {
+				System.err.println("Problèmes rencontrés: " + e);
+			}
+		} finally {
+			this.conn = connectionDB.disconnectDB();
+		}
+		return false;
 	}
 }

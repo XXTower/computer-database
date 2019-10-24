@@ -31,4 +31,8 @@ public class CompanyService {
 	public int nbCompany() {
 		return companyDAO.nbCompany();
 	}
+
+	public boolean deleteCopany(String companyName) {
+		return companyDAO.deleteCompany(companyName);
+	}
 }

@@ -48,4 +48,8 @@ public class ComputerService {
 	public int nbComputer()  {
 		return computerDAO.nbComputer();
 	}
+
+	public boolean deleteComputerByCompanyName(String companyName) {
+		return computerDAO.deleteComputerByCompanyName(companyName);
+	}
 }
