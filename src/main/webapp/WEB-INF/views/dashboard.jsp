@@ -28,7 +28,6 @@
 	            <div class="alert alert-danger">
 					<c:out value="${response}"/>
 					<br/>
-					<!-- stacktrace -->
 				</div>
 			</c:if>
             <div id="actions" class="form-horizontal">

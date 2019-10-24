@@ -3,12 +3,14 @@ package fr.excilys.databasecomputer.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
 import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
+import fr.excilys.databasecomputer.exception.DateFormatExeption;
 
 public class ComputerMapper {
 	private static ComputerMapper instance;
@@ -41,13 +43,17 @@ public class ComputerMapper {
 		return new ComputerBuilder().id(id).name(name).introduced(introduced).discontinued(discontinued).company(company).build();
 	}
 
-	public Computer computerDtoToComputer(ComputerDTO computerDto) {
+	public Computer computerDtoToComputer(ComputerDTO computerDto) throws DateFormatExeption {
 		ComputerBuilder computer = new ComputerBuilder();
-		computer.id(computerDto.getId())
-		.name(computerDto.getName())
-		.introduced(computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getIntroduced()) : null)
-		.discontinued(computerDto.getDiscontinued() != "" ? LocalDate.parse(computerDto.getDiscontinued()) : null)
-		.company(new CompanyBuilder().name(computerDto.getCompany()).build());
+		try {
+			computer.id(computerDto.getId())
+			.name(computerDto.getName())
+			.introduced(computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getIntroduced()) : null)
+			.discontinued(computerDto.getDiscontinued() != "" ? LocalDate.parse(computerDto.getDiscontinued()) : null)
+			.company(new CompanyBuilder().name(computerDto.getCompany()).build());
+		} catch (DateTimeParseException e) {
+			throw new DateFormatExeption("Format date incorrect");
+		}
 
 		return computer.build();
 	}

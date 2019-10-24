@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
 import fr.excilys.databasecomputer.dtos.ComputerDTO.ComputerDTOBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
+import fr.excilys.databasecomputer.exception.DateFormatExeption;
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
 import fr.excilys.databasecomputer.exception.NameCheckException;
 import fr.excilys.databasecomputer.mapper.ComputerMapper;
@@ -57,19 +58,26 @@ public class AddComputerServelet extends HttpServlet {
 		String company = request.getParameter("company");
 
 		ComputerDTO computerDto = new ComputerDTOBuilder().name(name).introduced(introduced).discontinued(discontinued).company(company).build();
-		Computer computer = computerMapper.computerDtoToComputer(computerDto);
-
+		Computer computer = null;
 		try {
-			validator.checkNameComputer(computer.getName());
-		} catch (NameCheckException e) {
-			errors.put("computerName", e.getMessage());
-		}
+			computer = computerMapper.computerDtoToComputer(computerDto);
+			try {
+				validator.checkNameComputer(computer.getName());
+			} catch (NameCheckException e) {
+				errors.put("computerName", e.getMessage());
+			}
 
-		try {
-			validator.checkDateIntervale(computer.getDiscontinued(), computer.getIntroduced());
-		} catch (DateIntevaleExecption e) {
+			try {
+				validator.checkDateIntervale(computer.getDiscontinued(), computer.getIntroduced());
+			} catch (DateIntevaleExecption e) {
+				errors.put("discontinued", e.getMessage());
+			}
+		} catch (DateFormatExeption e) {
+			errors.put("introduced", e.getMessage());
 			errors.put("discontinued", e.getMessage());
 		}
+
+		
 
 		if (errors.isEmpty()) {
 			if (computerService.addComputer(computer)) {
