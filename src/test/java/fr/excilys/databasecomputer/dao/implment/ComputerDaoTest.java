@@ -48,7 +48,7 @@ public class ComputerDaoTest extends TestCase {
 		computers.add(new ComputerBuilder().id(1).name("MacBook Pro 15.4 inch").introduced(null).discontinued(null).company(new CompanyBuilder().id(1).name("Apple Inc.").build()).build());
 		computers.add(new ComputerBuilder().id(2).name("CM-2a").introduced(null).discontinued(null).company(new CompanyBuilder().id(2).name("Thinking Machines").build()).build());
 
-		assertEquals(computers, computerDAO.findAll(2,0));
+		assertEquals(computers, computerDAO.findAll(2,0,"ASC"));
 	}
 	
 	@Test

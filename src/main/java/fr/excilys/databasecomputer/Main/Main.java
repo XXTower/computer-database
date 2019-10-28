@@ -69,7 +69,7 @@ public class Main {
 		int nbComputer = computerService.nbComputer();
 		int maxPage = page.nbPageMax(nbComputer);
 		do {
-			for (Computer computer : computerService.displayAllComputer(page.getLimite(), offset)) {
+			for (Computer computer : computerService.displayAllComputer(page.getLimite(), offset, "ASC")) {
 				System.out.println(computer.toString());
 			}
 			System.out.println("Page " + reponse + " sur " + maxPage);

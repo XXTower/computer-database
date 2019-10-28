@@ -27,6 +27,7 @@ public class DashboardServelet extends HttpServlet {
 		int offset = 0;
 		int actpage = 1;
 		int nbComputer = 0;
+		String order = "ASC";
 		if (request.getParameter("limite") != null) {
 			try {
 				int limite = Integer.parseInt(request.getParameter("limite"));
@@ -48,20 +49,25 @@ public class DashboardServelet extends HttpServlet {
 		} else {
 			offset = page.calculeNewOffset(actpage);
 		}
+		
+		if (request.getParameter("order") != null && (request.getParameter("order").equals("ASC") || request.getParameter("order").equals("DESC"))) {
+			order = request.getParameter("order");
+		}
 
 		if (request.getParameter("search") != null) {
 			request.setAttribute("search", request.getParameter("search"));
 			nbComputer = computerService.nbComputerCompanyFindByName(request.getParameter("search"));
-			request.setAttribute("listComputer", computerService.findComputerCompanyByName(request.getParameter("search"), page.getLimite(), offset));
+			request.setAttribute("listComputer", computerService.findComputerCompanyByName(request.getParameter("search"), page.getLimite(), offset, order));
 		} else {
 			nbComputer = computerService.nbComputer();
-			request.setAttribute("listComputer", computerService.displayAllComputer(page.getLimite(), offset));
+			request.setAttribute("listComputer", computerService.displayAllComputer(page.getLimite(), offset, order));
 		}
 
 		request.setAttribute("limite", page.getLimite());
 		request.setAttribute("nbPage", page.nbPageMax(nbComputer));
 		request.setAttribute("nbcomputer", nbComputer);
 		request.setAttribute("actPage", actpage);
+		request.setAttribute("order", order);
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}

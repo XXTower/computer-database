@@ -29,8 +29,8 @@ public class ComputerService {
 		return computerDAO.findAll();
 	}
 
- 	public ArrayList<Computer> displayAllComputer(int limite, int offset)  {
-		return computerDAO.findAll(limite, offset);
+ 	public ArrayList<Computer> displayAllComputer(int limite, int offset, String order)  {
+		return computerDAO.findAll(limite, offset, order);
 	}
 
 	public Computer displayOneComputeur(int idComputer) throws SQLExceptionComputerNotFound  {
@@ -53,8 +53,8 @@ public class ComputerService {
 		return computerDAO.deleteComputerByCompanyName(companyName);
 	}
 
-	public ArrayList<Computer> findComputerCompanyByName(String name, int limite, int offset)  {
-		return computerDAO.findComputerByName(name, limite, offset);
+	public ArrayList<Computer> findComputerCompanyByName(String name, int limite, int offset, String order)  {
+		return computerDAO.findComputerByName(name, limite, offset, order);
 	}
 
 	public int nbComputerCompanyFindByName(String name) {

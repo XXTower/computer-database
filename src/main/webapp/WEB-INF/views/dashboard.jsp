@@ -67,6 +67,13 @@
                         </th>
                         <th>
                             Computer name
+                            <a href="dashboard?page=${actPage}&order=ASC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
+                            	<i class="fa fa-chevron-down"></i>
+                            </a>
+                            <a href="dashboard?page=${actPage}&order=DESC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
+                            	<i class="fa fa-chevron-up"></i>
+                            </a>
+                            
                         </th>
                         <th>
                             Introduced date
@@ -107,14 +114,14 @@
             <ul class="pagination">
 	        	<c:if test="${actPage+1>2}">
 		            <li class="page-item">
-		               	<a href="dashboard?page=${actPage-1}&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Previous">
+		               	<a href="dashboard?page=${actPage-1}&limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Previous">
 		               	<span aria-hidden="true">&laquo;</span>
 		            	</a>
 		            </li>
 	            </c:if>
 	             
 	            <c:if test="${actPage > 1 }">
-	            	<li class="page-item"><a href="dashboard?limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="1"/></a></li>
+	            	<li class="page-item"><a href="dashboard?limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="1"/></a></li>
 	            </c:if>
 	              
 	            <c:if test="${actPage >4}">
@@ -122,33 +129,33 @@
 	            </c:if>
 	              
 	            <c:if test="${actPage-2 > 1 }">
-	            	<li class="page-item"><a href="dashboard?page=${actPage-2}&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-2}"/></a></li>
+	            	<li class="page-item"><a href="dashboard?page=${actPage-2}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-2}"/></a></li>
 	            </c:if>
 	              
 	            <c:if test="${actPage-1 > 1 }">
-	            	<li class="page-item"><a href="dashboard?page=${actPage-1}&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-1}"/></a></li>
+	            	<li class="page-item"><a href="dashboard?page=${actPage-1}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-1}"/></a></li>
 	            </c:if>
 	              
-	            <li class="page-item active"><a href="dashboard?page=${actPage}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage}"/></a></li>
+	            <li class="page-item active"><a href="dashboard?page=${actPage}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage}"/></a></li>
 	              
 	            <c:if test="${actPage+1 < nbPage }">
-	            	<li class="page-item"><a href="dashboard?page=${actPage+1}&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+1}"/></a></li>
+	            	<li class="page-item"><a href="dashboard?page=${actPage+1}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+1}"/></a></li>
 	            </c:if>
 	              
 	            <c:if test="${actPage+2 < nbPage }">
-              	<li class="page-item"><a href="dashboard?page=${actPage+2}&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+2}"/></a></li>
+              	<li class="page-item"><a href="dashboard?page=${actPage+2}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+2}"/></a></li>
 				</c:if>
 				<c:if test="${actPage+3 < nbPage}">
               		<li class="page-item"><a>...</a></li>
               	</c:if>
               	
               	<c:if test="${actPage < nbPage }">
-	            	<li class="page-item"><a href="dashboard?page=${nbPage}&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${nbPage}"/></a></li>
+	            	<li class="page-item"><a href="dashboard?page=${nbPage}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${nbPage}"/></a></li>
 	            </c:if>
 
 				<c:if test="${actPage< nbPage }">
 		            <li class="page-item">
-		                <a href="dashboard?page=${actPage+1}&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Next">
+		                <a href="dashboard?page=${actPage+1}&limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Next">
 		                    <span aria-hidden="true">&raquo;</span>
 		                </a>
 		            </li>
@@ -156,9 +163,9 @@
 	        </ul>
 		
 	        <div class="btn-group btn-group-sm pull-right" role="group" >
-	            <a type="submit" class="btn btn-default" href="dashboard?limite=10<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">10</a>
-	            <a type="submit" class="btn btn-default" href="dashboard?limite=50<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">50</a>
-	            <a type="submit" class="btn btn-default" href="dashboard?limite=100<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">100</a>
+	            <a type="submit" class="btn btn-default" href="dashboard?limite=10&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">10</a>
+	            <a type="submit" class="btn btn-default" href="dashboard?limite=50&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">50</a>
+	            <a type="submit" class="btn btn-default" href="dashboard?limite=100&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">100</a>
 	        </div>
 		</div>
     </footer>

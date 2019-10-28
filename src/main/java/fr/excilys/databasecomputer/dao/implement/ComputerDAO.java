@@ -16,7 +16,9 @@ public class ComputerDAO {
 	private static final String FIND_ALL = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY computer.id";
 	private static final String FIND_ALL_LIMIT_OFFSET = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY computer.id LIMIT ? OFFSET ?";
+			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY "
+			+ "(CASE ? WHEN 'ASC' THEN computer.name END) ASC,(CASE ? WHEN 'DESC' THEN computer.name END) DESC "
+			+ "LIMIT ? OFFSET ?";
 	private static final String FIND_BY_ID = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = ? ORDER BY computer.id ";
 	private static final String UPDATE = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=(SELECT id FROM company WHERE name LIKE ?) WHERE id=?";
@@ -26,7 +28,9 @@ public class ComputerDAO {
 	private static final String INSERT_COMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,(SELECT id FROM company WHERE name LIKE ?))";
 	private static final String DELETE_COMPUTER_NAME_COMPANY = "DELETE computer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ?";
 	private static final String SEARCH_COMPUTER_COMPANY_BY_NAME = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ? OR computer.name LIKE ? ORDER BY computer.id LIMIT ? OFFSET ?";
+			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ? OR computer.name LIKE ? ORDER BY "
+			+ "(CASE ? WHEN 'ASC' THEN computer.name END) ASC,(CASE ? WHEN 'DESC' THEN computer.name END) DESC "
+			+ "LIMIT ? OFFSET ?";
 	private Connection conn;
 	private static ComputerDAO instance;
 	private ComputerMapper computerMapper;
@@ -155,12 +159,14 @@ public class ComputerDAO {
 		return 0;
 	}
 
-	public ArrayList<Computer> findAll(int limite, int offset) {
+	public ArrayList<Computer> findAll(int limite, int offset, String order) {
 		ArrayList<Computer> computers = new ArrayList<>();
 		this.conn = connectionDB.getConnection();
 		try (PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMIT_OFFSET);) {
-			stm.setInt(1, limite);
-			stm.setInt(2, offset);
+			stm.setString(1, order);
+			stm.setString(2, order);
+			stm.setInt(3, limite);
+			stm.setInt(4, offset);
 			ResultSet result = stm.executeQuery();
 			computerMapper = ComputerMapper.getInstance();
 			while (result.next()) {
@@ -192,14 +198,16 @@ public class ComputerDAO {
 		return false;
 	}
 
-	public ArrayList<Computer> findComputerByName(String name, int limite, int offset) {
+	public ArrayList<Computer> findComputerByName(String name, int limite, int offset, String order) {
 		ArrayList<Computer> computers = new ArrayList<>();
 		this.conn = connectionDB.getConnection();
 		try (PreparedStatement stm = this.conn.prepareStatement(SEARCH_COMPUTER_COMPANY_BY_NAME);) {
 			stm.setString(1, "%" + name + "%");
 			stm.setString(2, "%" + name + "%");
-			stm.setInt(3, limite);
-			stm.setInt(4, offset);
+			stm.setString(3, order);
+			stm.setString(4, order);
+			stm.setInt(5, limite);
+			stm.setInt(6, offset);
 			ResultSet result = stm.executeQuery();
 			computerMapper = ComputerMapper.getInstance();
 			while (result.next()) {
