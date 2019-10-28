@@ -196,8 +196,8 @@ public class ComputerDAO {
 		ArrayList<Computer> computers = new ArrayList<>();
 		this.conn = connectionDB.getConnection();
 		try (PreparedStatement stm = this.conn.prepareStatement(SEARCH_COMPUTER_COMPANY_BY_NAME);) {
-			stm.setString(1, "%"+name+"%");
-			stm.setString(2, "%"+name+"%");
+			stm.setString(1, "%" + name + "%");
+			stm.setString(2, "%" + name + "%");
 			stm.setInt(3, limite);
 			stm.setInt(4, offset);
 			ResultSet result = stm.executeQuery();
@@ -218,8 +218,8 @@ public class ComputerDAO {
 	public int nbComputerFindByName(String name) {
 		this.conn = connectionDB.getConnection();
 		try (PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER_FIND_BY_NAME);) {
-			stm.setString(1, "%"+name+"%");
-			stm.setString(2, "%"+name+"%");
+			stm.setString(1, "%" + name + "%");
+			stm.setString(2, "%" + name + "%");
 			ResultSet result = stm.executeQuery();
 			if (result.first()) {
 				return result.getInt("nbComputer");

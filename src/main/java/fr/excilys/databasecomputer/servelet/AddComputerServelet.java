@@ -46,7 +46,6 @@ public class AddComputerServelet extends HttpServlet {
 		request.setAttribute("listCompany", companyService.displayAllCompany());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -76,8 +75,6 @@ public class AddComputerServelet extends HttpServlet {
 			errors.put("introduced", e.getMessage());
 			errors.put("discontinued", e.getMessage());
 		}
-
-		
 
 		if (errors.isEmpty()) {
 			if (computerService.addComputer(computer)) {
