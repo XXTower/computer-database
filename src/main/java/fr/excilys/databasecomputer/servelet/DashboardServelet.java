@@ -1,27 +1,38 @@
 package fr.excilys.databasecomputer.servelet;
 
 import java.io.IOException;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import fr.excilys.databasecomputer.pageable.Page;
 import fr.excilys.databasecomputer.service.ComputerService;
 
 
 @WebServlet(name = "Dashboard", urlPatterns = "/dashboard")
+@Controller
 public class DashboardServelet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static ComputerService computerService;
-	private static Page page;
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private Page page;
 
-    public DashboardServelet() {
-    	page = Page.getInstance();
-    	computerService = ComputerService.getInstance();
+    public DashboardServelet() { }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+    	super.init(config);
+    	SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int offset = 0;
@@ -49,7 +60,7 @@ public class DashboardServelet extends HttpServlet {
 		} else {
 			offset = page.calculeNewOffset(actpage);
 		}
-		
+
 		if (request.getParameter("order") != null && (request.getParameter("order").equals("ASC") || request.getParameter("order").equals("DESC"))) {
 			order = request.getParameter("order");
 		}

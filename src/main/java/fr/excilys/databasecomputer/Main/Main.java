@@ -61,8 +61,6 @@ public class Main {
 	}
 
 	public static void afficherComputer(Scanner sc) {
-		page = Page.getInstance();
-		computerService = ComputerService.getInstance();
 		validator = ValidatorCLI.getInstance();
 		int reponse = 1;
 		int offset = 0;
@@ -90,8 +88,6 @@ public class Main {
 	}
 
 	public static void afficherCompany(Scanner sc) {
-		page = Page.getInstance();
-		companyService = CompanyService.getInstance();
 		validator = ValidatorCLI.getInstance();
 		int reponse = 1;
 		int offset = 0;
@@ -132,7 +128,6 @@ public class Main {
 	public static void ajouterComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
 		ComputerBuilder newComputer = new ComputerBuilder();
-		computerService = ComputerService.getInstance();
 
 		System.out.print("Nom (Obligatoire): ");
 		newComputer.name(validator.verificationEntreUserString(sc));
@@ -158,7 +153,6 @@ public class Main {
 	}
 
 	public static void trouverComputer(Scanner sc) {
-		computerService = ComputerService.getInstance();
 		validator = ValidatorCLI.getInstance();
 
 		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
@@ -174,7 +168,6 @@ public class Main {
 
 	public static void supprimerComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
-		computerService = ComputerService.getInstance();
 
 		System.out.println("Entrez l'id de l'ordinateur souhaitez supprimer");
 
@@ -190,7 +183,7 @@ public class Main {
 	public static void majComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
 		ComputerBuilder updateComputer = new ComputerBuilder();
-		computerService = ComputerService.getInstance();
+//		computerService = ComputerService.getInstance();
 
 		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
 		int idComputer = validator.verificationEntreUserInt(sc);
@@ -231,8 +224,6 @@ public class Main {
 	}
 
 	public static void deleteComputer(Scanner sc) {
-		computerService = ComputerService.getInstance();
-		companyService = CompanyService.getInstance();
 		System.out.println("Reinseingner le nom de la companie que vous voulez supprimer");
 		String companyName = sc.nextLine().trim();
 		System.out.println(companyName);

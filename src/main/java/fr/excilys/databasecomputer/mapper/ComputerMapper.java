@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import org.springframework.stereotype.Component;
+
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
 import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
@@ -12,17 +14,10 @@ import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 
+@Component
 public class ComputerMapper {
-	private static ComputerMapper instance;
 
 	private ComputerMapper() { }
-
-	public static ComputerMapper getInstance() {
-		if (instance == null) {
-			instance = new ComputerMapper();
-		}
-		return instance;
-	}
 
 	public Computer sqlToComputer(ResultSet result) {
 		int id = 0;

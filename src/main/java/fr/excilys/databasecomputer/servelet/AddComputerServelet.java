@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
 import fr.excilys.databasecomputer.dtos.ComputerDTO.ComputerDTOBuilder;
@@ -22,33 +27,31 @@ import fr.excilys.databasecomputer.service.ComputerService;
 import fr.excilys.databasecomputer.validator.Validator;
 
 @WebServlet("/addComputer")
+@Controller
 public class AddComputerServelet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static ComputerService computerService;
-	private static CompanyService companyService;
-	private static ComputerMapper computerMapper;
-	private static Validator validator;
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private ComputerMapper computerMapper;
+	@Autowired
+	private Validator validator;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddComputerServelet() {
-        computerService = ComputerService.getInstance();
-        companyService = CompanyService.getInstance();
-        computerMapper = ComputerMapper.getInstance();
-        validator = Validator.getInstance();
+    public AddComputerServelet() { }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+      super.init(config);
+      SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("listCompany", companyService.displayAllCompany());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, String> errors = new HashMap<String, String>();
 		String name = request.getParameter("computerName");

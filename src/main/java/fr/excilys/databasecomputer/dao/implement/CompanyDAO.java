@@ -6,10 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.mapper.CompanyMapper;
 
+@Repository
 public class CompanyDAO {
 	private CompanyMapper companyMapper;
 	private Connection conn;
@@ -17,19 +21,11 @@ public class CompanyDAO {
 	private static final String FIND_ALL_LIMITE_OFFSET = "SELECT id, name FROM company ORDER BY id LIMIT ? OFFSET ?";
 	private static final String NB_COMPANY = "SELECT COUNT(id) AS nbCompany FROM company";
 	private static final String DELETE_COMPANY = "DELETE FROM company WHERE name LIKE ?";
-	private static CompanyDAO instance;
-	private static ConnextionDB connectionDB;
 
-	private CompanyDAO() {
-		connectionDB = ConnextionDB.getInstance();
-	}
+	@Autowired
+	private ConnextionDB connectionDB;
 
-	public static CompanyDAO getInstance() {
-		if (instance == null) {
-			instance = new CompanyDAO();
-		}
-		return instance;
-	}
+	private CompanyDAO() { }
 
 	public ArrayList<Company> findAll() {
 		this.conn = connectionDB.getConnection();

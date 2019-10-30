@@ -6,12 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 import fr.excilys.databasecomputer.mapper.ComputerMapper;
 import fr.excilys.databasecomputer.mapper.DateMapper;
 
+@Repository
 public class ComputerDAO {
 	private static final String FIND_ALL = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY computer.id";
@@ -32,26 +36,17 @@ public class ComputerDAO {
 			+ "(CASE ? WHEN 'ASC' THEN computer.name END) ASC,(CASE ? WHEN 'DESC' THEN computer.name END) DESC "
 			+ "LIMIT ? OFFSET ?";
 	private Connection conn;
-	private static ComputerDAO instance;
+	@Autowired
 	private ComputerMapper computerMapper;
+	@Autowired
 	private ConnextionDB connectionDB;
 
-	private ComputerDAO() {
-		connectionDB = ConnextionDB.getInstance();
-	}
-
-	public static ComputerDAO getInstance() {
-		if (instance == null) {
-			instance = new ComputerDAO();
-		}
-		return instance;
-	}
+	private ComputerDAO() {	}
 
 	public Computer find(int id) throws SQLExceptionComputerNotFound {
 		this.conn = connectionDB.getConnection();
 		try (PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);) {
 			stm.setInt(1, id);
-			computerMapper = ComputerMapper.getInstance();
 			ResultSet result = stm.executeQuery();
 			if (result.next()) {
 				return	computerMapper.sqlToComputer(result);
@@ -109,7 +104,6 @@ public class ComputerDAO {
 		this.conn = connectionDB.getConnection();
 		try (PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
 			ResultSet result = stm.executeQuery();
-			computerMapper = ComputerMapper.getInstance();
 			while (result.next()) {
 				computers.add(computerMapper.sqlToComputer(result));
 			}
@@ -168,7 +162,6 @@ public class ComputerDAO {
 			stm.setInt(3, limite);
 			stm.setInt(4, offset);
 			ResultSet result = stm.executeQuery();
-			computerMapper = ComputerMapper.getInstance();
 			while (result.next()) {
 				computers.add(computerMapper.sqlToComputer(result));
 			}
@@ -209,7 +202,6 @@ public class ComputerDAO {
 			stm.setInt(5, limite);
 			stm.setInt(6, offset);
 			ResultSet result = stm.executeQuery();
-			computerMapper = ComputerMapper.getInstance();
 			while (result.next()) {
 				computers.add(computerMapper.sqlToComputer(result));
 			}

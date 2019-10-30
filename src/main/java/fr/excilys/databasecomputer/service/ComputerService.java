@@ -2,24 +2,19 @@ package fr.excilys.databasecomputer.service;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 
+@Service
 public class ComputerService {
-	private static ComputerService instance;
+	@Autowired
 	private ComputerDAO computerDAO;
 
-	private ComputerService() {
-		this.computerDAO = ComputerDAO.getInstance();
-	}
-
-	public static ComputerService getInstance() {
-		if (instance == null) {
-			instance = new ComputerService();
-		}
-		return instance;
-	}
+	private ComputerService() { }
 
 	public Boolean addComputer(Computer computer)  {
 		return computerDAO.addComputer(computer);

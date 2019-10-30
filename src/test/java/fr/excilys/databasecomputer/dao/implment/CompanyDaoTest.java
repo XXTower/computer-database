@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.dao.implement.CompanyDAO;
@@ -13,14 +14,15 @@ import fr.excilys.databasecomputer.entity.Company;
 import junit.framework.TestCase;
 
 public class CompanyDaoTest extends TestCase {
+	@Autowired
 	ConnextionDB connextion;
+	@Autowired
 	CompanyDAO companyDAO;
 	
 	@Before
 	public void setUp() {
-		connextion = ConnextionDB.getInstance();
-//		connextion.testURL();
-		companyDAO = CompanyDAO.getInstance();
+//		connextion = ConnextionDB.getInstance();
+//		companyDAO = CompanyDAO.getInstance();
 	}
 	
 	@After

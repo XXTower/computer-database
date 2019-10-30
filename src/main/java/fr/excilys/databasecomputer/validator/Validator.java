@@ -2,20 +2,15 @@ package fr.excilys.databasecomputer.validator;
 
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Component;
+
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
 import fr.excilys.databasecomputer.exception.NameCheckException;
 
+@Component
 public class Validator {
-	private static Validator instance;
 
 	private Validator() { }
-
-	public static Validator getInstance() {
-		if (instance == null) {
-			instance = new Validator();
-		}
-		return instance;
-	}
 
 	public void checkDateIntervale(LocalDate discontinuedDate, LocalDate dateinterruption) throws DateIntevaleExecption {
 		if (discontinuedDate != null && dateinterruption != null && dateinterruption.isAfter(discontinuedDate)) {

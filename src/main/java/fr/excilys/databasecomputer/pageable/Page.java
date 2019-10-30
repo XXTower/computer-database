@@ -1,17 +1,12 @@
 package fr.excilys.databasecomputer.pageable;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Page {
-	private static Page instance;
 	private int limite = 10;
 
 	private Page() { }
-
-	public static Page getInstance() {
-		if (instance == null) {
-			instance = new Page();
-		}
-		return instance;
-	}
 
 	public int getLimite() {
 		return limite;

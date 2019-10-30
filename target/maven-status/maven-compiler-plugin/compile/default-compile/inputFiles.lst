@@ -1,4 +1,5 @@
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/Main/Main.java
+/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/configuration/SpringConfiguration.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/exception/NameCheckException.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/servelet/EditComputerServelet.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/dtos/CompanyDTO.java
@@ -12,6 +13,7 @@
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/servelet/DashboardServelet.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/entity/Computer.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/exception/DateIntevaleExecption.java
+/home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/exception/DateFormatExeption.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/validator/Validator.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/mapper/ComputerMapper.java
 /home/excilys/git/Computer-database/src/main/java/fr/excilys/databasecomputer/service/CompanyService.java

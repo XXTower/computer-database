@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
@@ -17,13 +18,14 @@ import junit.framework.TestCase;
 
 public class ComputerDaoTest extends TestCase {
 
+	@Autowired
 	ConnextionDB connextion;
 	ComputerDAO computerDAO;
 	
 	@Before
 	public void setUp() {
-		connextion = ConnextionDB.getInstance();
-		computerDAO = ComputerDAO.getInstance();
+//		connextion = ConnextionDB.getInstance();
+//		computerDAO = ComputerDAO.getInstance();
 	}
 	
 	@After
