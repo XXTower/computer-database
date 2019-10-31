@@ -1,4 +1,4 @@
-package fr.excilys.databasecomputer.servelet;
+package fr.excilys.databasecomputer.servlet;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,14 +21,15 @@ import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
 import fr.excilys.databasecomputer.exception.NameCheckException;
+import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 import fr.excilys.databasecomputer.mapper.ComputerMapper;
 import fr.excilys.databasecomputer.service.CompanyService;
 import fr.excilys.databasecomputer.service.ComputerService;
 import fr.excilys.databasecomputer.validator.Validator;
 
-@WebServlet("/addComputer")
+@WebServlet("/editComputer")
 @Controller
-public class AddComputerServelet extends HttpServlet {
+public class EditComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	private ComputerService computerService;
@@ -39,7 +40,7 @@ public class AddComputerServelet extends HttpServlet {
 	@Autowired
 	private Validator validator;
 
-    public AddComputerServelet() { }
+    public EditComputerServlet() { }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -48,18 +49,32 @@ public class AddComputerServelet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int id;
+		if (request.getParameter("computer") != null) {
+			try {
+				id = Integer.parseInt(request.getParameter("computer"));
+				Computer computer = computerService.displayOneComputeur(id);
+				request.setAttribute("computer", computer);
+			} catch (NumberFormatException | SQLExceptionComputerNotFound e) {
+				this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
+			}
+		} else {
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
+		}
+
 		request.setAttribute("listCompany", companyService.displayAllCompany());
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, String> errors = new HashMap<String, String>();
+		int id = Integer.parseInt(request.getParameter("id"));
 		String name = request.getParameter("computerName");
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		String company = request.getParameter("company");
 
-		ComputerDTO computerDto = new ComputerDTOBuilder().name(name).introduced(introduced).discontinued(discontinued).company(company).build();
+		ComputerDTO computerDto = new ComputerDTOBuilder().id(id).name(name).introduced(introduced).discontinued(discontinued).company(company).build();
 		Computer computer = null;
 		try {
 			computer = computerMapper.computerDtoToComputer(computerDto);

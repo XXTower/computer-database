@@ -17,33 +17,26 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <junit.version>4.11</junit.version>
+    <junit.version>4.12</junit.version>
     <hikari.version>3.4.1</hikari.version>
     <mysql.version>8.0.18</mysql.version>
     <mockito.version>3.1.0</mockito.version>
     <h2.version>1.4.200</h2.version>
+    <springMVC.version>5.2.0.RELEASE</springMVC.version>
+    <springTest.version>5.2.0.RELEASE</springTest.version>
+    <springJDBC.version>5.2.0.RELEASE</springJDBC.version>
   </properties>
 
   <dependencies>
-	  <dependency>
+	 <dependency>
 	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-web</artifactId>
-	    <version>5.2.0.RELEASE</version>
-	</dependency>
-	  <dependency>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-context</artifactId>
-	    <version>5.2.0.RELEASE</version>
-	</dependency>
-	  <dependency>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-core</artifactId>
-	    <version>5.2.0.RELEASE</version>
+	    <artifactId>spring-jdbc</artifactId>
+	    <version>${springJDBC.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-webmvc</artifactId>
-	    <version>5.2.0.RELEASE</version>
+	    <version>${springMVC.version}</version>
 	</dependency>
 	  <dependency>
 	    <groupId>com.zaxxer</groupId>
@@ -108,7 +101,13 @@
 	    <artifactId>h2</artifactId>
 	    <version>${h2.version}</version>
 	    <scope>test</scope>
-	</dependency>   
+	</dependency> 
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-test</artifactId>
+	    <version>${springTest.version}</version>
+	    <scope>test</scope>
+	</dependency>  
   </dependencies>
 
   <build>

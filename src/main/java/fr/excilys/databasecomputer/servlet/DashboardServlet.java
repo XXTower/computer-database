@@ -1,4 +1,4 @@
-package fr.excilys.databasecomputer.servelet;
+package fr.excilys.databasecomputer.servlet;
 
 import java.io.IOException;
 
@@ -19,14 +19,14 @@ import fr.excilys.databasecomputer.service.ComputerService;
 
 @WebServlet(name = "Dashboard", urlPatterns = "/dashboard")
 @Controller
-public class DashboardServelet extends HttpServlet {
+public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	private ComputerService computerService;
 	@Autowired
 	private Page page;
 
-    public DashboardServelet() { }
+    public DashboardServlet() { }
 
     @Override
     public void init(ServletConfig config) throws ServletException {

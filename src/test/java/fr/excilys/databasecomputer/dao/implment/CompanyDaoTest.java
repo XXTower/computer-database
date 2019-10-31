@@ -5,14 +5,20 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.excilys.databasecomputer.configuration.SpringConfiguration;
 import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.dao.implement.CompanyDAO;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Company;
 import junit.framework.TestCase;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {SpringConfiguration.class})
 public class CompanyDaoTest extends TestCase {
 	@Autowired
 	ConnextionDB connextion;
@@ -21,8 +27,7 @@ public class CompanyDaoTest extends TestCase {
 	
 	@Before
 	public void setUp() {
-//		connextion = ConnextionDB.getInstance();
-//		companyDAO = CompanyDAO.getInstance();
+
 	}
 	
 	@After

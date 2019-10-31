@@ -3,24 +3,27 @@ package fr.excilys.databasecomputer.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 
 @Component
 public class ConnextionDB {
 
+	@Autowired
+	private DataSource dataSource;
 	private static Connection connect;
 
-	private static HikariConfig config = new HikariConfig("/database.properties");
-    private static HikariDataSource ds = new HikariDataSource(config);
+//	private static HikariConfig config = new HikariConfig("/database.properties");
+//    private static HikariDataSource ds = new HikariDataSource(config);
 
 	private ConnextionDB() { }
 
 	public Connection getConnection() {
 		try {
-			connect = ds.getConnection();
+			connect = dataSource.getConnection();
 		} catch (SQLException se) {
 			for (Throwable e : se) {
 				System.err.println("Problèmes rencontrés: " + e);
