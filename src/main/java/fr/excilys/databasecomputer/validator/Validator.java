@@ -10,8 +10,6 @@ import fr.excilys.databasecomputer.exception.NameCheckException;
 @Component
 public class Validator {
 
-	private Validator() { }
-
 	public void checkDateIntervale(LocalDate discontinuedDate, LocalDate dateinterruption) throws DateIntevaleExecption {
 		if (discontinuedDate != null && dateinterruption != null && dateinterruption.isAfter(discontinuedDate)) {
 			throw new DateIntevaleExecption("The date " + dateinterruption.toString() + " must be after " + dateinterruption.toString());

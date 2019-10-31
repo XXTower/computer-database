@@ -17,8 +17,6 @@ import fr.excilys.databasecomputer.exception.DateFormatExeption;
 @Component
 public class ComputerMapper {
 
-	private ComputerMapper() { }
-
 	public Computer sqlToComputer(ResultSet result) {
 		int id = 0;
 		String name = null;

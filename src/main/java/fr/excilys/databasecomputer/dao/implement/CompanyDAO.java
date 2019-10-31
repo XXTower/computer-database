@@ -15,6 +15,7 @@ import fr.excilys.databasecomputer.mapper.CompanyMapper;
 
 @Repository
 public class CompanyDAO {
+	@Autowired
 	private CompanyMapper companyMapper;
 	private Connection conn;
 	private static final String FIND_ALL = "SELECT id, name FROM company ORDER BY id";
@@ -31,7 +32,6 @@ public class CompanyDAO {
 		this.conn = connectionDB.getConnection();
 		ArrayList<Company> companys = new ArrayList<>();
 		try (PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
-			companyMapper = CompanyMapper.getInstance();
 			ResultSet result = stm.executeQuery();
 
 			while (result.next()) {
@@ -51,7 +51,6 @@ public class CompanyDAO {
 		this.conn = connectionDB.getConnection();
 		ArrayList<Company> companys = new ArrayList<>();
 		try (PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMITE_OFFSET);) {
-			companyMapper = CompanyMapper.getInstance();
 			stm.setInt(1, limite);
 			stm.setInt(2, offset);
 			ResultSet result = stm.executeQuery();

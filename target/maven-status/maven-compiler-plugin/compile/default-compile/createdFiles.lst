@@ -1,3 +1,4 @@
+fr/excilys/databasecomputer/servlet/AddComputerServlet.class
 fr/excilys/databasecomputer/validator/Validator.class
 fr/excilys/databasecomputer/entity/Company$1.class
 fr/excilys/databasecomputer/dtos/ComputerDTO$1.class
@@ -8,13 +9,12 @@ fr/excilys/databasecomputer/dtos/ComputerDTO$ComputerDTOBuilder.class
 fr/excilys/databasecomputer/exception/SQLExceptionComputerNotFound.class
 fr/excilys/databasecomputer/entity/Company$CompanyBuilder.class
 fr/excilys/databasecomputer/mapper/ComputerMapper.class
+fr/excilys/databasecomputer/servlet/EditComputerServlet.class
 fr/excilys/databasecomputer/service/ComputerService.class
 fr/excilys/databasecomputer/dao/implement/ComputerDAO.class
 fr/excilys/databasecomputer/mapper/CompanyMapper.class
 fr/excilys/databasecomputer/exception/DateFormatExeption.class
 fr/excilys/databasecomputer/mapper/DateMapper.class
-fr/excilys/databasecomputer/servelet/DashboardServelet.class
-fr/excilys/databasecomputer/servelet/EditComputerServelet.class
 fr/excilys/databasecomputer/dtos/ComputerDTO.class
 fr/excilys/databasecomputer/pageable/Page.class
 fr/excilys/databasecomputer/exception/DateIntevaleExecption.class
@@ -23,8 +23,8 @@ fr/excilys/databasecomputer/dao/ConnextionDB.class
 fr/excilys/databasecomputer/entity/Computer.class
 fr/excilys/databasecomputer/dtos/CompanyDTO$1.class
 fr/excilys/databasecomputer/entity/Computer$ComputerBuilder.class
-fr/excilys/databasecomputer/servelet/AddComputerServelet.class
 fr/excilys/databasecomputer/service/CompanyService.class
+fr/excilys/databasecomputer/servlet/DashboardServlet.class
 fr/excilys/databasecomputer/entity/Company.class
 fr/excilys/databasecomputer/dtos/CompanyDTO$CompanyDTOBuilder.class
 fr/excilys/databasecomputer/validator/ValidatorCLI.class

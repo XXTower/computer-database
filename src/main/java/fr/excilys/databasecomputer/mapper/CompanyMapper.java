@@ -3,21 +3,13 @@ package fr.excilys.databasecomputer.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Component;
+
 import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 
+@Component
 public class CompanyMapper {
-
-private static CompanyMapper instance;
-
-	private CompanyMapper() { }
-
-	public static CompanyMapper getInstance() {
-		if (instance == null) {
-			instance = new CompanyMapper();
-		}
-		return instance;
-	}
 
 	public Company sqlToComputer(ResultSet result) {
 
