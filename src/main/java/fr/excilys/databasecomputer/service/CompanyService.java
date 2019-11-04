@@ -1,6 +1,6 @@
 package fr.excilys.databasecomputer.service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +16,11 @@ public class CompanyService {
 	private CompanyService() { }
 
 
-	public ArrayList<Company> displayAllCompany() {
+	public List<Company> displayAllCompany() {
 		return companyDAO.findAll();
 	}
 
-	public ArrayList<Company> displayAllCompany(int limite, int offset) {
+	public List<Company> displayAllCompany(int limite, int offset) {
 		return companyDAO.findAll(limite, offset);
 	}
 

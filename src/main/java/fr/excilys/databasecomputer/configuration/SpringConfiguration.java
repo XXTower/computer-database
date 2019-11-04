@@ -15,9 +15,9 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 
 @Configuration
 @ComponentScan(basePackages = "fr.excilys.databasecomputer")
-@PropertySource(value="classpath:database.properties")
+@PropertySource(value = "classpath:database.properties")
 public class SpringConfiguration extends AbstractContextLoaderInitializer {
-	
+
 	@Autowired
 	private Environment env;
 
