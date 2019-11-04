@@ -15,10 +15,6 @@ public class ConnextionDB {
 	@Autowired
 	private DataSource dataSource;
 	private static Connection connect;
-
-//	private static HikariConfig config = new HikariConfig("/database.properties");
-//    private static HikariDataSource ds = new HikariDataSource(config);
-
 	private ConnextionDB() { }
 
 	public Connection getConnection() {

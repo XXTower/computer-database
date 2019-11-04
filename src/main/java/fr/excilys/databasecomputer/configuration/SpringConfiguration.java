@@ -14,7 +14,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 @Configuration
-@ComponentScan(basePackages = "fr.excilys.databasecomputer")
+@ComponentScan(basePackages = {"fr.excilys.databasecomputer.dao.implement","fr.excilys.databasecomputer.servlet",
+		"fr.excilys.databasecomputer.mapper","fr.excilys.databasecomputer.service","fr.excilys.databasecomputer.validator",
+		"fr.excilys.databasecomputer.pageable"})
 @PropertySource(value = "classpath:database.properties")
 public class SpringConfiguration extends AbstractContextLoaderInitializer {
 

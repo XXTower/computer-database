@@ -25,10 +25,11 @@
     <springMVC.version>5.2.0.RELEASE</springMVC.version>
     <springTest.version>5.2.0.RELEASE</springTest.version>
     <springJDBC.version>5.2.0.RELEASE</springJDBC.version>
+    <selenium.version>3.141.59</selenium.version>
   </properties>
 
   <dependencies>
-	 <dependency>
+	<dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-jdbc</artifactId>
 	    <version>${springJDBC.version}</version>
@@ -38,7 +39,7 @@
 	    <artifactId>spring-webmvc</artifactId>
 	    <version>${springMVC.version}</version>
 	</dependency>
-	  <dependency>
+	<dependency>
 	    <groupId>com.zaxxer</groupId>
 	    <artifactId>HikariCP</artifactId>
 	    <version>${hikari.version}</version>
@@ -82,7 +83,7 @@
 	<dependency>
 	    <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-java</artifactId>
-	    <version>3.141.59</version>
+	    <version>${selenium.version}</version>
 	</dependency>
     <dependency>
       <groupId>junit</groupId>

@@ -5,7 +5,9 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import fr.excilys.databasecomputer.entity.Computer;
@@ -19,42 +21,47 @@ public class ComputerDAO {
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY computer.id";
 	private static final String FIND_ALL_LIMIT_OFFSET = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY "
-			+ "(CASE ? WHEN 'ASC' THEN computer.name END) ASC,(CASE ? WHEN 'DESC' THEN computer.name END) DESC "
-			+ "LIMIT ? OFFSET ?";
+			+ "(CASE :order WHEN 'ASC' THEN computer.name END) ASC,(CASE :order WHEN 'DESC' THEN computer.name END) DESC "
+			+ "LIMIT :limite OFFSET :offset";
 	private static final String FIND_BY_ID = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = ? ORDER BY computer.id ";
-	private static final String UPDATE = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=(SELECT id FROM company WHERE name LIKE ?) WHERE id=?";
+			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = :id ORDER BY computer.id ";
+	private static final String UPDATE = "UPDATE computer SET name=:name, introduced=:intoduced, discontinued=:discontinued, company_id=(SELECT id FROM company WHERE name LIKE :company) WHERE id=:id";
 	private static final String NB_COMPUTER = "SELECT COUNT(id) AS nbComputer FROM computer";
-	private static final String NB_COMPUTER_FIND_BY_NAME = "SELECT COUNT(computer.id) AS nbComputer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ? OR computer.name LIKE ?";
-	private static final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
-	private static final String INSERT_COMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,(SELECT id FROM company WHERE name LIKE ?))";
-	private static final String DELETE_COMPUTER_NAME_COMPANY = "DELETE computer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ?";
+	private static final String NB_COMPUTER_FIND_BY_NAME = "SELECT COUNT(computer.id) AS nbComputer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE :name OR computer.name LIKE :name";
+	private static final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = :id";
+	private static final String INSERT_COMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (:name,:intoduced,:discontinued,(SELECT id FROM company WHERE name LIKE :company))";
+	private static final String DELETE_COMPUTER_NAME_COMPANY = "DELETE computer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE :company";
 	private static final String SEARCH_COMPUTER_COMPANY_BY_NAME = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ? OR computer.name LIKE ? ORDER BY "
-			+ "(CASE ? WHEN 'ASC' THEN computer.name END) ASC,(CASE ? WHEN 'DESC' THEN computer.name END) DESC "
-			+ "LIMIT ? OFFSET ?";
+			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE name OR computer.name LIKE :name ORDER BY "
+			+ "(CASE :order WHEN 'ASC' THEN computer.name END) ASC,(CASE :order WHEN 'DESC' THEN computer.name END) DESC "
+			+ "LIMIT :limite OFFSET :offset";
 	@Autowired
 	private ComputerMapper computerMapper;
 
-	private JdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	@Autowired
 	private ComputerDAO(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	public Computer find(int id) throws SQLExceptionComputerNotFound {
-		return jdbcTemplate.queryForObject(FIND_BY_ID, computerMapper, id);
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("id", id);
+		return jdbcTemplate.queryForObject(FIND_BY_ID, namedParameterSource, computerMapper);
 	}
 
 	public boolean update(Computer computer) {
-		int result = jdbcTemplate.update(UPDATE, computer.getName(), DateMapper.changeToDateSQL(computer.getIntroduced()),
-				DateMapper.changeToDateSQL(computer.getDiscontinued()), computer.getCompany().getName(), computer.getId());
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name",computer.getName())
+				.addValue("intoduced", DateMapper.changeToDateSQL(computer.getIntroduced()))
+				.addValue("discontinued", DateMapper.changeToDateSQL(computer.getDiscontinued()))
+				.addValue("company", computer.getCompany().getName()).addValue("id", computer.getId());
+		int result = jdbcTemplate.update(UPDATE, namedParameterSource);
 		return result == 1;
 	}
 
 	public boolean delete(int id) {
-		int result = jdbcTemplate.update(DELETE_COMPUTER, id);
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("id", id);
+		int result = jdbcTemplate.update(DELETE_COMPUTER, namedParameterSource);
 		return result != 0;
 	}
 
@@ -63,29 +70,42 @@ public class ComputerDAO {
 	}
 
 	public boolean addComputer(Computer computer) {
-		int result = jdbcTemplate.update(INSERT_COMPUTER, computer.getName(), DateMapper.changeToDateSQL(computer.getIntroduced()),
-				DateMapper.changeToDateSQL(computer.getDiscontinued()), computer.getCompany().getName());
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name",computer.getName())
+				.addValue("intoduced", DateMapper.changeToDateSQL(computer.getIntroduced()))
+				.addValue("discontinued", DateMapper.changeToDateSQL(computer.getDiscontinued()))
+				.addValue("company", computer.getCompany().getName());
+		int result = jdbcTemplate.update(INSERT_COMPUTER, namedParameterSource);
 		return result == 1;
 	}
 
 	public int nbComputer() {
-		return jdbcTemplate.queryForObject(NB_COMPUTER, Integer.class);
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource();
+		return jdbcTemplate.queryForObject(NB_COMPUTER,namedParameterSource,Integer.class);
 	}
 
 	public List<Computer> findAll(int limite, int offset, String order) {
-		return jdbcTemplate.query(FIND_ALL_LIMIT_OFFSET, computerMapper, order, order, limite, offset);
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("order", order)
+				.addValue("limite", limite)
+				.addValue("offset", offset);
+		return jdbcTemplate.query(FIND_ALL_LIMIT_OFFSET, namedParameterSource, computerMapper);
 	}
 
 	public boolean deleteComputerByCompanyName(String companyName) {
-		int result = jdbcTemplate.update(DELETE_COMPUTER_NAME_COMPANY, companyName);
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("company", companyName);
+		int result = jdbcTemplate.update(DELETE_COMPUTER_NAME_COMPANY, namedParameterSource);
 		return result != 0;
 	}
 
 	public List<Computer> findComputerByName(String name, int limite, int offset, String order) {
-		return jdbcTemplate.query(SEARCH_COMPUTER_COMPANY_BY_NAME, computerMapper, "%" + name + "%", "%" + name + "%", order, order, limite, offset);
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name", "%" + name + "%")
+				.addValue("order", order)
+				.addValue("limite", limite)
+				.addValue("offset", offset);
+		return jdbcTemplate.query(SEARCH_COMPUTER_COMPANY_BY_NAME, namedParameterSource, computerMapper);
 	}
 
 	public int nbComputerFindByName(String name) {
-		return jdbcTemplate.queryForObject(NB_COMPUTER_FIND_BY_NAME, Integer.class, "%" + name + "%", "%" + name + "%");
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name", "%" + name + "%");
+		return jdbcTemplate.queryForObject(NB_COMPUTER_FIND_BY_NAME,namedParameterSource, Integer.class);
 	}
 }
