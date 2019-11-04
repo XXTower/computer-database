@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import fr.excilys.databasecomputer.dao.ConnextionDB;
@@ -25,6 +28,8 @@ public class CompanyDAO {
 
 	@Autowired
 	private ConnextionDB connectionDB;
+	@Autowired
+	DataSource dataSource;
 
 	private CompanyDAO() { }
 
@@ -68,21 +73,8 @@ public class CompanyDAO {
 	}
 
 	public int nbCompany() {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(NB_COMPANY);) {
-
-			ResultSet result = stm.executeQuery();
-			if (result.first()) {
-				return result.getInt("nbCompany");
-			}
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return 0;
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		return template.queryForObject(NB_COMPANY, Integer.class);
 	}
 
 	public boolean deleteCompany(String companyName) {

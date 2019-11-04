@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import fr.excilys.databasecomputer.dao.ConnextionDB;
@@ -40,7 +43,8 @@ public class ComputerDAO {
 	private ComputerMapper computerMapper;
 	@Autowired
 	private ConnextionDB connectionDB;
-
+	@Autowired
+	private DataSource dataSource;
 	private ComputerDAO() {	}
 
 	public Computer find(int id) throws SQLExceptionComputerNotFound {
@@ -137,20 +141,8 @@ public class ComputerDAO {
 	}
 
 	public int nbComputer() {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER);) {
-			ResultSet result = stm.executeQuery();
-			if (result.first()) {
-				return result.getInt("nbComputer");
-			}
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return 0;
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		return template.queryForObject(NB_COMPUTER, Integer.class);
 	}
 
 	public ArrayList<Computer> findAll(int limite, int offset, String order) {
@@ -216,21 +208,7 @@ public class ComputerDAO {
 	}
 
 	public int nbComputerFindByName(String name) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER_FIND_BY_NAME);) {
-			stm.setString(1, "%" + name + "%");
-			stm.setString(2, "%" + name + "%");
-			ResultSet result = stm.executeQuery();
-			if (result.first()) {
-				return result.getInt("nbComputer");
-			}
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return 0;
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		return template.queryForObject(NB_COMPUTER_FIND_BY_NAME, Integer.class,"%" + name + "%","%" + name + "%" );
 	}
 }
