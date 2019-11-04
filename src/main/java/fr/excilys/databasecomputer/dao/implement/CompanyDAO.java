@@ -78,18 +78,8 @@ public class CompanyDAO {
 	}
 
 	public boolean deleteCompany(String companyName) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPANY);) {
-			stm.setString(1, companyName);
-			int result = stm.executeUpdate();
-			return result != 0;
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return false;
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		int result = template.update(DELETE_COMPANY, companyName);
+		return result != 0;
 	}
 }

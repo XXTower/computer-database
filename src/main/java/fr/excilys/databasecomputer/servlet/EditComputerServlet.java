@@ -95,7 +95,7 @@ public class EditComputerServlet extends HttpServlet {
 		}
 
 		if (errors.isEmpty()) {
-			if (computerService.addComputer(computer)) {
+			if (computerService.updateComputer(computer)) {
 				response.sendRedirect("dashboard");
 			} else {
 				request.setAttribute("response", "Errors whith the save");

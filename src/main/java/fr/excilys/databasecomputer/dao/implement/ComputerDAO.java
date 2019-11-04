@@ -68,39 +68,16 @@ public class ComputerDAO {
 	}
 
 	public boolean update(Computer computer) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(UPDATE);) {
-			stm.setString(1, computer.getName());
-			stm.setDate(2, DateMapper.changeToDateSQL(computer.getIntroduced()));
-			stm.setDate(3, DateMapper.changeToDateSQL(computer.getDiscontinued()));
-			stm.setString(4, computer.getCompany().getName());
-			stm.setInt(5, computer.getId());
-			int result = stm.executeUpdate();
-			return result == 1;
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return false;
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		int result = template.update(UPDATE, computer.getName(),DateMapper.changeToDateSQL(computer.getIntroduced()),
+				DateMapper.changeToDateSQL(computer.getDiscontinued()),computer.getCompany().getName(),computer.getId() );
+		return result == 1;
 	}
 
 	public boolean delete(int id) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPUTER);) {
-			stm.setInt(1, id);
-			int result = stm.executeUpdate();
-			return result != 0;
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return false;
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		int result = template.update(DELETE_COMPUTER, id );
+		return result != 0;
 	}
 
 	public ArrayList<Computer> findAll() {
@@ -122,22 +99,10 @@ public class ComputerDAO {
 	}
 
 	public boolean addComputer(Computer computer) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(INSERT_COMPUTER);) {
-			stm.setString(1, computer.getName());
-			stm.setDate(2, DateMapper.changeToDateSQL(computer.getIntroduced()));
-			stm.setDate(3, DateMapper.changeToDateSQL(computer.getDiscontinued()));
-			stm.setString(4, computer.getCompany().getName());
-			int result = stm.executeUpdate();
-			return result == 1;
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return false;
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		int result = template.update(INSERT_COMPUTER, computer.getName(),DateMapper.changeToDateSQL(computer.getIntroduced()),
+				DateMapper.changeToDateSQL(computer.getDiscontinued()), computer.getCompany().getName());
+		return result == 1;
 	}
 
 	public int nbComputer() {
@@ -168,19 +133,9 @@ public class ComputerDAO {
 	}
 
 	public boolean deleteComputerByCompanyName(String companyName) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPUTER_NAME_COMPANY);) {
-			stm.setString(1, companyName);
-			int result = stm.executeUpdate();
-			return result != 0;
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return false;
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		int result = template.update(DELETE_COMPUTER_NAME_COMPANY, companyName);
+		return result != 0;
 	}
 
 	public ArrayList<Computer> findComputerByName(String name, int limite, int offset, String order) {
