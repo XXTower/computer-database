@@ -1,6 +1,5 @@
 package fr.excilys.databasecomputer.dao.implement;
 
-import java.sql.Connection;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import fr.excilys.databasecomputer.dao.ConnextionDB;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 import fr.excilys.databasecomputer.mapper.ComputerMapper;
@@ -35,14 +33,11 @@ public class ComputerDAO {
 			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ? OR computer.name LIKE ? ORDER BY "
 			+ "(CASE ? WHEN 'ASC' THEN computer.name END) ASC,(CASE ? WHEN 'DESC' THEN computer.name END) DESC "
 			+ "LIMIT ? OFFSET ?";
-	private Connection conn;
 	@Autowired
 	private ComputerMapper computerMapper;
-	@Autowired
-	private ConnextionDB connectionDB;
-	
+
 	private JdbcTemplate jdbcTemplate;
-	
+
 	@Autowired
 	private ComputerDAO(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);

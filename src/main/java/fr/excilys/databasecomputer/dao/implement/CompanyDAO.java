@@ -21,7 +21,7 @@ public class CompanyDAO {
 
 	@Autowired
 	CompanyMapper companyMapper;
-	
+
 	@Autowired
 	private CompanyDAO(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
