@@ -1,5 +1,8 @@
 package fr.excilys.databasecomputer.configuration;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,28 +12,28 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.web.context.AbstractContextLoaderInitializer;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
+@EnableWebMvc
 @ComponentScan(basePackages = {"fr.excilys.databasecomputer.dao.implement","fr.excilys.databasecomputer.servlet",
 		"fr.excilys.databasecomputer.mapper","fr.excilys.databasecomputer.service","fr.excilys.databasecomputer.validator",
-		"fr.excilys.databasecomputer.pageable"})
+		"fr.excilys.databasecomputer.pageable","fr.excilys.databasecomputer.controller"})
 @PropertySource(value = "classpath:database.properties")
-public class SpringConfiguration extends AbstractContextLoaderInitializer {
+public class SpringConfiguration implements WebApplicationInitializer, WebMvcConfigurer {
 
 	@Autowired
 	private Environment env;
 
-	 @Override
-	 protected WebApplicationContext createRootApplicationContext() {
-		 AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-		 rootContext.register(SpringConfiguration.class);
-		 return rootContext;
-	 }
-
-	 @Bean
+	@Bean
 	 public DataSource getConnection() {
 		 DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		 dataSource.setDriverClassName(env.getProperty("dataSource.driverClassName"));
@@ -39,28 +42,34 @@ public class SpringConfiguration extends AbstractContextLoaderInitializer {
 		 dataSource.setPassword(env.getProperty("dataSource.password"));
 		 return dataSource;
 	 }
+	
 
-//	@Override
-//    public void onStartup(ServletContext container) throws ServletException {
-//      // Create the 'root' Spring application context
-//      AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-//      rootContext.register(SpringConfiguration.class);
-//implements WebApplicationInitializer
-//      // Manage the life cycle of the root application context
-//      container.addListener(new ContextLoaderListener(rootContext));
-//      ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(rootContext));
-//      servlet.setLoadOnStartup(1);
-//      servlet.addMapping("/");
-//    }
-//
-//    @Bean
-//    public ViewResolver internalResourceViewResolver() {
-//      InternalResourceViewResolver bean = new InternalResourceViewResolver();
-//      bean.setViewClass(JstlView.class);
-//      bean.setPrefix("/WEB-INF/views/");
-//      bean.setSuffix(".jsp");
-//
-//      return bean;
-//    }
+
+    @Bean
+    public ViewResolver internalResourceViewResolver() {
+      InternalResourceViewResolver bean = new InternalResourceViewResolver();
+      bean.setViewClass(JstlView.class);
+      bean.setPrefix("/WEB-INF/views/");
+      bean.setSuffix(".jsp");
+
+      return bean;
+    }
+
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
+
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException {
+		AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
+		webContext.register(SpringConfiguration.class);
+		webContext.setServletContext(servletContext);
+		ServletRegistration.Dynamic servlet = servletContext.addServlet("dynamicServlet", new DispatcherServlet(webContext));
+		servlet.setLoadOnStartup(1);
+		servlet.addMapping("/");
+	}
+    
+    
 
 }
