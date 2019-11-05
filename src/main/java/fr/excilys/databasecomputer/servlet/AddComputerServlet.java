@@ -60,20 +60,14 @@ public class AddComputerServlet extends HttpServlet {
 		String company = request.getParameter("company");
 
 		ComputerDTO computerDto = new ComputerDTOBuilder().name(name).introduced(introduced).discontinued(discontinued).company(company).build();
-		Computer computer = null;
+		Computer computer = null;		
 		try {
 			computer = computerMapper.computerDtoToComputer(computerDto);
-			try {
-				validator.checkNameComputer(computer.getName());
-			} catch (NameCheckException e) {
+			validator.validationComputer(computer);
+		} catch (NameCheckException e) {
 				errors.put("computerName", e.getMessage());
-			}
-
-			try {
-				validator.checkDateIntervale(computer.getDiscontinued(), computer.getIntroduced());
-			} catch (DateIntevaleExecption e) {
+		} catch (DateIntevaleExecption e) {
 				errors.put("discontinued", e.getMessage());
-			}
 		} catch (DateFormatExeption e) {
 			errors.put("introduced", e.getMessage());
 			errors.put("discontinued", e.getMessage());

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -46,8 +47,14 @@ public class ComputerDAO {
 	}
 
 	public Computer find(int id) throws SQLExceptionComputerNotFound {
+		Computer computer = null;
 		SqlParameterSource namedParameterSource = new MapSqlParameterSource("id", id);
-		return jdbcTemplate.queryForObject(FIND_BY_ID, namedParameterSource, computerMapper);
+		try {
+			computer = jdbcTemplate.queryForObject(FIND_BY_ID, namedParameterSource, computerMapper);
+		} catch (EmptyResultDataAccessException e) {
+			throw new SQLExceptionComputerNotFound("Aucun ordinateur trouver a pour cette id");
+		}
+		return computer;
 	}
 
 	public boolean update(Computer computer) {

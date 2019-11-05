@@ -1,3 +1,5 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +22,7 @@
 			<div class="alert alert-danger">
 				Error 500: An error has occured!
 				<br/>
-				<!-- stacktrace -->
+				<c:out value="${message}"/>
 			</div>
 		</div>
 	</section>

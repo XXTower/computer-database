@@ -17,11 +17,11 @@ public class Page {
 	}
 
 	public int nbPageMax(int nbobject) {
-		return (int) Math.ceil(((double) nbobject / (double) this.limite));
+		return (int) Math.ceil(((double) nbobject / (double) limite));
 	}
 
 	public int calculeNewOffset(int page) {
-		return page * this.limite - this.limite;
+		return page * limite - limite;
 	}
 
 }

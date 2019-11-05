@@ -49,16 +49,16 @@ public class EditComputerServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int id;
 		if (request.getParameter("computer") != null) {
 			try {
-				id = Integer.parseInt(request.getParameter("computer"));
+				int id = Integer.parseInt(request.getParameter("computer"));
 				Computer computer = computerService.displayOneComputeur(id);
 				request.setAttribute("computer", computer);
 			} catch (NumberFormatException | SQLExceptionComputerNotFound e) {
 				this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 			}
 		} else {
+			request.setAttribute("message", "Ordinateur non renseigner");
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
 
@@ -78,17 +78,11 @@ public class EditComputerServlet extends HttpServlet {
 		Computer computer = null;
 		try {
 			computer = computerMapper.computerDtoToComputer(computerDto);
-			try {
-				validator.checkNameComputer(computer.getName());
-			} catch (NameCheckException e) {
-				errors.put("computerName", e.getMessage());
-			}
-
-			try {
-				validator.checkDateIntervale(computer.getDiscontinued(), computer.getIntroduced());
-			} catch (DateIntevaleExecption e) {
-				errors.put("discontinued", e.getMessage());
-			}
+			validator.validationComputer(computer);
+		} catch (NameCheckException e) {
+			errors.put("computerName", e.getMessage());
+		} catch (DateIntevaleExecption e) {
+			errors.put("discontinued", e.getMessage());
 		} catch (DateFormatExeption e) {
 			errors.put("introduced", e.getMessage());
 			errors.put("discontinued", e.getMessage());

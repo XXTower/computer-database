@@ -27,7 +27,6 @@
 	            <div class="alert alert-danger">
 					<c:out value="${response}"/>
 					<br/>
-					<!-- stacktrace -->
 				</div>
 			</c:if>
                 <div class="col-xs-8 col-xs-offset-2 box">
