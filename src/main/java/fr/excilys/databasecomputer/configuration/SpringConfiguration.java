@@ -26,7 +26,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan(basePackages = {"fr.excilys.databasecomputer.dao.implement","fr.excilys.databasecomputer.servlet",
 		"fr.excilys.databasecomputer.mapper","fr.excilys.databasecomputer.service","fr.excilys.databasecomputer.validator",
-		"fr.excilys.databasecomputer.pageable","fr.excilys.databasecomputer.controller"})
+		"fr.excilys.databasecomputer.pageable"})
 @PropertySource(value = "classpath:database.properties")
 public class SpringConfiguration implements WebApplicationInitializer, WebMvcConfigurer {
 
