@@ -25,9 +25,9 @@
         </div>
     </section>
 
-<script src="<c:url value="/resourcesjs/jquery.min.js" />"></script>
-<script src="<c:url value="/resourcesjs/bootstrap.min.js" />"></script>
-<script src="<c:url value="/resourcesjs/dashboard.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/js/dashboard.js" />"></script>
 
 </body>
 </html>
