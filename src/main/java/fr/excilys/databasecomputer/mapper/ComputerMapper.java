@@ -25,12 +25,22 @@ public class ComputerMapper implements RowMapper<Computer> {
 			.name(computerDto.getName())
 			.introduced(computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getIntroduced()) : null)
 			.discontinued(computerDto.getDiscontinued() != "" ? LocalDate.parse(computerDto.getDiscontinued()) : null)
-			.company(new CompanyBuilder().name(computerDto.getCompany()).build());
+			.company(new CompanyBuilder().name(computerDto.getCompanyName()).build());
 		} catch (DateTimeParseException e) {
 			throw new DateFormatExeption("Format date incorrect");
 		}
 
 		return computer.build();
+	}
+	
+	public ComputerDTO computerToComputerDto(Computer computer) {
+		ComputerDTO computerDto= new ComputerDTO();
+		computerDto.setId(computer.getId());
+		computerDto.setName(computer.getName());
+		computerDto.setIntroduced(computer.getIntroduced() == null ? "" : computer.getIntroduced().toString());
+		computerDto.setDiscontinued(computer.getDiscontinued() == null ? "" : computer.getDiscontinued().toString());
+		computerDto.setCompanyName(computer.getCompany().getName());
+		return computerDto;
 	}
 
 	@Override

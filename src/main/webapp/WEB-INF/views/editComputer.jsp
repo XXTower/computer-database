@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,32 +25,39 @@
                     </div>
                     <h1>Edit Computer</h1>
 
-                    <form action="editComputer" method="POST">
-                        <input type="hidden" name="id" value="<c:out value="${computer.id}"/>" id="id"/>
+                    <form:form action="editComputer" method="POST" modelAttribute="computer">
+                        <form:input path="id" type="hidden" name="id" value='${computer.id}' id="id"/>
                         <fieldset>
                             <div class="form-group">
-                                <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" name="computerName" id="computerName" placeholder="Computer name" value='<c:out value="${computer.name}"/>' required>
+                                <form:label path="name" for="computerName">Computer name</form:label>
+                                <form:input path="name" type="text" class="form-control" name="computerName" id="computerName" placeholder="Computer name" value='${computer.name}' required="required"/>
                             	<div class="error">${errors['computerName'] }</div>
                             </div>
                             <div class="form-group">
-                                <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date" value='<c:out value="${computer.introduced }"/>'>
+                                <form:label path="introduced" for="introduced">Introduced date</form:label>
+                                <form:input path="introduced" type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date" value='${computer.introduced }'/>
                             </div>
                             <div class="form-group">
-                                <label for="discontinued">Discontinued date</label>
-                                <input type="date" name="discontinued" class="form-control" id="discontinued" placeholder="Discontinued date" value='<c:out value="${computer.discontinued }"/>'>
+                                <form:label path="discontinued" for="discontinued">Discontinued date</form:label>
+                                <form:input path="discontinued" type="date" name="discontinued" class="form-control" id="discontinued" placeholder="Discontinued date" value='${computer.discontinued }'/>
                                 <div class="error">${errors['discontinued'] }</div>
                             	<div class="error" id="checkdate" style="display:none">The discontinued date must be before the introduced date  </div>
                             </div>
                             <div class="form-group">
-                                <label for="companyId">Company</label><c:out value="${computer.company.name }"/>
-                                <select class="form-control" id="company" name="company" >
-                                    <option value="0">--</option>
+                                <form:label path="companyName" for="companyId">Company</form:label>
+                                <form:select path="companyName" class="form-control" id="company" name="company" >
+                                    <form:option value="0">--</form:option>
                                     <c:forEach var="company" items="${listCompany}">
-                                    	<option value="${company.name}" <c:if test="${company.name == computer.company.name}"> selected </c:if> > <c:out value="${company.name}" /></option>
+                                    <c:choose>
+	                                    <c:when test="${company.name == computer.companyName}">
+	                                    	<form:option selected="selected" value='${company.name}'> <c:out value='${company.name}'/> </form:option>
+	                                    </c:when>
+	                                    <c:otherwise>
+	                                    	<form:option value='${company.name}'> <c:out value='${company.name}'/> </form:option>
+	                                    </c:otherwise>
+                                    </c:choose>
                                     </c:forEach>
-                                </select>
+                                </form:select>
                             </div>            
                         </fieldset>
                         <div class="actions pull-right">
@@ -57,7 +65,7 @@
                             or
                             <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>
-                    </form>
+                    </form:form>
                 </div>
             </div>
         </div>

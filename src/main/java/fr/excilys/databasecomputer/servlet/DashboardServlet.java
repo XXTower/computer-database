@@ -24,7 +24,7 @@ public class DashboardServlet {
 	private Page page;
 
     @GetMapping("/dashboard")
-	protected ModelAndView doGet(@RequestParam(value = "limite", defaultValue = "10") Integer limite,
+	protected ModelAndView doGet(@RequestParam(value = "limite", defaultValue = "0") Integer limite,
 			@RequestParam(value = "page", defaultValue = "1") Integer actpage, @RequestParam(value = "order", defaultValue = "ASC") String order,
 			@RequestParam(value = "search", defaultValue = "") String search) {
 		ModelAndView mv = new ModelAndView();

@@ -1,22 +1,17 @@
 package fr.excilys.databasecomputer.servlet;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
-import fr.excilys.databasecomputer.dtos.ComputerDTO.ComputerDTOBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
@@ -27,10 +22,8 @@ import fr.excilys.databasecomputer.service.CompanyService;
 import fr.excilys.databasecomputer.service.ComputerService;
 import fr.excilys.databasecomputer.validator.Validator;
 
-@WebServlet("/editComputer")
 @Controller
-public class EditComputerServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class EditComputerServlet {
 	@Autowired
 	private ComputerService computerService;
 	@Autowired
@@ -40,41 +33,26 @@ public class EditComputerServlet extends HttpServlet {
 	@Autowired
 	private Validator validator;
 
-    public EditComputerServlet() { }
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-      super.init(config);
-      SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    }
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("computer") != null) {
-			try {
-				int id = Integer.parseInt(request.getParameter("computer"));
-				Computer computer = computerService.displayOneComputeur(id);
-				request.setAttribute("computer", computer);
-			} catch (NumberFormatException | SQLExceptionComputerNotFound e) {
-				this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
-			}
-		} else {
-			request.setAttribute("message", "Ordinateur non renseigner");
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
+	@GetMapping("/editComputer")
+	protected ModelAndView doGet(@RequestParam(value = "computer") Integer idComputer) {
+		ModelAndView mv = new ModelAndView();
+		Computer computer = null;
+		try {
+			computer = computerService.displayOneComputeur(idComputer);
+			mv.setViewName("editComputer");
+		} catch (SQLExceptionComputerNotFound e) {
+			mv.addObject("message", e.getMessage());
+			mv.setViewName("500");
 		}
-
-		request.setAttribute("listCompany", companyService.displayAllCompany());
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
+		mv.addObject("computer", computerMapper.computerToComputerDto(computer));
+		mv.getModel().put("listCompany", companyService.displayAllCompany());
+		return mv;
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@PostMapping("/editComputer")
+	protected ModelAndView doPost(@ModelAttribute("computer") ComputerDTO computerDto) {
 		Map<String, String> errors = new HashMap<String, String>();
-		int id = Integer.parseInt(request.getParameter("id"));
-		String name = request.getParameter("computerName");
-		String introduced = request.getParameter("introduced");
-		String discontinued = request.getParameter("discontinued");
-		String company = request.getParameter("company");
-
-		ComputerDTO computerDto = new ComputerDTOBuilder().id(id).name(name).introduced(introduced).discontinued(discontinued).company(company).build();
+		ModelAndView mv = new ModelAndView();
 		Computer computer = null;
 		try {
 			computer = computerMapper.computerDtoToComputer(computerDto);
@@ -90,14 +68,17 @@ public class EditComputerServlet extends HttpServlet {
 
 		if (errors.isEmpty()) {
 			if (computerService.updateComputer(computer)) {
-				response.sendRedirect("dashboard");
+				mv.setViewName("redirect:dashboard");
+				return mv;
 			} else {
-				request.setAttribute("response", "Errors whith the save");
-				doGet(request, response);
+				mv.addObject("response", "Errors whith the save");
+				mv.setViewName("addComputer");
+				return mv;
 			}
 		} else {
-			request.setAttribute("errors", errors);
-			doGet(request, response);
+			mv.addObject("errors", errors);
+			mv.setViewName("addComputer");
+			return mv;
 		}
 	}
 }
