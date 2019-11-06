@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 import fr.excilys.databasecomputer.mapper.ComputerMapper;
-import fr.excilys.databasecomputer.mapper.DateMapper;
 
 @Repository
 public class ComputerDAO {

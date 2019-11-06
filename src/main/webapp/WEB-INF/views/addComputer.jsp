@@ -50,8 +50,8 @@
                                 <div class="error" id="checkdate" style="display:none">The discontinued date must be before the introduced date  </div>
                             </div>
                             <div class="form-group">
-                                <form:label path="companyId" for="companyId">Company</form:label>
-                                <form:select path="companyId" class="form-control" name="company" id="company" >
+                                <form:label path="companyName" for="companyId">Company</form:label>
+                                <form:select path="companyName" class="form-control" name="company" id="company" >
                                 	<form:option value="">---</form:option>
                                 	<c:forEach var="company" items="${listCompany}">
                                     	<form:option value="${company.name}"><c:out value="${company.name}" /></form:option>
