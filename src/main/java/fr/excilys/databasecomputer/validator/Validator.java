@@ -18,7 +18,7 @@ public class Validator {
 
 	private void checkDateIntervale(LocalDate dateinterruption, LocalDate discontinuedDate) throws DateIntevaleExecption {
 		if (discontinuedDate != null && dateinterruption != null && dateinterruption.isAfter(discontinuedDate)) {
-			throw new DateIntevaleExecption("The date " + dateinterruption.toString() + " must be after " + dateinterruption.toString());
+			throw new DateIntevaleExecption("The date " + dateinterruption.toString() + " must be after " + discontinuedDate.toString());
 		}
 	}
 

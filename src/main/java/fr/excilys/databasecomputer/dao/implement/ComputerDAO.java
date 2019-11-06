@@ -33,7 +33,7 @@ public class ComputerDAO {
 	private static final String INSERT_COMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (:name,:intoduced,:discontinued,(SELECT id FROM company WHERE name LIKE :company))";
 	private static final String DELETE_COMPUTER_NAME_COMPANY = "DELETE computer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE :company";
 	private static final String SEARCH_COMPUTER_COMPANY_BY_NAME = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE name OR computer.name LIKE :name ORDER BY "
+			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE :name OR computer.name LIKE :name ORDER BY "
 			+ "(CASE :order WHEN 'ASC' THEN computer.name END) ASC,(CASE :order WHEN 'DESC' THEN computer.name END) DESC "
 			+ "LIMIT :limite OFFSET :offset";
 	@Autowired
@@ -59,8 +59,8 @@ public class ComputerDAO {
 
 	public boolean update(Computer computer) {
 		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name",computer.getName())
-				.addValue("intoduced", DateMapper.changeToDateSQL(computer.getIntroduced()))
-				.addValue("discontinued", DateMapper.changeToDateSQL(computer.getDiscontinued()))
+				.addValue("intoduced", computer.getIntroduced())
+				.addValue("discontinued", computer.getDiscontinued())
 				.addValue("company", computer.getCompany().getName()).addValue("id", computer.getId());
 		int result = jdbcTemplate.update(UPDATE, namedParameterSource);
 		return result == 1;
@@ -78,8 +78,8 @@ public class ComputerDAO {
 
 	public boolean addComputer(Computer computer) {
 		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name",computer.getName())
-				.addValue("intoduced", DateMapper.changeToDateSQL(computer.getIntroduced()))
-				.addValue("discontinued", DateMapper.changeToDateSQL(computer.getDiscontinued()))
+				.addValue("intoduced", computer.getIntroduced())
+				.addValue("discontinued", computer.getDiscontinued())
 				.addValue("company", computer.getCompany().getName());
 		int result = jdbcTemplate.update(INSERT_COMPUTER, namedParameterSource);
 		return result == 1;
