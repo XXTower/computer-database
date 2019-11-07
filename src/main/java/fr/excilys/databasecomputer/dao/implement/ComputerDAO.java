@@ -57,7 +57,7 @@ public class ComputerDAO {
 	}
 
 	public boolean update(Computer computer) {
-		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name",computer.getName())
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name", computer.getName())
 				.addValue("intoduced", computer.getIntroduced())
 				.addValue("discontinued", computer.getDiscontinued())
 				.addValue("company", computer.getCompany().getName()).addValue("id", computer.getId());
@@ -76,7 +76,7 @@ public class ComputerDAO {
 	}
 
 	public boolean addComputer(Computer computer) {
-		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name",computer.getName())
+		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name", computer.getName())
 				.addValue("intoduced", computer.getIntroduced())
 				.addValue("discontinued", computer.getDiscontinued())
 				.addValue("company", computer.getCompany().getName());
@@ -86,7 +86,7 @@ public class ComputerDAO {
 
 	public int nbComputer() {
 		SqlParameterSource namedParameterSource = new MapSqlParameterSource();
-		return jdbcTemplate.queryForObject(NB_COMPUTER,namedParameterSource,Integer.class);
+		return jdbcTemplate.queryForObject(NB_COMPUTER, namedParameterSource, Integer.class);
 	}
 
 	public List<Computer> findAll(int limite, int offset, String order) {
@@ -112,6 +112,6 @@ public class ComputerDAO {
 
 	public int nbComputerFindByName(String name) {
 		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name", "%" + name + "%");
-		return jdbcTemplate.queryForObject(NB_COMPUTER_FIND_BY_NAME,namedParameterSource, Integer.class);
+		return jdbcTemplate.queryForObject(NB_COMPUTER_FIND_BY_NAME, namedParameterSource, Integer.class);
 	}
 }

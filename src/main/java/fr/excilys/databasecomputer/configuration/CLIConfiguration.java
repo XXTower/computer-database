@@ -9,8 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-@ComponentScan(basePackages = {"fr.excilys.databasecomputer.dao.implement","fr.excilys.databasecomputer.Main",
-		"fr.excilys.databasecomputer.mapper","fr.excilys.databasecomputer.service","fr.excilys.databasecomputer.validator",
+@ComponentScan(basePackages = {"fr.excilys.databasecomputer.dao.implement", "fr.excilys.databasecomputer.Main",
+		"fr.excilys.databasecomputer.mapper", "fr.excilys.databasecomputer.service", "fr.excilys.databasecomputer.validator",
 		"fr.excilys.databasecomputer.pageable"})
 @PropertySource(value = "classpath:database.properties")
 public class CLIConfiguration {

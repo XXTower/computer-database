@@ -1,6 +1,5 @@
 package fr.excilys.databasecomputer.dtos;
 
-
 public class ComputerDTO {
 	private int id;
 	private String name;

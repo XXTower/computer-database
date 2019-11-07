@@ -19,8 +19,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"fr.excilys.databasecomputer.dao.implement","fr.excilys.databasecomputer.servlet",
-		"fr.excilys.databasecomputer.mapper","fr.excilys.databasecomputer.service","fr.excilys.databasecomputer.validator",
+@ComponentScan(basePackages = {"fr.excilys.databasecomputer.dao.implement", "fr.excilys.databasecomputer.servlet",
+		"fr.excilys.databasecomputer.mapper", "fr.excilys.databasecomputer.service", "fr.excilys.databasecomputer.validator",
 		"fr.excilys.databasecomputer.pageable"})
 @PropertySource(value = "classpath:database.properties")
 public class SpringConfiguration implements WebApplicationInitializer {
@@ -41,7 +41,7 @@ public class SpringConfiguration implements WebApplicationInitializer {
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
-		webContext.register(SpringConfiguration.class,SpringMvcConfiguration.class);
+		webContext.register(SpringConfiguration.class, SpringMvcConfiguration.class);
 		webContext.setServletContext(servletContext);
 		ServletRegistration.Dynamic servlet = servletContext.addServlet("dynamicServlet", new DispatcherServlet(webContext));
 		servlet.setLoadOnStartup(1);

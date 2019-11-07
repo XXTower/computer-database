@@ -10,7 +10,7 @@ import fr.excilys.databasecomputer.exception.NameCheckException;
 
 @Component
 public class Validator {
-	
+
 	public void validationComputer(Computer computer) throws DateIntevaleExecption, NameCheckException {
 		checkNameComputer(computer.getName());
 		checkDateIntervale(computer.getIntroduced(), computer.getDiscontinued());

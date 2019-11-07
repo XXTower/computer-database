@@ -40,12 +40,12 @@ public class AddComputerServlet {
 		mv.addObject("computer", new ComputerDTO());
 		return mv;
 	}
-	
+
 	@PostMapping("/addComputer")
 	public ModelAndView doPost(@ModelAttribute("computer") ComputerDTO computerDto) {
 		Map<String, String> errors = new HashMap<String, String>();
 		ModelAndView mv = new ModelAndView();
-		Computer computer = null;		
+		Computer computer = null;
 		try {
 			computer = computerMapper.computerDtoToComputer(computerDto);
 			validator.validationComputer(computer);

@@ -32,9 +32,9 @@ public class ComputerMapper implements RowMapper<Computer> {
 
 		return computer.build();
 	}
-	
+
 	public ComputerDTO computerToComputerDto(Computer computer) {
-		ComputerDTO computerDto= new ComputerDTO();
+		ComputerDTO computerDto = new ComputerDTO();
 		computerDto.setId(computer.getId());
 		computerDto.setName(computer.getName());
 		computerDto.setIntroduced(computer.getIntroduced() == null ? "" : computer.getIntroduced().toString());

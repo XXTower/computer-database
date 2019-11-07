@@ -13,7 +13,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-public class SpringMvcConfiguration implements WebMvcConfigurer{
+public class SpringMvcConfiguration implements WebMvcConfigurer {
 
     @Bean
     public ViewResolver internalResourceViewResolver() {
@@ -39,7 +39,7 @@ public class SpringMvcConfiguration implements WebMvcConfigurer{
 	}
 
 	@Bean
-	public CookieLocaleResolver localeResolver(){
+	public CookieLocaleResolver localeResolver() {
 	    CookieLocaleResolver resolver = new CookieLocaleResolver();
 	    resolver.setDefaultLocale(Locale.ENGLISH);
 	    resolver.setCookieName("DatabaseApp");
