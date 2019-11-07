@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
 import fr.excilys.databasecomputer.entity.Computer;
@@ -34,25 +34,22 @@ public class EditComputerServlet {
 	private Validator validator;
 
 	@GetMapping("/editComputer")
-	protected ModelAndView doGet(@RequestParam(value = "computer") Integer idComputer) {
-		ModelAndView mv = new ModelAndView();
+	protected String doGet(@RequestParam(value = "computer") Integer idComputer, Model model) {
 		Computer computer = null;
 		try {
 			computer = computerService.displayOneComputeur(idComputer);
-			mv.setViewName("editComputer");
 		} catch (SQLExceptionComputerNotFound e) {
-			mv.addObject("message", e.getMessage());
-			mv.setViewName("500");
+			model.addAttribute("message", e.getMessage());
+			return "500";
 		}
-		mv.addObject("computer", computerMapper.computerToComputerDto(computer));
-		mv.getModel().put("listCompany", companyService.displayAllCompany());
-		return mv;
+		model.addAttribute("computer", computerMapper.computerToComputerDto(computer));
+		model.addAttribute("listCompany", companyService.displayAllCompany());
+		return "editComputer";
 	}
 
 	@PostMapping("/editComputer")
-	protected ModelAndView doPost(@ModelAttribute("computer") ComputerDTO computerDto) {
+	protected String doPost(@ModelAttribute("computer") ComputerDTO computerDto, Model model) {
 		Map<String, String> errors = new HashMap<String, String>();
-		ModelAndView mv = new ModelAndView();
 		Computer computer = null;
 		try {
 			computer = computerMapper.computerDtoToComputer(computerDto);
@@ -68,17 +65,14 @@ public class EditComputerServlet {
 
 		if (errors.isEmpty()) {
 			if (computerService.updateComputer(computer)) {
-				mv.setViewName("redirect:dashboard");
-				return mv;
+				return "redirect:dashboard";
 			} else {
-				mv.addObject("response", "Errors whith the save");
-				mv.setViewName("addComputer");
-				return mv;
+				model.addAttribute("response", "Errors whith the save");
+				return "addComputer";
 			}
 		} else {
-			mv.addObject("errors", errors);
-			mv.setViewName("addComputer");
-			return mv;
+			model.addAttribute("errors", errors);
+			return "addComputer";
 		}
 	}
 }

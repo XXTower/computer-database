@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
 import fr.excilys.databasecomputer.entity.Computer;
@@ -33,18 +33,15 @@ public class AddComputerServlet {
 
 
 	@GetMapping("/addComputer")
-	public ModelAndView doGet() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("addComputer");
-		mv.addObject("listCompany", companyService.displayAllCompany());
-		mv.addObject("computer", new ComputerDTO());
-		return mv;
+	public String doGet(Model model) {
+		model.addAttribute("listCompany", companyService.displayAllCompany());
+		model.addAttribute("computer", new ComputerDTO());
+		return "addComputer";
 	}
 
 	@PostMapping("/addComputer")
-	public ModelAndView doPost(@ModelAttribute("computer") ComputerDTO computerDto) {
+	public String doPost(@ModelAttribute("computer") ComputerDTO computerDto, Model model) {
 		Map<String, String> errors = new HashMap<String, String>();
-		ModelAndView mv = new ModelAndView();
 		Computer computer = null;
 		try {
 			computer = computerMapper.computerDtoToComputer(computerDto);
@@ -60,17 +57,14 @@ public class AddComputerServlet {
 
 		if (errors.isEmpty()) {
 			if (computerService.addComputer(computer)) {
-				mv.setViewName("redirect:dashboard");
-				return mv;
+				return "redirect:dashboard";
 			} else {
-				mv.addObject("response", "Errors whith the save");
-				mv.setViewName("addComputer");
-				return mv;
+				model.addAttribute("response", "Errors whith the save");
+				return "addComputer";
 			}
 		} else {
-			mv.addObject("errors", errors);
-			mv.setViewName("addComputer");
-			return mv;
+			model.addAttribute("errors", errors);
+			return "addComputer";
 		}
 	}
 }
