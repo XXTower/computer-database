@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +23,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                <c:out value="${nbcomputer}"></c:out> Computers found 
+                <c:out value="${nbcomputer}"></c:out> <spring:message code="dashboard.nbComputer"/>
             </h1>
             <c:if test="${not empty response}">
 	            <div class="alert alert-danger">
@@ -34,13 +35,13 @@
                 <div class="pull-left">
                     <form id="searchForm" method="GET" class="form-inline">
 
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" value="<c:out value="${search}"/>" />
-                        <input type="submit" id="searchsubmit" value="Filter by name"
+                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="<spring:message code="dashbord.searchbox" />" value="<c:out value="${search}"/>" />
+                        <input type="submit" id="searchsubmit" value="<spring:message code="dashbord.btnSearch" />"
                         class="btn btn-primary" />
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a> 
+                    <a class="btn btn-success" id="addComputer" href="addComputer"><spring:message code="dashbord.btajouter" /></a> 
                     <a class="btn btn-default" id="editComputer" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
@@ -66,7 +67,7 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
+                            <spring:message code="dashbord.computerName" />
                             <a href="dashboard?page=${actPage}&order=ASC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
                             	<i class="fa fa-chevron-down"></i>
                             </a>
@@ -76,15 +77,17 @@
                             
                         </th>
                         <th>
-                            Introduced date
+                        <spring:message code="dashbord.computerIntroDate" />
+                            
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            Discontinued date
+                        <spring:message code="dashbord.computerDisDate" />
+                            
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            Company
+                        	<spring:message code="dashbord.computerCompany" />
                         </th>
 
                     </tr>

@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,26 +32,26 @@
 				</div>
 			</c:if>
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1>Add Computer</h1>
+                    <h1><spring:message code="addComputer.title"/></h1>
                     <form:form action="addComputer" method="POST" modelAttribute="computer">
                         <fieldset>
                             <div class="form-group">
-                                <form:label for="computerName" path="name">Computer name</form:label>
+                                <form:label for="computerName" path="name"><spring:message code="addComputer.computerName"/></form:label>
                                 <form:input path="name" required="required" type="text" class="form-control" name="computerName" id="computerName" placeholder="Computer name"/>
                             	<div class="error">${errors['computerName'] }</div>
                             </div>
                             <div class="form-group">
-                                <form:label path="introduced" for="introduced">Introduced date</form:label>
+                                <form:label path="introduced" for="introduced"><spring:message code="addComputer.computerIntroDate"/></form:label>
                                 <form:input path="introduced" type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date" value='<c:out value="${param.introduced}"/>'/>
                             </div>
                             <div class="form-group">
-                                <form:label path="discontinued" for="discontinued">Discontinued date</form:label>
+                                <form:label path="discontinued" for="discontinued"><spring:message code="addComputer.computerDisDate"/></form:label>
                                 <form:input path="discontinued" type="date" class="form-control" name="discontinued" id="discontinued" placeholder="Discontinued date"  value='<c:out value="${param.discontinued}"/>'/>
                                 <div class="error">${errors['discontinued'] }</div>
                                 <div class="error" id="checkdate" style="display:none">The discontinued date must be before the introduced date  </div>
                             </div>
                             <div class="form-group">
-                                <form:label path="companyName" for="companyId">Company</form:label>
+                                <form:label path="companyName" for="companyId"><spring:message code="addComputer.computerCompany"/></form:label>
                                 <form:select path="companyName" class="form-control" name="company" id="company" >
                                 	<form:option value="">---</form:option>
                                 	<c:forEach var="company" items="${listCompany}">
@@ -60,9 +61,9 @@
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary" id="validButton">
+                            <input type="submit" value="<spring:message code="addComputer.btnAdd"/>" class="btn btn-primary" id="validButton">
                             or
-                            <a href="dashboard" class="btn btn-default">Cancel</a>
+                            <a href="dashboard" class="btn btn-default"><spring:message code="addComputer.btnCancel"/></a>
                         </div>
                     </form:form>
                 </div>
