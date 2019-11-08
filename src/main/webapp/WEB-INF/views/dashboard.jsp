@@ -41,7 +41,7 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer"><spring:message code="dashbord.btajouter" /></a> 
+                    <a class="btn btn-success" id="addComputer" href="addComputer"><spring:message code="dashboard.btajouter" /></a> 
                     <a class="btn btn-default" id="editComputer" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                             </span>
                         </th>
                         <th>
-                            <spring:message code="dashbord.computerName" />
+                            <spring:message code="dashboard.computerName" />
                             <a href="dashboard?page=${actPage}&order=ASC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
                             	<i class="fa fa-chevron-down"></i>
                             </a>
@@ -77,17 +77,17 @@
                             
                         </th>
                         <th>
-                        <spring:message code="dashbord.computerIntroDate" />
+                        <spring:message code="dashboard.computerIntroDate" />
                             
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                        <spring:message code="dashbord.computerDisDate" />
+                        <spring:message code="dashboard.computerDisDate" />
                             
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                        	<spring:message code="dashbord.computerCompany" />
+                        	<spring:message code="dashboard.computerCompany" />
                         </th>
 
                     </tr>

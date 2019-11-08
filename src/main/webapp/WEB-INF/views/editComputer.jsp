@@ -49,14 +49,7 @@
                                 <form:select path="companyName" class="form-control" id="company" name="company" >
                                     <form:option value="0">--</form:option>
                                     <c:forEach var="company" items="${listCompany}">
-                                    <c:choose>
-	                                    <c:when test="${company.name == computer.companyName}">
-	                                    	<form:option selected="selected" value='${company.name}'> <c:out value='${company.name}'/> </form:option>
-	                                    </c:when>
-	                                    <c:otherwise>
-	                                    	<form:option value='${company.name}'> <c:out value='${company.name}'/> </form:option>
-	                                    </c:otherwise>
-                                    </c:choose>
+	                                    <form:option value='${company.name}'> <c:out value='${company.name}'/> </form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>            
