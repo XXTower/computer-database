@@ -1,7 +1,6 @@
 package fr.excilys.databasecomputer.servlet;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,7 @@ public class DashboardServlet {
 		}
 
 		model.addAttribute("search", search);
-		int nbComputer = computerService.nbComputerCompanyFindByName(search);
+		long nbComputer = computerService.nbComputerCompanyFindByName(search);
 		model.addAttribute("listComputer", computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(actpage), order));
 
 		model.addAttribute("limite", page.getLimite());
@@ -42,7 +41,7 @@ public class DashboardServlet {
 	}
 
     @PostMapping("/dashboard")
-	protected String doPost(HttpServletRequest request, HttpServletResponse response) {
+	protected String doPost(HttpServletRequest request) {
 
 		String deletecomputer = request.getParameter("selection");
 		String[] listComputer = deletecomputer.split(",");

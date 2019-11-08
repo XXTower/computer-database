@@ -12,6 +12,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -23,10 +27,26 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 		"fr.excilys.databasecomputer.mapper", "fr.excilys.databasecomputer.service", "fr.excilys.databasecomputer.validator",
 		"fr.excilys.databasecomputer.pageable"})
 @PropertySource(value = "classpath:database.properties")
+@EnableTransactionManagement
 public class SpringConfiguration implements WebApplicationInitializer {
 
 	@Autowired
 	private Environment env;
+
+	@Bean
+    public PlatformTransactionManager hibernateTransactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
+    }
+
+	@Bean
+	public LocalSessionFactoryBean sessionFactory() {
+		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+		sessionFactory.setDataSource(getConnection());
+		sessionFactory.setPackagesToScan("fr.excilys.databasecomputer.entity");
+		return sessionFactory;
+	}
 
 	@Bean
 	 public DataSource getConnection() {

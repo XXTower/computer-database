@@ -40,7 +40,7 @@ public class ComputerService {
 		return computerDAO.update(computer);
 	}
 
-	public int nbComputer()  {
+	public long nbComputer()  {
 		return computerDAO.nbComputer();
 	}
 
@@ -52,7 +52,7 @@ public class ComputerService {
 		return computerDAO.findComputerByName(name, limite, offset, order);
 	}
 
-	public int nbComputerCompanyFindByName(String name) {
+	public long nbComputerCompanyFindByName(String name) {
 		return computerDAO.nbComputerFindByName(name);
 	}
 }

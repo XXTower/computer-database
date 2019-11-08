@@ -76,7 +76,7 @@ public class Main {
 		validator = ValidatorCLI.getInstance();
 		int reponse = 1;
 		int offset = 0;
-		int nbComputer = computerService.nbComputer();
+		long nbComputer = computerService.nbComputer();
 		int maxPage = page.nbPageMax(nbComputer);
 		do {
 			for (Computer computer : computerService.displayAllComputer(page.getLimite(), offset, "ASC")) {

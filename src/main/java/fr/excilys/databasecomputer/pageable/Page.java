@@ -16,8 +16,8 @@ public class Page {
 		this.limite = limite;
 	}
 
-	public int nbPageMax(int nbobject) {
-		return (int) Math.ceil(((double) nbobject / (double) limite));
+	public int nbPageMax(long nbComputer) {
+		return (int) Math.ceil(((double) nbComputer / (double) limite));
 	}
 
 	public int calculeNewOffset(int page) {

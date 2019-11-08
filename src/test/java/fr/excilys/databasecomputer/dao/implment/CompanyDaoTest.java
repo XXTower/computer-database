@@ -10,18 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.excilys.databasecomputer.configuration.SpringConfiguration;
-import fr.excilys.databasecomputer.dao.ConnextionDB;
+import fr.excilys.databasecomputer.configuration.CLIConfiguration;
 import fr.excilys.databasecomputer.dao.implement.CompanyDAO;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Company;
 import junit.framework.TestCase;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpringConfiguration.class})
+@ContextConfiguration(classes = {CLIConfiguration.class})
 public class CompanyDaoTest extends TestCase {
-	@Autowired
-	ConnextionDB connextion;
 	@Autowired
 	CompanyDAO companyDAO;
 	
@@ -32,7 +29,6 @@ public class CompanyDaoTest extends TestCase {
 	
 	@After
 	public void tearDown() {
-		connextion=null;
 		companyDAO = null;
 	}
 	
