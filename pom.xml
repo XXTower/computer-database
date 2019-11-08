@@ -22,13 +22,24 @@
     <mysql.version>8.0.18</mysql.version>
     <mockito.version>3.1.0</mockito.version>
     <h2.version>1.4.200</h2.version>
-    <springMVC.version>5.2.0.RELEASE</springMVC.version>
-    <springTest.version>5.2.0.RELEASE</springTest.version>
-    <springJDBC.version>5.2.0.RELEASE</springJDBC.version>
+    <springMVC.version>5.2.1.RELEASE</springMVC.version>
+    <springTest.version>5.2.1.RELEASE</springTest.version>
+    <springJDBC.version>5.2.1.RELEASE</springJDBC.version>
+    <springORM.version>5.2.1.RELEASE</springORM.version>
     <selenium.version>3.141.59</selenium.version>
   </properties>
 
   <dependencies>
+  <dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>5.4.8.Final</version>
+</dependency>
+	  <dependency>
+	    <groupId>org.springframework.data</groupId>
+	    <artifactId>spring-data-jpa</artifactId>
+	    <version>2.2.1.RELEASE</version>
+	</dependency>
 	  <dependency>
 	  	<groupId>ch.qos.logback</groupId>
 	    <artifactId>logback-classic</artifactId>
@@ -38,6 +49,11 @@
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-jdbc</artifactId>
 	    <version>${springJDBC.version}</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-orm</artifactId>
+	    <version>${springORM.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.springframework</groupId>

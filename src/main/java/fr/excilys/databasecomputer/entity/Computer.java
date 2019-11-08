@@ -2,11 +2,24 @@ package fr.excilys.databasecomputer.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "computer")
 public class Computer {
+	@Id
 	private int id;
+	@Column(name = "name")
 	private String name;
+	@Column(name = "introduced")
 	private LocalDate introduced;
+	@Column(name = "discontinued")
 	private LocalDate discontinued;
+	@OneToOne
 	private Company company;
 
 	private Computer(ComputerBuilder builder) {
