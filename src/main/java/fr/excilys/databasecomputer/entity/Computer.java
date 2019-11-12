@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,7 +21,10 @@ public class Computer {
 	@Column(name = "discontinued")
 	private LocalDate discontinued;
 	@OneToOne
+	@JoinColumn(name = "company_id")
 	private Company company;
+
+	private Computer() { }
 
 	private Computer(ComputerBuilder builder) {
 		this.id = builder.id;
@@ -91,8 +95,9 @@ public class Computer {
 
 	@Override
 	public String toString() {
+		String companydisplay = this.company == null ? "null" : this.company.toString();
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", company=" + company.toString() + "]";
+				+ ", company=" + companydisplay  + "]";
 	}
 
 	@Override
