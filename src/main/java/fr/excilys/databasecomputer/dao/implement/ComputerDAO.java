@@ -62,12 +62,19 @@ public class ComputerDAO {
 
 	@Transactional
 	public boolean update(Computer computer) {
-		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name", computer.getName())
-				.addValue("intoduced", computer.getIntroduced())
-				.addValue("discontinued", computer.getDiscontinued())
-				.addValue("company", computer.getCompany().getName()).addValue("id", computer.getId());
-		int result = jdbcTemplate.update(UPDATE, namedParameterSource);
-		
+//		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name", computer.getName())
+//				.addValue("intoduced", computer.getIntroduced())
+//				.addValue("discontinued", computer.getDiscontinued())
+//				.addValue("company", computer.getCompany().getName()).addValue("id", computer.getId());
+//		int result = jdbcTemplate.update(UPDATE, namedParameterSource);
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaUpdate<Computer> criteriaUpdate = builder.createCriteriaUpdate(Computer.class);
+		Root<Computer> root = criteriaUpdate.from(Computer.class);
+		criteriaUpdate.set("name", computer.getName()).set("introduced", computer.getIntroduced())
+		.set("discontinued", computer.getDiscontinued());
+		criteriaUpdate.where(builder.equal(root.get("id"), computer.getId()));
+		Query update = em.createQuery(criteriaUpdate);
+		int result = update.executeUpdate();
 		return result == 1;
 	}
 

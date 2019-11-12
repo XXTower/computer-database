@@ -24,14 +24,20 @@ import fr.excilys.databasecomputer.validator.Validator;
 
 @Controller
 public class EditComputerServlet {
-	@Autowired
+	
 	private ComputerService computerService;
-	@Autowired
 	private CompanyService companyService;
-	@Autowired
 	private ComputerMapper computerMapper;
-	@Autowired
 	private Validator validator;
+	
+	@Autowired
+	public EditComputerServlet(ComputerService computerService, CompanyService companyService,
+			ComputerMapper computerMapper, Validator validator) {
+		this.computerService = computerService;
+		this.companyService = companyService;
+		this.computerMapper = computerMapper;
+		this.validator = validator;
+	}
 
 	@GetMapping("/editComputer")
 	protected String doGet(@RequestParam(value = "computer") Integer idComputer, Model model) {

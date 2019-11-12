@@ -22,15 +22,20 @@ import fr.excilys.databasecomputer.validator.Validator;
 
 @Controller
 public class AddComputerServlet {
-	@Autowired
-	private ComputerService computerService;
-	@Autowired
-	private CompanyService companyService;
-	@Autowired
-	private ComputerMapper computerMapper;
-	@Autowired
-	private Validator validator;
 
+	private ComputerService computerService;
+	private CompanyService companyService;
+	private ComputerMapper computerMapper;
+	private Validator validator;
+	
+	@Autowired
+	public AddComputerServlet(ComputerService computerService, CompanyService companyService,
+			ComputerMapper computerMapper,Validator validator) {
+		this.computerService = computerService;
+		this.companyService = companyService;
+		this.computerMapper = computerMapper;
+		this.validator = validator;
+	}
 
 	@GetMapping("/addComputer")
 	public String doGet(Model model) {

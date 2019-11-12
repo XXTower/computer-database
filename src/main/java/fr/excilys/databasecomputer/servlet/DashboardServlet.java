@@ -14,10 +14,15 @@ import fr.excilys.databasecomputer.service.ComputerService;
 
 @Controller
 public class DashboardServlet {
-	@Autowired
+
 	private ComputerService computerService;
-	@Autowired
 	private Page page;
+	
+	@Autowired
+	public DashboardServlet(ComputerService computerService, Page page) {
+		this.computerService = computerService;
+		this.page = page;
+	}
 
     @GetMapping("/dashboard")
 	protected String doGet(@RequestParam(value = "limite", defaultValue = "0") Integer limite,
@@ -41,7 +46,7 @@ public class DashboardServlet {
 	}
 
     @PostMapping("/dashboard")
-	protected String doPost(HttpServletRequest request) {
+	protected String delete(HttpServletRequest request) {
 
 		String deletecomputer = request.getParameter("selection");
 		String[] listComputer = deletecomputer.split(",");

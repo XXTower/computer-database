@@ -11,10 +11,13 @@ import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 
 @Service
 public class ComputerService {
-	@Autowired
+
 	private ComputerDAO computerDAO;
 
-	private ComputerService() { }
+	@Autowired
+	private ComputerService(ComputerDAO computerDAO) { 
+		this.computerDAO = computerDAO;
+	}
 
 	public Boolean addComputer(Computer computer)  {
 		return computerDAO.addComputer(computer);
