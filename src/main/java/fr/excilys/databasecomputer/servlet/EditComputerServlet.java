@@ -15,6 +15,7 @@ import fr.excilys.databasecomputer.dtos.ComputerDTO;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 import fr.excilys.databasecomputer.exception.NameCheckException;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 import fr.excilys.databasecomputer.mapper.ComputerMapper;
@@ -70,10 +71,11 @@ public class EditComputerServlet {
 		}
 
 		if (errors.isEmpty()) {
-			if (computerService.updateComputer(computer)) {
+			try {
+				computerService.updateComputer(computer);
 				return "redirect:dashboard";
-			} else {
-				model.addAttribute("response", "Errors whith the save");
+			} catch (FailSaveComputer e) {
+				model.addAttribute("response", e);
 				return "addComputer";
 			}
 		} else {

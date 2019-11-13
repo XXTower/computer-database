@@ -47,16 +47,19 @@ public class ComputerDAO {
 	}
 
 	@Transactional
-	public boolean update(Computer computer) {
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaUpdate<Computer> criteriaUpdate = builder.createCriteriaUpdate(Computer.class);
-		Root<Computer> root = criteriaUpdate.from(Computer.class);
-		criteriaUpdate.set("name", computer.getName()).set("introduced", computer.getIntroduced())
-		.set("discontinued", computer.getDiscontinued()).set("company_id", computer.getCompany().getId());
-		criteriaUpdate.where(builder.equal(root.get("id"), computer.getId()));
-		Query update = em.createQuery(criteriaUpdate);
-		int result = update.executeUpdate();
-		return result == 1;
+	public void update(Computer computer) throws FailSaveComputer {
+		try {
+			CriteriaBuilder builder = em.getCriteriaBuilder();
+			CriteriaUpdate<Computer> criteriaUpdate = builder.createCriteriaUpdate(Computer.class);
+			Root<Computer> root = criteriaUpdate.from(Computer.class);
+			criteriaUpdate.set("name", computer.getName()).set("introduced", computer.getIntroduced())
+			.set("discontinued", computer.getDiscontinued()).set("company_id", computer.getCompany().getId());
+			criteriaUpdate.where(builder.equal(root.get("id"), computer.getId()));
+			Query update = em.createQuery(criteriaUpdate);
+			update.executeUpdate();
+		} catch (Exception e) {
+			throw new FailSaveComputer("Errors whith the save");
+		}
 	}
 
 	@Transactional

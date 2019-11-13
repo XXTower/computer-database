@@ -197,7 +197,6 @@ public class Main {
 	public void majComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
 		ComputerBuilder updateComputer = new ComputerBuilder();
-//		computerService = ComputerService.getInstance();
 
 		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
 		int idComputer = validator.verificationEntreUserInt(sc);
@@ -227,9 +226,10 @@ public class Main {
 			System.out.print("Nouveaux nom company(Optionnel): ");
 			updateComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
 
-			if (computerService.updateComputer(updateComputer.build())) {
+			try {
+				computerService.updateComputer(updateComputer.build());
 				System.out.println("Ordinateur modifier");
-			} else {
+			} catch (FailSaveComputer e) {
 				System.out.println("Ordinateur non modifier");
 			}
 		} catch (SQLExceptionComputerNotFound e) {

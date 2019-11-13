@@ -75,10 +75,5 @@ public class ComputerDaoTest extends TestCase {
 	public final void testDelete() {
 		assertEquals(true, computerDAO.delete(2));
 	}
-	
-	@Test
-	public final void testUpdate() {
-		Computer computer = new ComputerBuilder().id(1).name("pierre").introduced(null).discontinued(null).company(new CompanyBuilder().name(null).build()).build();
-		assertEquals(true, computerDAO.update(computer));
-	}
+
 }

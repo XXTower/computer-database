@@ -40,8 +40,8 @@ public class ComputerService {
 		return computerDAO.delete(idComputer);
 	}
 
-	public Boolean updateComputer(Computer computer)  {
-		return computerDAO.update(computer);
+	public void updateComputer(Computer computer) throws FailSaveComputer  {
+		computerDAO.update(computer);
 	}
 
 	public long nbComputer()  {
