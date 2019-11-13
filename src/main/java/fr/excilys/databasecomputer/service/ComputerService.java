@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
 import fr.excilys.databasecomputer.entity.Computer;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 
 @Service
@@ -15,12 +16,12 @@ public class ComputerService {
 	private ComputerDAO computerDAO;
 
 	@Autowired
-	private ComputerService(ComputerDAO computerDAO) { 
+	private ComputerService(ComputerDAO computerDAO) {
 		this.computerDAO = computerDAO;
 	}
 
-	public Boolean addComputer(Computer computer)  {
-		return computerDAO.addComputer(computer);
+	public void addComputer(Computer computer) throws FailSaveComputer  {
+		computerDAO.addComputer(computer);
 	}
 
  	public List<Computer> displayAllComputer()  {

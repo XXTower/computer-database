@@ -9,6 +9,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.configuration.CLIConfiguration;
@@ -157,9 +158,10 @@ public class Main {
 		System.out.print("Nouveaux nom company(Optionnel): ");
 		newComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
 
-		if (computerService.addComputer(newComputer.build())) {
+		try {
+			computerService.addComputer(newComputer.build());
 			System.out.println("Ordinateur ajouter");
-		} else {
+		} catch (FailSaveComputer e) {
 			System.out.println("Ordinateur non ajouter");
 		}
 	}

@@ -24,12 +24,12 @@ import fr.excilys.databasecomputer.validator.Validator;
 
 @Controller
 public class EditComputerServlet {
-	
+
 	private ComputerService computerService;
 	private CompanyService companyService;
 	private ComputerMapper computerMapper;
 	private Validator validator;
-	
+
 	@Autowired
 	public EditComputerServlet(ComputerService computerService, CompanyService companyService,
 			ComputerMapper computerMapper, Validator validator) {

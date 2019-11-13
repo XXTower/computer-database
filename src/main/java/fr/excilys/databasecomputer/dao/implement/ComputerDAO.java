@@ -15,34 +15,20 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Computer;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 
 @Repository
 public class ComputerDAO {
-	private static final String UPDATE = "UPDATE computer SET name=:name, introduced=:intoduced, discontinued=:discontinued, company_id=(SELECT id FROM company WHERE name LIKE :company) WHERE id=:id";
-	private static final String INSERT_COMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (:name,:intoduced,:discontinued,(SELECT id FROM company WHERE name LIKE :company))";
-	private static final String DELETE_COMPUTER_NAME_COMPANY = "DELETE computer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE :company";
-
-	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	@PersistenceContext
 	private EntityManager em;
-
-	@Autowired
-	public ComputerDAO(DataSource dataSource) {
-		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-	}
 
 	public Computer find(int id) throws SQLExceptionComputerNotFound {
 		Computer computer = null;
@@ -62,16 +48,11 @@ public class ComputerDAO {
 
 	@Transactional
 	public boolean update(Computer computer) {
-//		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name", computer.getName())
-//				.addValue("intoduced", computer.getIntroduced())
-//				.addValue("discontinued", computer.getDiscontinued())
-//				.addValue("company", computer.getCompany().getName()).addValue("id", computer.getId());
-//		int result = jdbcTemplate.update(UPDATE, namedParameterSource);
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaUpdate<Computer> criteriaUpdate = builder.createCriteriaUpdate(Computer.class);
 		Root<Computer> root = criteriaUpdate.from(Computer.class);
 		criteriaUpdate.set("name", computer.getName()).set("introduced", computer.getIntroduced())
-		.set("discontinued", computer.getDiscontinued());
+		.set("discontinued", computer.getDiscontinued()).set("company_id", computer.getCompany().getId());
 		criteriaUpdate.where(builder.equal(root.get("id"), computer.getId()));
 		Query update = em.createQuery(criteriaUpdate);
 		int result = update.executeUpdate();
@@ -98,13 +79,13 @@ public class ComputerDAO {
 		return computers.getResultList();
 	}
 
-	public boolean addComputer(Computer computer) {
-		SqlParameterSource namedParameterSource = new MapSqlParameterSource("name", computer.getName())
-				.addValue("intoduced", computer.getIntroduced())
-				.addValue("discontinued", computer.getDiscontinued())
-				.addValue("company", computer.getCompany().getName());
-		int result = jdbcTemplate.update(INSERT_COMPUTER, namedParameterSource);
-		return result == 1;
+	@Transactional
+	public void addComputer(Computer computer) throws FailSaveComputer {
+		try {
+			em.persist(computer);
+		} catch (Exception e) {
+			throw new FailSaveComputer("Errors whith the save");
+		}
 	}
 
 	public long nbComputer() {
@@ -129,9 +110,15 @@ public class ComputerDAO {
 		return computers.getResultList();
 	}
 
+	@Transactional
 	public boolean deleteComputerByCompanyName(String companyName) {
-		SqlParameterSource namedParameterSource = new MapSqlParameterSource("company", companyName);
-		int result = jdbcTemplate.update(DELETE_COMPUTER_NAME_COMPANY, namedParameterSource);
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaDelete<Computer> criteriaDelete = builder.createCriteriaDelete(Computer.class);
+		Root<Computer> root = criteriaDelete.from(Computer.class);
+		Join<Computer, Company> company = root.join("company", JoinType.LEFT);
+		criteriaDelete.where(builder.like(company.get("name"), companyName));
+		Query computer = em.createQuery(criteriaDelete);
+		int result = computer.executeUpdate();
 		return result != 0;
 	}
 

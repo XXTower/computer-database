@@ -17,7 +17,7 @@ public class DashboardServlet {
 
 	private ComputerService computerService;
 	private Page page;
-	
+
 	@Autowired
 	public DashboardServlet(ComputerService computerService, Page page) {
 		this.computerService = computerService;

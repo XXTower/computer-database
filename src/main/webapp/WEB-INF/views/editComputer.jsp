@@ -45,11 +45,11 @@
                             	<div class="error" id="checkdate" style="display:none">The discontinued date must be before the introduced date  </div>
                             </div>
                             <div class="form-group">
-                                <form:label path="companyName" for="companyId"><spring:message code="editComputer.computerCompany"/></form:label>
-                                <form:select path="companyName" class="form-control" id="company" name="company" >
+                                <form:label path="companyId" for="companyId"><spring:message code="editComputer.computerCompany"/></form:label>
+                                <form:select path="companyId" class="form-control" id="company" name="company" >
                                     <form:option value="0">--</form:option>
                                     <c:forEach var="company" items="${listCompany}">
-	                                    <form:option value='${company.name}'> <c:out value='${company.name}'/> </form:option>
+	                                    <form:option value='${company.id}'> <c:out value='${company.name}'/> </form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>            

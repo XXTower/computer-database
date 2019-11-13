@@ -14,6 +14,7 @@ import fr.excilys.databasecomputer.dtos.ComputerDTO;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 import fr.excilys.databasecomputer.exception.NameCheckException;
 import fr.excilys.databasecomputer.mapper.ComputerMapper;
 import fr.excilys.databasecomputer.service.CompanyService;
@@ -27,10 +28,10 @@ public class AddComputerServlet {
 	private CompanyService companyService;
 	private ComputerMapper computerMapper;
 	private Validator validator;
-	
+
 	@Autowired
 	public AddComputerServlet(ComputerService computerService, CompanyService companyService,
-			ComputerMapper computerMapper,Validator validator) {
+			ComputerMapper computerMapper, Validator validator) {
 		this.computerService = computerService;
 		this.companyService = companyService;
 		this.computerMapper = computerMapper;
@@ -61,10 +62,11 @@ public class AddComputerServlet {
 		}
 
 		if (errors.isEmpty()) {
-			if (computerService.addComputer(computer)) {
+			try {
+				computerService.addComputer(computer);
 				return "redirect:dashboard";
-			} else {
-				model.addAttribute("response", "Errors whith the save");
+			} catch (FailSaveComputer e) {
+				model.addAttribute("response", e);
 				return "addComputer";
 			}
 		} else {

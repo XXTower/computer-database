@@ -10,14 +10,13 @@ import fr.excilys.databasecomputer.entity.Company;
 
 @Service
 public class CompanyService {
-	
+
 	private CompanyDAO companyDAO;
 
 	@Autowired
 	private CompanyService(CompanyDAO companyDAO) {
 		this.companyDAO = companyDAO;
 	}
-
 
 	public List<Company> displayAllCompany() {
 		return companyDAO.findAll();
