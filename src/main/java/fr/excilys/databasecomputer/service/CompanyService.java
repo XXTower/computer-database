@@ -26,7 +26,7 @@ public class CompanyService {
 		return companyDAO.findAll(limite, offset);
 	}
 
-	public int nbCompany() {
+	public long nbCompany() {
 		return companyDAO.nbCompany();
 	}
 

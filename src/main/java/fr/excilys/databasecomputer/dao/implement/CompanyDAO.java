@@ -2,51 +2,61 @@ package fr.excilys.databasecomputer.dao.implement;
 
 import java.util.List;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.excilys.databasecomputer.entity.Company;
-import fr.excilys.databasecomputer.mapper.CompanyMapper;
 
 @Repository
 public class CompanyDAO {
-	private static final String FIND_ALL = "SELECT id, name FROM company ORDER BY id";
-	private static final String FIND_ALL_LIMITE_OFFSET = "SELECT id, name FROM company ORDER BY id LIMIT :limite OFFSET :offset";
-	private static final String NB_COMPANY = "SELECT COUNT(id) AS nbCompany FROM company";
-	private static final String DELETE_COMPANY = "DELETE FROM company WHERE name LIKE :company";
-	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	@Autowired
-	CompanyMapper companyMapper;
-
-	@Autowired
-	private CompanyDAO(DataSource dataSource) {
-		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-	}
+	@PersistenceContext
+	private EntityManager em;
 
 	public List<Company> findAll() {
-		SqlParameterSource namedParameterSource = new MapSqlParameterSource();
-		return jdbcTemplate.query(FIND_ALL, namedParameterSource, companyMapper);
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Company> criteriaQuery = builder.createQuery(Company.class);
+		Root<Company> root = criteriaQuery.from(Company.class);
+		criteriaQuery.select(root);
+		TypedQuery<Company> companys = em.createQuery(criteriaQuery);
+		return companys.getResultList();
 	}
 
 	public List<Company> findAll(int limite, int offset) {
-		SqlParameterSource namedParameterSource = new MapSqlParameterSource("limite", limite).addValue("offset", offset);
-		return jdbcTemplate.query(FIND_ALL_LIMITE_OFFSET, namedParameterSource, companyMapper);
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Company> criteriaQuery = builder.createQuery(Company.class);
+		Root<Company> root = criteriaQuery.from(Company.class);
+		criteriaQuery.select(root);
+		TypedQuery<Company> companys = em.createQuery(criteriaQuery).setFirstResult(offset).setMaxResults(limite);
+		return companys.getResultList();
 	}
 
-	public int nbCompany() {
-		SqlParameterSource namedParameterSource = new MapSqlParameterSource();
-		return jdbcTemplate.queryForObject(NB_COMPANY, namedParameterSource, Integer.class);
+	public long nbCompany() {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+		Root<Company> root = criteriaQuery.from(Company.class);
+		criteriaQuery.select(builder.countDistinct(root));
+		TypedQuery<Long> query = em.createQuery(criteriaQuery);
+		return query.getSingleResult();
 	}
 
+	@Transactional
 	public boolean deleteCompany(String companyName) {
-		SqlParameterSource namedParameterSource = new MapSqlParameterSource("company", companyName);
-		int result = jdbcTemplate.update(DELETE_COMPANY, namedParameterSource);
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaDelete<Company> criteriaDelete = builder.createCriteriaDelete(Company.class);
+		Root<Company> root = criteriaDelete.from(Company.class);
+		criteriaDelete.where(builder.like(root.get("name"), companyName));
+		Query computer = em.createQuery(criteriaDelete);
+		int result = computer.executeUpdate();
 		return result != 0;
 	}
 }

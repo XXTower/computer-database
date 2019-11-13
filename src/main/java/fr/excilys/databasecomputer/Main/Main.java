@@ -104,7 +104,7 @@ public class Main {
 		validator = ValidatorCLI.getInstance();
 		int reponse = 1;
 		int offset = 0;
-		int nbCompany = companyService.nbCompany();
+		long nbCompany = companyService.nbCompany();
 		int maxPage = page.nbPageMax(nbCompany);
 		do {
 			for (Company company : companyService.displayAllCompany(page.getLimite(), offset)) {

@@ -53,7 +53,7 @@ public class CompanyDaoTest extends TestCase {
 	
 	@Test
 	public final void testNbCompany() {
-		int number = companyDAO.nbCompany();
+		long number = companyDAO.nbCompany();
 		assertEquals(5, number);
 	}
 }
