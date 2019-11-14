@@ -25,7 +25,7 @@ public class ComputerMapper implements RowMapper<Computer> {
 			.name(computerDto.getName())
 			.introduced(computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getIntroduced()) : null)
 			.discontinued(computerDto.getDiscontinued() != "" ? LocalDate.parse(computerDto.getDiscontinued()) : null)
-			.company(new CompanyBuilder().id(computerDto.getCompanyId()).build());
+			.company(computerDto.getCompanyId() == 0 ? null : new CompanyBuilder().id(computerDto.getCompanyId()).build());
 		} catch (DateTimeParseException e) {
 			throw new DateFormatExeption("Format date incorrect");
 		}

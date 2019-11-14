@@ -18,7 +18,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="<c:url value="/dashboard"/>"> Application - Computer Database </a>
+            <a class="navbar-brand" href="<c:url value="/computers"/>"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -37,16 +37,16 @@
                         <fieldset>
                             <div class="form-group">
                                 <form:label for="computerName" path="name"><spring:message code="addComputer.computerName"/></form:label>
-                                <form:input path="name" required="required" type="text" class="form-control" name="computerName" id="computerName" placeholder="Computer name"/>
+                                <form:input required="required" path="name"  type="text" class="form-control" name="computerName" id="computerName" value='${computer.name}' placeholder="Computer name"/>
                             	<div class="error">${errors['computerName'] }</div>
                             </div>
                             <div class="form-group">
                                 <form:label path="introduced" for="introduced"><spring:message code="addComputer.computerIntroDate"/></form:label>
-                                <form:input path="introduced" type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date" value='<c:out value="${param.introduced}"/>'/>
+                                <form:input path="introduced" type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date" value='${computer.introduced }'/>
                             </div>
                             <div class="form-group">
                                 <form:label path="discontinued" for="discontinued"><spring:message code="addComputer.computerDisDate"/></form:label>
-                                <form:input path="discontinued" type="date" class="form-control" name="discontinued" id="discontinued" placeholder="Discontinued date"  value='<c:out value="${param.discontinued}"/>'/>
+                                <form:input path="discontinued" type="date" class="form-control" name="discontinued" id="discontinued" placeholder="Discontinued date"  value='${computer.discontinued }'/>
                                 <div class="error">${errors['discontinued'] }</div>
                                 <div class="error" id="checkdate" style="display:none">The discontinued date must be before the introduced date  </div>
                             </div>
@@ -63,7 +63,7 @@
                         <div class="actions pull-right">
                             <input type="submit" value="<spring:message code="addComputer.btnAdd"/>" class="btn btn-primary" id="validButton">
                             or
-                            <a href="dashboard" class="btn btn-default"><spring:message code="addComputer.btnCancel"/></a>
+                            <a href="<c:url value="/computers"/>" class="btn btn-default"><spring:message code="addComputer.btnCancel"/></a>
                         </div>
                     </form:form>
                 </div>

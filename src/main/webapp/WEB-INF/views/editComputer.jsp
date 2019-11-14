@@ -14,12 +14,18 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="<c:url value="/dashboard"/>"> Application - Computer Database </a>
+            <a class="navbar-brand" href="<c:url value="/computers"/>"> Application - Computer Database </a>
         </div>
     </header>
     <section id="main">
         <div class="container">
             <div class="row">
+            <c:if test="${not empty response}">
+	            <div class="alert alert-danger">
+					<c:out value="${response}"/>
+					<br/>
+				</div>
+			</c:if>
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <div class="label label-default pull-right">
                         id: <c:out value="${computer.id}"/>
@@ -57,7 +63,7 @@
                         <div class="actions pull-right">
                             <input type="submit" value="<spring:message code="editComputer.btnEdit"/>" class="btn btn-primary">
                             or
-                            <a href="dashboard" class="btn btn-default"><spring:message code="editComputer.btnCancel"/></a>
+                            <a href="<c:url value="/computers"/>" class="btn btn-default"><spring:message code="editComputer.btnCancel"/></a>
                         </div>
                     </form:form>
                 </div>

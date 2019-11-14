@@ -53,7 +53,7 @@ public class ComputerDAO {
 			CriteriaUpdate<Computer> criteriaUpdate = builder.createCriteriaUpdate(Computer.class);
 			Root<Computer> root = criteriaUpdate.from(Computer.class);
 			criteriaUpdate.set("name", computer.getName()).set("introduced", computer.getIntroduced())
-			.set("discontinued", computer.getDiscontinued()).set("company_id", computer.getCompany().getId());
+			.set("discontinued", computer.getDiscontinued()).set("company", computer.getCompany());
 			criteriaUpdate.where(builder.equal(root.get("id"), computer.getId()));
 			Query update = em.createQuery(criteriaUpdate);
 			update.executeUpdate();
