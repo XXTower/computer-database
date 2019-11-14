@@ -15,8 +15,6 @@ public class ComputerService {
 
 	private ComputerDAO computerDAO;
 
-	public ComputerService() { }
-	
 	@Autowired
 	private ComputerService(ComputerDAO computerDAO) {
 		this.computerDAO = computerDAO;

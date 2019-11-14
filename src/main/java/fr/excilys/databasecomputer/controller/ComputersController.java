@@ -46,7 +46,7 @@ public class ComputersController {
 		this.validator = validator;
 		this.page = page;
 	}
-	
+
 	@GetMapping
 	protected String getComputers(@RequestParam(value = "limite", defaultValue = "0") Integer limite,
 			@RequestParam(value = "page", defaultValue = "1") Integer actpage, @RequestParam(value = "order", defaultValue = "ASC") String order,
@@ -67,7 +67,7 @@ public class ComputersController {
 
 		return "dashboard";
 	}
-	
+
 	@PostMapping("/delete")
 	protected String deleteComputer(HttpServletRequest request) {
 		String deletecomputer = request.getParameter("selection");
@@ -81,14 +81,14 @@ public class ComputersController {
 		}
 		return "redirect:/computers";
 	}
-	
+
 	@GetMapping("/addComputer")
 	public String displayAddComputer(Model model) {
 		model.addAttribute("listCompany", companyService.displayAllCompany());
 		model.addAttribute("computer", new ComputerDTO());
 		return "addComputer";
 	}
-	
+
 	@PostMapping("/addComputer")
 	public String addcomputer(@ModelAttribute("computer") ComputerDTO computerDto, Model model) {
 		Map<String, String> errors = new HashMap<String, String>();
@@ -122,7 +122,7 @@ public class ComputersController {
 			return "addComputer";
 		}
 	}
-	
+
 	@GetMapping("/editComputer")
 	protected String displayEditComputer(@RequestParam(value = "computer") Integer idComputer, Model model) {
 		Computer computer = null;
