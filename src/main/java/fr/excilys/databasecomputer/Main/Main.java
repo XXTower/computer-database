@@ -3,23 +3,36 @@ package fr.excilys.databasecomputer.Main;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
+
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
+import fr.excilys.databasecomputer.configuration.CLIConfiguration;
 import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.pageable.Page;
 import fr.excilys.databasecomputer.service.CompanyService;
 import fr.excilys.databasecomputer.service.ComputerService;
 import fr.excilys.databasecomputer.validator.ValidatorCLI;
-
+@Component
 public class Main {
-	private static ComputerService computerService;
-	private static CompanyService companyService;
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
 	private static ValidatorCLI validator;
-	private static Page page;
+	@Autowired
+	private Page page;
+	private static ApplicationContext ctx;
 
 	public static void main(String[] args) {
+		ctx = new AnnotationConfigApplicationContext(CLIConfiguration.class);
+		Main main = ctx.getBean(Main.class);
 		Scanner sc = new Scanner(System.in);
 
 		String reponce = "";
@@ -29,25 +42,25 @@ public class Main {
 			reponce = sc.nextLine().trim();
 			switch (reponce) {
 			case "1":
-				afficherComputer(sc);
+				main.afficherComputer(sc);
 				break;
 			case "2":
-				afficherCompany(sc);
+				main.afficherCompany(sc);
 				break;
 			case "3":
-				trouverComputer(sc);
+				main.trouverComputer(sc);
 				break;
 			case "4":
-				ajouterComputer(sc);
+				main.ajouterComputer(sc);
 				break;
 			case "5":
-				majComputer(sc);
+				main.majComputer(sc);
 				break;
 			case "6":
-				supprimerComputer(sc);
+				main.supprimerComputer(sc);
 				break;
 			case "7":
-				deleteComputer(sc);
+				main.deleteComputer(sc);
 				break;
 			case "8":
 				System.out.print("Au revoir");
@@ -60,13 +73,11 @@ public class Main {
 		sc.close();
 	}
 
-	public static void afficherComputer(Scanner sc) {
-		page = Page.getInstance();
-		computerService = ComputerService.getInstance();
+	public void afficherComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
 		int reponse = 1;
 		int offset = 0;
-		int nbComputer = computerService.nbComputer();
+		long nbComputer = computerService.nbComputer();
 		int maxPage = page.nbPageMax(nbComputer);
 		do {
 			for (Computer computer : computerService.displayAllComputer(page.getLimite(), offset, "ASC")) {
@@ -89,13 +100,11 @@ public class Main {
 		} while (reponse != -1);
 	}
 
-	public static void afficherCompany(Scanner sc) {
-		page = Page.getInstance();
-		companyService = CompanyService.getInstance();
+	public void afficherCompany(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
 		int reponse = 1;
 		int offset = 0;
-		int nbCompany = companyService.nbCompany();
+		long nbCompany = companyService.nbCompany();
 		int maxPage = page.nbPageMax(nbCompany);
 		do {
 			for (Company company : companyService.displayAllCompany(page.getLimite(), offset)) {
@@ -129,10 +138,9 @@ public class Main {
 		System.out.println("8 - Quitter");
 	}
 
-	public static void ajouterComputer(Scanner sc) {
+	public  void ajouterComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
 		ComputerBuilder newComputer = new ComputerBuilder();
-		computerService = ComputerService.getInstance();
 
 		System.out.print("Nom (Obligatoire): ");
 		newComputer.name(validator.verificationEntreUserString(sc));
@@ -150,15 +158,15 @@ public class Main {
 		System.out.print("Nouveaux nom company(Optionnel): ");
 		newComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
 
-		if (computerService.addComputer(newComputer.build())) {
+		try {
+			computerService.addComputer(newComputer.build());
 			System.out.println("Ordinateur ajouter");
-		} else {
+		} catch (FailSaveComputer e) {
 			System.out.println("Ordinateur non ajouter");
 		}
 	}
 
-	public static void trouverComputer(Scanner sc) {
-		computerService = ComputerService.getInstance();
+	public void trouverComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
 
 		System.out.println("Entrez l'id de l'ordinateur souhaitez consulter");
@@ -172,9 +180,8 @@ public class Main {
 		}
 	}
 
-	public static void supprimerComputer(Scanner sc) {
+	public void supprimerComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
-		computerService = ComputerService.getInstance();
 
 		System.out.println("Entrez l'id de l'ordinateur souhaitez supprimer");
 
@@ -187,10 +194,9 @@ public class Main {
 		}
 	}
 
-	public static void majComputer(Scanner sc) {
+	public void majComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
 		ComputerBuilder updateComputer = new ComputerBuilder();
-		computerService = ComputerService.getInstance();
 
 		System.out.println("Entrez l'id de l'ordinateur souhaitez modifier");
 		int idComputer = validator.verificationEntreUserInt(sc);
@@ -220,9 +226,10 @@ public class Main {
 			System.out.print("Nouveaux nom company(Optionnel): ");
 			updateComputer.company(new CompanyBuilder().name(sc.nextLine()).build());
 
-			if (computerService.updateComputer(updateComputer.build())) {
+			try {
+				computerService.updateComputer(updateComputer.build());
 				System.out.println("Ordinateur modifier");
-			} else {
+			} catch (FailSaveComputer e) {
 				System.out.println("Ordinateur non modifier");
 			}
 		} catch (SQLExceptionComputerNotFound e) {
@@ -230,9 +237,7 @@ public class Main {
 		}
 	}
 
-	public static void deleteComputer(Scanner sc) {
-		computerService = ComputerService.getInstance();
-		companyService = CompanyService.getInstance();
+	public void deleteComputer(Scanner sc) {
 		System.out.println("Reinseingner le nom de la companie que vous voulez supprimer");
 		String companyName = sc.nextLine().trim();
 		System.out.println(companyName);

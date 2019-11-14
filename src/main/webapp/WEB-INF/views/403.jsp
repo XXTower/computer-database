@@ -1,5 +1,3 @@
-<%@ page pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,16 +16,16 @@
 	</header>
 
 	<section id="main">
-		<div class="container">	
+		<div class="container">
 			<div class="alert alert-danger">
-				Error 500: An error has occured!
+				Error 403: Access denied!
 				<br/>
-				<c:out value="${message}"/>
+				<!-- stacktrace -->
 			</div>
 		</div>
 	</section>
 
-<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+	<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/dashboard.js" />"></script>
 

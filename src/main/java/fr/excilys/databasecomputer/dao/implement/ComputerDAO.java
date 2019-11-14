@@ -1,244 +1,156 @@
 package fr.excilys.databasecomputer.dao.implement;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
-import fr.excilys.databasecomputer.dao.ConnextionDB;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Computer;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
-import fr.excilys.databasecomputer.mapper.ComputerMapper;
-import fr.excilys.databasecomputer.mapper.DateMapper;
 
+@Repository
 public class ComputerDAO {
-	private static final String FIND_ALL = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY computer.id";
-	private static final String FIND_ALL_LIMIT_OFFSET = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY "
-			+ "(CASE ? WHEN 'ASC' THEN computer.name END) ASC,(CASE ? WHEN 'DESC' THEN computer.name END) DESC "
-			+ "LIMIT ? OFFSET ?";
-	private static final String FIND_BY_ID = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = ? ORDER BY computer.id ";
-	private static final String UPDATE = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=(SELECT id FROM company WHERE name LIKE ?) WHERE id=?";
-	private static final String NB_COMPUTER = "SELECT COUNT(id) AS nbComputer FROM computer";
-	private static final String NB_COMPUTER_FIND_BY_NAME = "SELECT COUNT(computer.id) AS nbComputer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ? OR computer.name LIKE ?";
-	private static final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
-	private static final String INSERT_COMPUTER = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,(SELECT id FROM company WHERE name LIKE ?))";
-	private static final String DELETE_COMPUTER_NAME_COMPANY = "DELETE computer FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ?";
-	private static final String SEARCH_COMPUTER_COMPANY_BY_NAME = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company.id, company.name "
-			+ "FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE company.name LIKE ? OR computer.name LIKE ? ORDER BY "
-			+ "(CASE ? WHEN 'ASC' THEN computer.name END) ASC,(CASE ? WHEN 'DESC' THEN computer.name END) DESC "
-			+ "LIMIT ? OFFSET ?";
-	private Connection conn;
-	private static ComputerDAO instance;
-	private ComputerMapper computerMapper;
-	private ConnextionDB connectionDB;
 
-	private ComputerDAO() {
-		connectionDB = ConnextionDB.getInstance();
-	}
-
-	public static ComputerDAO getInstance() {
-		if (instance == null) {
-			instance = new ComputerDAO();
-		}
-		return instance;
-	}
+	@PersistenceContext
+	private EntityManager em;
 
 	public Computer find(int id) throws SQLExceptionComputerNotFound {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(FIND_BY_ID);) {
-			stm.setInt(1, id);
-			computerMapper = ComputerMapper.getInstance();
-			ResultSet result = stm.executeQuery();
-			if (result.next()) {
-				return	computerMapper.sqlToComputer(result);
-			} else {
-				throw new SQLExceptionComputerNotFound("Aucun ordinateur trouver a pour cette id");
-			}
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
+		Computer computer = null;
+		try {
+			CriteriaBuilder builder = em.getCriteriaBuilder();
+			CriteriaQuery<Computer> criteriaQuery = builder.createQuery(Computer.class);
+			Root<Computer> root = criteriaQuery.from(Computer.class);
+			criteriaQuery.select(root)
+			.where(builder.equal(root.get("id"), id));
+			TypedQuery<Computer> query = em.createQuery(criteriaQuery);
+			computer = query.getSingleResult();
+		} catch (NoResultException e) {
+			throw new SQLExceptionComputerNotFound("Aucun ordinateur trouver a pour cette id");
 		}
-		return null;
+		return computer;
 	}
 
-	public boolean update(Computer computer) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(UPDATE);) {
-			stm.setString(1, computer.getName());
-			stm.setDate(2, DateMapper.changeToDateSQL(computer.getIntroduced()));
-			stm.setDate(3, DateMapper.changeToDateSQL(computer.getDiscontinued()));
-			stm.setString(4, computer.getCompany().getName());
-			stm.setInt(5, computer.getId());
-			int result = stm.executeUpdate();
-			return result == 1;
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
+	@Transactional
+	public void update(Computer computer) throws FailSaveComputer {
+		try {
+			CriteriaBuilder builder = em.getCriteriaBuilder();
+			CriteriaUpdate<Computer> criteriaUpdate = builder.createCriteriaUpdate(Computer.class);
+			Root<Computer> root = criteriaUpdate.from(Computer.class);
+			criteriaUpdate.set("name", computer.getName()).set("introduced", computer.getIntroduced())
+			.set("discontinued", computer.getDiscontinued()).set("company", computer.getCompany());
+			criteriaUpdate.where(builder.equal(root.get("id"), computer.getId()));
+			Query update = em.createQuery(criteriaUpdate);
+			update.executeUpdate();
+		} catch (Exception e) {
+			throw new FailSaveComputer("Errors whith the save");
 		}
-		return false;
 	}
 
+	@Transactional
 	public boolean delete(int id) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPUTER);) {
-			stm.setInt(1, id);
-			int result = stm.executeUpdate();
-			return result != 0;
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return false;
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaDelete<Computer> criteriaDelete = builder.createCriteriaDelete(Computer.class);
+		Root<Computer> root = criteriaDelete.from(Computer.class);
+		criteriaDelete.where(builder.equal(root.get("id"), id));
+		Query computer = em.createQuery(criteriaDelete);
+		int result = computer.executeUpdate();
+		return result != 0;
 	}
 
-	public ArrayList<Computer> findAll() {
-		ArrayList<Computer> computers = new ArrayList<>();
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(FIND_ALL);) {
-			ResultSet result = stm.executeQuery();
-			computerMapper = ComputerMapper.getInstance();
-			while (result.next()) {
-				computers.add(computerMapper.sqlToComputer(result));
-			}
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return computers;
+	public List<Computer> findAll() {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Computer> criteriaQuery = builder.createQuery(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
+		criteriaQuery.select(root);
+		TypedQuery<Computer> computers = em.createQuery(criteriaQuery);
+		return computers.getResultList();
 	}
 
-	public boolean addComputer(Computer computer) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(INSERT_COMPUTER);) {
-			stm.setString(1, computer.getName());
-			stm.setDate(2, DateMapper.changeToDateSQL(computer.getIntroduced()));
-			stm.setDate(3, DateMapper.changeToDateSQL(computer.getDiscontinued()));
-			stm.setString(4, computer.getCompany().getName());
-			int result = stm.executeUpdate();
-			return result == 1;
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
+	@Transactional
+	public void addComputer(Computer computer) throws FailSaveComputer {
+		try {
+			em.persist(computer);
+		} catch (Exception e) {
+			throw new FailSaveComputer("Errors whith the save");
 		}
-		return false;
 	}
 
-	public int nbComputer() {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER);) {
-			ResultSet result = stm.executeQuery();
-			if (result.first()) {
-				return result.getInt("nbComputer");
-			}
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return 0;
+	public long nbComputer() {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
+		criteriaQuery.select(builder.countDistinct(root));
+		TypedQuery<Long> query = em.createQuery(criteriaQuery);
+		return query.getSingleResult();
 	}
 
-	public ArrayList<Computer> findAll(int limite, int offset, String order) {
-		ArrayList<Computer> computers = new ArrayList<>();
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(FIND_ALL_LIMIT_OFFSET);) {
-			stm.setString(1, order);
-			stm.setString(2, order);
-			stm.setInt(3, limite);
-			stm.setInt(4, offset);
-			ResultSet result = stm.executeQuery();
-			computerMapper = ComputerMapper.getInstance();
-			while (result.next()) {
-				computers.add(computerMapper.sqlToComputer(result));
-			}
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
+	public List<Computer> findAll(int limite, int offset, String order) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Computer> criteriaQuery = builder.createQuery(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
+		if (order.equals("ASC")) {
+			criteriaQuery.select(root).orderBy(builder.asc(root.get("name")));
+		} else {
+			criteriaQuery.select(root).orderBy(builder.desc(root.get("name")));
 		}
-		return computers;
+		TypedQuery<Computer> computers = em.createQuery(criteriaQuery).setFirstResult(offset).setMaxResults(limite);
+		return computers.getResultList();
 	}
 
+	@Transactional
 	public boolean deleteComputerByCompanyName(String companyName) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(DELETE_COMPUTER_NAME_COMPANY);) {
-			stm.setString(1, companyName);
-			int result = stm.executeUpdate();
-			return result != 0;
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return false;
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaDelete<Computer> criteriaDelete = builder.createCriteriaDelete(Computer.class);
+		Root<Computer> root = criteriaDelete.from(Computer.class);
+		Join<Computer, Company> company = root.join("company", JoinType.LEFT);
+		criteriaDelete.where(builder.like(company.get("name"), companyName));
+		Query computer = em.createQuery(criteriaDelete);
+		int result = computer.executeUpdate();
+		return result != 0;
 	}
 
-	public ArrayList<Computer> findComputerByName(String name, int limite, int offset, String order) {
-		ArrayList<Computer> computers = new ArrayList<>();
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(SEARCH_COMPUTER_COMPANY_BY_NAME);) {
-			stm.setString(1, "%" + name + "%");
-			stm.setString(2, "%" + name + "%");
-			stm.setString(3, order);
-			stm.setString(4, order);
-			stm.setInt(5, limite);
-			stm.setInt(6, offset);
-			ResultSet result = stm.executeQuery();
-			computerMapper = ComputerMapper.getInstance();
-			while (result.next()) {
-				computers.add(computerMapper.sqlToComputer(result));
-			}
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
+	public List<Computer> findComputerByName(String name, int limite, int offset, String order) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Computer> criteriaQuery = builder.createQuery(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
+		Join<Computer, Company> company = root.join("company", JoinType.LEFT);
+		Predicate nameComputer = builder.like(root.get("name"), "%" + name + "%");
+		Predicate nameCompany = builder.like(company.get("name"), "%" + name + "%");
+		criteriaQuery.select(root).where(builder.or(nameComputer, nameCompany));
+		if (order.equals("ASC")) {
+			criteriaQuery.orderBy(builder.asc(root.get("name")));
+		} else {
+			criteriaQuery.orderBy(builder.desc(root.get("name")));
 		}
-		return computers;
+		TypedQuery<Computer> computers = em.createQuery(criteriaQuery).setFirstResult(offset).setMaxResults(limite);
+		return computers.getResultList();
 	}
 
-	public int nbComputerFindByName(String name) {
-		this.conn = connectionDB.getConnection();
-		try (PreparedStatement stm = this.conn.prepareStatement(NB_COMPUTER_FIND_BY_NAME);) {
-			stm.setString(1, "%" + name + "%");
-			stm.setString(2, "%" + name + "%");
-			ResultSet result = stm.executeQuery();
-			if (result.first()) {
-				return result.getInt("nbComputer");
-			}
-		} catch (SQLException se) {
-			for (Throwable e : se) {
-				System.err.println("Problèmes rencontrés: " + e);
-			}
-		} finally {
-			this.conn = connectionDB.disconnectDB();
-		}
-		return 0;
+	public long nbComputerFindByName(String name) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
+		Join<Computer, Company> company = root.join("company", JoinType.LEFT);
+		Predicate nameComputer = builder.like(root.get("name"), "%" + name + "%");
+		Predicate nameCompany = builder.like(company.get("name"), "%" + name + "%");
+		criteriaQuery.select(builder.countDistinct(root)).where(builder.or(nameComputer, nameCompany));
+		TypedQuery<Long> query = em.createQuery(criteriaQuery);
+		return query.getSingleResult();
 	}
 }

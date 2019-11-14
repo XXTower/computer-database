@@ -1,35 +1,34 @@
 package fr.excilys.databasecomputer.service;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
 import fr.excilys.databasecomputer.entity.Computer;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 import fr.excilys.databasecomputer.exception.SQLExceptionComputerNotFound;
 
+@Service
 public class ComputerService {
-	private static ComputerService instance;
+
 	private ComputerDAO computerDAO;
 
-	private ComputerService() {
-		this.computerDAO = ComputerDAO.getInstance();
+	@Autowired
+	private ComputerService(ComputerDAO computerDAO) {
+		this.computerDAO = computerDAO;
 	}
 
-	public static ComputerService getInstance() {
-		if (instance == null) {
-			instance = new ComputerService();
-		}
-		return instance;
+	public void addComputer(Computer computer) throws FailSaveComputer  {
+		computerDAO.addComputer(computer);
 	}
 
-	public Boolean addComputer(Computer computer)  {
-		return computerDAO.addComputer(computer);
-	}
-
- 	public ArrayList<Computer> displayAllComputer()  {
+ 	public List<Computer> displayAllComputer()  {
 		return computerDAO.findAll();
 	}
 
- 	public ArrayList<Computer> displayAllComputer(int limite, int offset, String order)  {
+ 	public List<Computer> displayAllComputer(int limite, int offset, String order)  {
 		return computerDAO.findAll(limite, offset, order);
 	}
 
@@ -41,11 +40,11 @@ public class ComputerService {
 		return computerDAO.delete(idComputer);
 	}
 
-	public Boolean updateComputer(Computer computer)  {
-		return computerDAO.update(computer);
+	public void updateComputer(Computer computer) throws FailSaveComputer  {
+		computerDAO.update(computer);
 	}
 
-	public int nbComputer()  {
+	public long nbComputer()  {
 		return computerDAO.nbComputer();
 	}
 
@@ -53,11 +52,11 @@ public class ComputerService {
 		return computerDAO.deleteComputerByCompanyName(companyName);
 	}
 
-	public ArrayList<Computer> findComputerCompanyByName(String name, int limite, int offset, String order)  {
+	public List<Computer> findComputerCompanyByName(String name, int limite, int offset, String order)  {
 		return computerDAO.findComputerByName(name, limite, offset, order);
 	}
 
-	public int nbComputerCompanyFindByName(String name) {
+	public long nbComputerCompanyFindByName(String name) {
 		return computerDAO.nbComputerFindByName(name);
 	}
 }

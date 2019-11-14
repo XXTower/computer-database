@@ -1,14 +1,16 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+	<link href='<c:url value="/resources/css/bootstrap.min.css" />' rel="stylesheet" media="screen">
+<link href="<c:url value="/resources/css/font-awesome.css" />" rel="stylesheet" media="screen">
+<link href="<c:url value="/resources/css/main.css" />" rel="stylesheet" media="screen">
 </head>
 <style>
 .error{color: #900;}
@@ -16,7 +18,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+            <a class="navbar-brand" href="<c:url value="/computers"/>"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -27,52 +29,51 @@
 	            <div class="alert alert-danger">
 					<c:out value="${response}"/>
 					<br/>
-					<!-- stacktrace -->
 				</div>
 			</c:if>
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1>Add Computer</h1>
-                    <form action="addComputer" method="POST">
+                    <h1><spring:message code="addComputer.title"/></h1>
+                    <form:form action="addComputer" method="POST" modelAttribute="computer">
                         <fieldset>
                             <div class="form-group">
-                                <label for="computerName">Computer name</label>
-                                <input required type="text" class="form-control" name="computerName" id="computerName" placeholder="Computer name" value='<c:out value="${param.computerName}"/>'>
+                                <form:label for="computerName" path="name"><spring:message code="addComputer.computerName"/></form:label>
+                                <form:input required="required" path="name"  type="text" class="form-control" name="computerName" id="computerName" value='${computer.name}' placeholder="Computer name"/>
                             	<div class="error">${errors['computerName'] }</div>
                             </div>
                             <div class="form-group">
-                                <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date" <c:out value="${param.introduced}"/>>
+                                <form:label path="introduced" for="introduced"><spring:message code="addComputer.computerIntroDate"/></form:label>
+                                <form:input path="introduced" type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date" value='${computer.introduced }'/>
                             </div>
                             <div class="form-group">
-                                <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" name="discontinued" id="discontinued" placeholder="Discontinued date" <c:out value="${param.discontinued}"/>>
+                                <form:label path="discontinued" for="discontinued"><spring:message code="addComputer.computerDisDate"/></form:label>
+                                <form:input path="discontinued" type="date" class="form-control" name="discontinued" id="discontinued" placeholder="Discontinued date"  value='${computer.discontinued }'/>
                                 <div class="error">${errors['discontinued'] }</div>
                                 <div class="error" id="checkdate" style="display:none">The discontinued date must be before the introduced date  </div>
                             </div>
                             <div class="form-group">
-                                <label for="companyId">Company</label>
-                                <select class="form-control" name="company" id="company" >
-                                	<option value="">---</option>
+                                <form:label path="companyId" for="companyId"><spring:message code="addComputer.computerCompany"/></form:label>
+                                <form:select path="companyId" class="form-control" name="company" id="company" >
+                                	<form:option value="0">---</form:option>
                                 	<c:forEach var="company" items="${listCompany}">
-                                    	<option value="${company.name}"><c:out value="${company.name}" /></option>
+                                    	<form:option value="${company.id}"><c:out value="${company.name}" /></form:option>
                                     </c:forEach>
-                                </select>
+                                </form:select>
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary" id="validButton">
+                            <input type="submit" value="<spring:message code="addComputer.btnAdd"/>" class="btn btn-primary" id="validButton">
                             or
-                            <a href="dashboard" class="btn btn-default">Cancel</a>
+                            <a href="<c:url value="/computers"/>" class="btn btn-default"><spring:message code="addComputer.btnCancel"/></a>
                         </div>
-                    </form>
+                    </form:form>
                 </div>
             </div>
         </div>
     </section>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/addcomputer.js"></script>
+<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/js/addcomputer.js" />"></script>
 
 </html>

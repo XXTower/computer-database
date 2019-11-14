@@ -1,34 +1,32 @@
 package fr.excilys.databasecomputer.service;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fr.excilys.databasecomputer.dao.implement.CompanyDAO;
 import fr.excilys.databasecomputer.entity.Company;
 
+@Service
 public class CompanyService {
+
 	private CompanyDAO companyDAO;
-	private static CompanyService instance;
 
-	private CompanyService() {
-		this.companyDAO = CompanyDAO.getInstance();
+	@Autowired
+	private CompanyService(CompanyDAO companyDAO) {
+		this.companyDAO = companyDAO;
 	}
 
-	public static CompanyService getInstance() {
-		if (instance == null) {
-			instance = new CompanyService();
-		}
-		return instance;
-	}
-
-	public ArrayList<Company> displayAllCompany() {
+	public List<Company> displayAllCompany() {
 		return companyDAO.findAll();
 	}
 
-	public ArrayList<Company> displayAllCompany(int limite, int offset) {
+	public List<Company> displayAllCompany(int limite, int offset) {
 		return companyDAO.findAll(limite, offset);
 	}
 
-	public int nbCompany() {
+	public long nbCompany() {
 		return companyDAO.nbCompany();
 	}
 

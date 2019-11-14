@@ -5,27 +5,30 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.excilys.databasecomputer.dao.ConnextionDB;
+import fr.excilys.databasecomputer.configuration.CLIConfiguration;
 import fr.excilys.databasecomputer.dao.implement.CompanyDAO;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Company;
 import junit.framework.TestCase;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {CLIConfiguration.class})
 public class CompanyDaoTest extends TestCase {
-	ConnextionDB connextion;
+	@Autowired
 	CompanyDAO companyDAO;
 	
 	@Before
 	public void setUp() {
-		connextion = ConnextionDB.getInstance();
-//		connextion.testURL();
-		companyDAO = CompanyDAO.getInstance();
+
 	}
 	
 	@After
 	public void tearDown() {
-		connextion=null;
 		companyDAO = null;
 	}
 	
@@ -50,7 +53,7 @@ public class CompanyDaoTest extends TestCase {
 	
 	@Test
 	public final void testNbCompany() {
-		int number = companyDAO.nbCompany();
+		long number = companyDAO.nbCompany();
 		assertEquals(5, number);
 	}
 }

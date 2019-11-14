@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,21 +9,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href='<c:url value="/resources/css/bootstrap.min.css" />' rel="stylesheet" media="screen">
+<link href="<c:url value="/resources/css/font-awesome.css" />" rel="stylesheet" media="screen">
+<link href="<c:url value="/resources/css/main.css" />" rel="stylesheet" media="screen">
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+            <a class="navbar-brand" href="<c:url value="/computers"/>"> Application - Computer Database </a>
         </div>
     </header>
 
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                <c:out value="${nbcomputer}"></c:out> Computers found 
+                <c:out value="${nbcomputer}"></c:out> <spring:message code="dashboard.nbComputer"/>
             </h1>
             <c:if test="${not empty response}">
 	            <div class="alert alert-danger">
@@ -34,19 +35,19 @@
                 <div class="pull-left">
                     <form id="searchForm" method="GET" class="form-inline">
 
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" value="<c:out value="${search}"/>" />
-                        <input type="submit" id="searchsubmit" value="Filter by name"
+                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="<spring:message code="dashboard.searchbox" />" value="<c:out value="${search}"/>" />
+                        <input type="submit" id="searchsubmit" value="<spring:message code="dashboard.btnSearch" />"
                         class="btn btn-primary" />
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                    <a class="btn btn-success" id="addComputer" href="<c:url value="/computers/addComputer"/>"><spring:message code="dashboard.btajouter" /></a> 
+                    <a class="btn btn-default" id="editComputer" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
         </div>
 
-        <form id="deleteForm" action="#" method="POST">
+        <form id="deleteForm" method="POST" action='<c:url value="/computers/delete" />'>
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -66,25 +67,27 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
-                            <a href="dashboard?page=${actPage}&order=ASC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
+                            <spring:message code="dashboard.computerName" />
+                            <a href="computers?page=${actPage}&order=ASC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
                             	<i class="fa fa-chevron-down"></i>
                             </a>
-                            <a href="dashboard?page=${actPage}&order=DESC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
+                            <a href="computers?page=${actPage}&order=DESC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
                             	<i class="fa fa-chevron-up"></i>
                             </a>
                             
                         </th>
                         <th>
-                            Introduced date
+                        <spring:message code="dashboard.computerIntroDate" />
+                            
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            Discontinued date
+                        <spring:message code="dashboard.computerDisDate" />
+                            
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            Company
+                        	<spring:message code="dashboard.computerCompany" />
                         </th>
 
                     </tr>
@@ -97,7 +100,7 @@
                             <input type="checkbox" name="cb" class="cb" value='<c:out value="${computer.id}"/>'>
                         </td>
                         <td>
-                            <a href="editComputer?computer=${computer.id}" onclick=""><c:out value="${computer.name}"/></a>
+                            <a href="computers/editComputer?computer=${computer.id}" onclick=""><c:out value="${computer.name}"/></a>
                         </td>
                         <td><c:out value="${computer.introduced}"/></td>
                         <td><c:out value="${computer.discontinued}"/></td>
@@ -114,14 +117,14 @@
             <ul class="pagination">
 	        	<c:if test="${actPage+1>2}">
 		            <li class="page-item">
-		               	<a href="dashboard?page=${actPage-1}&limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Previous">
+		               	<a href="computers?page=${actPage-1}&limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Previous">
 		               	<span aria-hidden="true">&laquo;</span>
 		            	</a>
 		            </li>
 	            </c:if>
 	             
 	            <c:if test="${actPage > 1 }">
-	            	<li class="page-item"><a href="dashboard?limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="1"/></a></li>
+	            	<li class="page-item"><a href="computers?limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="1"/></a></li>
 	            </c:if>
 	              
 	            <c:if test="${actPage >4}">
@@ -129,33 +132,33 @@
 	            </c:if>
 	              
 	            <c:if test="${actPage-2 > 1 }">
-	            	<li class="page-item"><a href="dashboard?page=${actPage-2}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-2}"/></a></li>
+	            	<li class="page-item"><a href="computers?page=${actPage-2}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-2}"/></a></li>
 	            </c:if>
 	              
 	            <c:if test="${actPage-1 > 1 }">
-	            	<li class="page-item"><a href="dashboard?page=${actPage-1}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-1}"/></a></li>
+	            	<li class="page-item"><a href="computers?page=${actPage-1}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-1}"/></a></li>
 	            </c:if>
 	              
-	            <li class="page-item active"><a href="dashboard?page=${actPage}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage}"/></a></li>
+	            <li class="page-item active"><a href="computers?page=${actPage}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage}"/></a></li>
 	              
 	            <c:if test="${actPage+1 < nbPage }">
-	            	<li class="page-item"><a href="dashboard?page=${actPage+1}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+1}"/></a></li>
+	            	<li class="page-item"><a href="computers?page=${actPage+1}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+1}"/></a></li>
 	            </c:if>
 	              
 	            <c:if test="${actPage+2 < nbPage }">
-              	<li class="page-item"><a href="dashboard?page=${actPage+2}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+2}"/></a></li>
+              	<li class="page-item"><a href="computers?page=${actPage+2}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+2}"/></a></li>
 				</c:if>
 				<c:if test="${actPage+3 < nbPage}">
               		<li class="page-item"><a>...</a></li>
               	</c:if>
               	
               	<c:if test="${actPage < nbPage }">
-	            	<li class="page-item"><a href="dashboard?page=${nbPage}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${nbPage}"/></a></li>
+	            	<li class="page-item"><a href="computers?page=${nbPage}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${nbPage}"/></a></li>
 	            </c:if>
 
 				<c:if test="${actPage< nbPage }">
 		            <li class="page-item">
-		                <a href="dashboard?page=${actPage+1}&limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Next">
+		                <a href="computers?page=${actPage+1}&limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Next">
 		                    <span aria-hidden="true">&raquo;</span>
 		                </a>
 		            </li>
@@ -163,15 +166,15 @@
 	        </ul>
 		
 	        <div class="btn-group btn-group-sm pull-right" role="group" >
-	            <a type="submit" class="btn btn-default" href="dashboard?limite=10&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">10</a>
-	            <a type="submit" class="btn btn-default" href="dashboard?limite=50&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">50</a>
-	            <a type="submit" class="btn btn-default" href="dashboard?limite=100&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">100</a>
+	            <a type="submit" class="btn btn-default" href="computers?limite=10&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">10</a>
+	            <a type="submit" class="btn btn-default" href="computers?limite=50&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">50</a>
+	            <a type="submit" class="btn btn-default" href="computers?limite=100&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">100</a>
 	        </div>
 		</div>
     </footer>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/dashboard.js"></script>
+<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/js/dashboard.js" />"></script>
 
 </body>
 </html>
