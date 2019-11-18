@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
 import fr.excilys.databasecomputer.entity.Computer;
@@ -48,24 +49,25 @@ public class ComputersController {
 	}
 
 	@GetMapping
-	protected String getComputers(@RequestParam(value = "limite", defaultValue = "0") Integer limite,
+	protected ModelAndView getComputers(@RequestParam(value = "limite", defaultValue = "0") Integer limite,
 			@RequestParam(value = "page", defaultValue = "1") Integer actpage, @RequestParam(value = "order", defaultValue = "ASC") String order,
 			@RequestParam(value = "search", defaultValue = "") String search, Model model) {
+		ModelAndView mv = new ModelAndView();
 		if (limite == 10 || limite == 50 || limite == 100) {
 			page.setLimite(limite);
 		}
 
-		model.addAttribute("search", search);
+		mv.addObject("search", search);
 		long nbComputer = computerService.nbComputerCompanyFindByName(search);
-		model.addAttribute("listComputer", computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(actpage), order));
+		mv.addObject("listComputer", computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(actpage), order));
 
-		model.addAttribute("limite", page.getLimite());
-		model.addAttribute("nbPage", page.nbPageMax(nbComputer));
-		model.addAttribute("nbcomputer", nbComputer);
-		model.addAttribute("actPage", actpage);
-		model.addAttribute("order", order);
-
-		return "dashboard";
+		mv.addObject("limite", page.getLimite());
+		mv.addObject("nbPage", page.nbPageMax(nbComputer));
+		mv.addObject("nbcomputer", nbComputer);
+		mv.addObject("actPage", actpage);
+		mv.addObject("order", order);
+		mv.setViewName("dashboard");
+		return mv;
 	}
 
 	@PostMapping("/delete")

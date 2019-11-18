@@ -18,14 +18,23 @@
 		<mysql.version>8.0.18</mysql.version>
 		<mockito.version>3.1.0</mockito.version>
 		<h2.version>1.4.200</h2.version>
-		<springMVC.version>5.2.1.RELEASE</springMVC.version>
-		<springTest.version>5.2.1.RELEASE</springTest.version>
-		<springJDBC.version>5.2.1.RELEASE</springJDBC.version>
-		<springORM.version>5.2.1.RELEASE</springORM.version>
+		<spring.version>5.2.1.RELEASE</spring.version>
 		<selenium.version>3.141.59</selenium.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -47,19 +56,19 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${springJDBC.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${springORM.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${springMVC.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -140,7 +149,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${springTest.version}</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 
