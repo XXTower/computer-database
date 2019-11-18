@@ -1,21 +1,25 @@
 package fr.excilys.databasecomputer.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+
+import fr.excilys.databasecomputer.service.UsersService;
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurity extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	private UsersService userService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -27,7 +31,6 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
 	}
 
 	DigestAuthenticationFilter digestAuthenticationFilter() throws Exception {
-
 		DigestAuthenticationFilter digestAuthenticationFilter = new DigestAuthenticationFilter();
 		digestAuthenticationFilter.setUserDetailsService(userDetailsServiceBean());
 		digestAuthenticationFilter.setAuthenticationEntryPoint(digestEntryPoint());
@@ -35,13 +38,15 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	@Bean
-	public UserDetailsService userDetailsServiceBean() {
-		InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
-		inMemoryUserDetailsManager.createUser(User.withUsername("admin").password("admin1").roles("ADMIN").build());
-		return inMemoryUserDetailsManager;
+    @Bean
+    public UserDetailsService userDetailsServiceBean() {
+        return userService;
+    }
 
-	}
+	@Override
+    protected void configure(AuthenticationManagerBuilder registry) throws Exception {
+        registry.userDetailsService(userDetailsServiceBean());
+    }
 
 	@Bean
 	DigestAuthenticationEntryPoint digestEntryPoint() {
@@ -49,11 +54,6 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
 		bauth.setRealmName("Digest WF Realm");
 		bauth.setKey("MySecureKey");
 		return bauth;
-	}
-
-	@Bean
-	public AuthenticationManager customAuthenticationManager() throws Exception {
-		return authenticationManager();
 	}
 
 	@Bean
