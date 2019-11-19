@@ -75,56 +75,53 @@ public class Main {
 
 	public void afficherComputer(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
-		int reponse = 1;
 		int offset = 0;
-		long nbComputer = computerService.nbComputer();
-		int maxPage = page.nbPageMax(nbComputer);
+		page.setNbComputer(computerService.nbComputer());
+		page.nbPageMax();
 		do {
 			for (Computer computer : computerService.displayAllComputer(page.getLimite(), offset, "ASC")) {
 				System.out.println(computer.toString());
 			}
-			System.out.println("Page " + reponse + " sur " + maxPage);
+			System.out.println("Page " + page.getActPage() + " sur " + page.getMaxPage());
 			System.out.println("Sur quelle page voulez vous aller ?");
 			System.out.println("Pour quitter marqué -1");
 			do {
-				reponse = validator.verificationEntreUserInt(sc);
-				if (1 <= reponse && reponse <= maxPage) {
-					offset = page.calculeNewOffset(reponse);
+				page.setActPage(validator.verificationEntreUserInt(sc));
+				if (1 <= page.getActPage() && page.getActPage() <= page.getMaxPage()) {
+					offset = page.calculeNewOffset();
 					break;
-				} else if (reponse == -1) {
+				} else if (page.getActPage() == -1) {
 					break;
 				} else {
 					System.out.println("Hors porter");
 				}
 			} while (true);
-		} while (reponse != -1);
+		} while (page.getActPage() != -1);
 	}
 
 	public void afficherCompany(Scanner sc) {
 		validator = ValidatorCLI.getInstance();
-		int reponse = 1;
 		int offset = 0;
-		long nbCompany = companyService.nbCompany();
-		int maxPage = page.nbPageMax(nbCompany);
+		page.setNbComputer(computerService.nbComputer());
 		do {
 			for (Company company : companyService.displayAllCompany(page.getLimite(), offset)) {
 				System.out.println(company.toString());
 			}
-			System.out.println("Page " + reponse + " sur " + maxPage);
+			System.out.println("Page " + page.getActPage() + " sur " + page.getMaxPage());
 			System.out.println("Sur quelle page voulez vous aller ?");
 			System.out.println("Pour quitter marqué -1");
 			do {
-				reponse = validator.verificationEntreUserInt(sc);
-				if (1 <= reponse && reponse <= maxPage) {
-					offset = page.calculeNewOffset(reponse);
+				page.setActPage(validator.verificationEntreUserInt(sc));
+				if (1 <= page.getActPage() && page.getActPage() <= page.getMaxPage()) {
+					offset = page.calculeNewOffset();
 					break;
-				} else if (reponse == -1) {
+				} else if (page.getActPage() == -1) {
 					break;
 				} else {
 					System.out.println("Hors range");
 				}
 			} while (true);
-		} while (reponse != -1);
+		} while (page.getActPage() != -1);
 	}
 
 	public static void afficherMenu() {

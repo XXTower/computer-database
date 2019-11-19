@@ -23,7 +23,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                <c:out value="${nbcomputer}"></c:out> <spring:message code="dashboard.nbComputer"/>
+                <c:out value="${page.nbComputer}"></c:out> <spring:message code="dashboard.nbComputer"/>
             </h1>
             <c:if test="${not empty response}">
 	            <div class="alert alert-danger">
@@ -68,10 +68,10 @@
                         </th>
                         <th>
                             <spring:message code="dashboard.computerName" />
-                            <a href="computers?page=${actPage}&order=ASC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
+                            <a href="computers?actPage=${page.actPage}&order=ASC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
                             	<i class="fa fa-chevron-down"></i>
                             </a>
-                            <a href="computers?page=${actPage}&order=DESC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
+                            <a href="computers?actPage=${page.actPage}&order=DESC<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>">
                             	<i class="fa fa-chevron-up"></i>
                             </a>
                             
@@ -115,50 +115,50 @@
     <footer class="navbar-fixed-bottom">
         <div class="container text-center">
             <ul class="pagination">
-	        	<c:if test="${actPage+1>2}">
+	        	<c:if test="${page.actPage+1>2}">
 		            <li class="page-item">
-		               	<a href="computers?page=${actPage-1}&limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Previous">
+		               	<a href="computers?actPage=${page.actPage-1}&limite=${page.limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Previous">
 		               	<span aria-hidden="true">&laquo;</span>
 		            	</a>
 		            </li>
 	            </c:if>
 	             
-	            <c:if test="${actPage > 1 }">
-	            	<li class="page-item"><a href="computers?limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="1"/></a></li>
+	            <c:if test="${page.actPage > 1 }">
+	            	<li class="page-item"><a href="computers?limite=${page.limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="1"/></a></li>
 	            </c:if>
 	              
-	            <c:if test="${actPage >4}">
+	            <c:if test="${page.actPage >4}">
 	            	<li class="page-item"><a>...</a></li>
 	            </c:if>
 	              
-	            <c:if test="${actPage-2 > 1 }">
-	            	<li class="page-item"><a href="computers?page=${actPage-2}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-2}"/></a></li>
+	            <c:if test="${page.actPage-2 > 1 }">
+	            	<li class="page-item"><a href="computers?actPage=${page.actPage-2}&order=<c:out value="${order}"/>&limite=${page.limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${page.actPage-2}"/></a></li>
 	            </c:if>
 	              
-	            <c:if test="${actPage-1 > 1 }">
-	            	<li class="page-item"><a href="computers?page=${actPage-1}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage-1}"/></a></li>
+	            <c:if test="${page.actPage-1 > 1 }">
+	            	<li class="page-item"><a href="computers?actPage=${page.actPage-1}&order=<c:out value="${order}"/>&limite=${page.limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${page.actPage-1}"/></a></li>
 	            </c:if>
 	              
-	            <li class="page-item active"><a href="computers?page=${actPage}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage}"/></a></li>
+	            <li class="page-item active"><a href="computers?actPage=${page.actPage}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${page.actPage}"/></a></li>
 	              
-	            <c:if test="${actPage+1 < nbPage }">
-	            	<li class="page-item"><a href="computers?page=${actPage+1}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+1}"/></a></li>
+	            <c:if test="${page.actPage+1 < page.maxPage }">
+	            	<li class="page-item"><a href="computers?actPage=${page.actPage+1}&order=<c:out value="${order}"/>&limite=${page.limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${page.actPage+1}"/></a></li>
 	            </c:if>
 	              
-	            <c:if test="${actPage+2 < nbPage }">
-              	<li class="page-item"><a href="computers?page=${actPage+2}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${actPage+2}"/></a></li>
+	            <c:if test="${page.actPage+2 < page.maxPage }">
+              	<li class="page-item"><a href="computers?actPage=${page.actPage+2}&order=<c:out value="${order}"/>&limite=${page.limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${page.actPage+2}"/></a></li>
 				</c:if>
-				<c:if test="${actPage+3 < nbPage}">
+				<c:if test="${page.actPage+3 < page.maxPage}">
               		<li class="page-item"><a>...</a></li>
               	</c:if>
               	
-              	<c:if test="${actPage < nbPage }">
-	            	<li class="page-item"><a href="computers?page=${nbPage}&order=<c:out value="${order}"/>&limite=${limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${nbPage}"/></a></li>
+              	<c:if test="${page.actPage < page.maxPage }">
+	            	<li class="page-item"><a href="computers?actPage=${page.maxPage}&order=<c:out value="${order}"/>&limite=${page.limite}<c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>"><c:out value="${page.maxPage}"/></a></li>
 	            </c:if>
 
-				<c:if test="${actPage< nbPage }">
+				<c:if test="${page.actPage < maxPage }">
 		            <li class="page-item">
-		                <a href="computers?page=${actPage+1}&limite=${limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Next">
+		                <a href="computers?page=${page.actPage+1}&limite=${page.limite}&order=<c:out value="${order}"/><c:if test="${not empty search}">&search=<c:out value="${search}"/></c:if>" aria-label="Next">
 		                    <span aria-hidden="true">&raquo;</span>
 		                </a>
 		            </li>

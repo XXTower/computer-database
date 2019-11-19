@@ -1,21 +1,23 @@
 package fr.excilys.databasecomputer.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
+import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
@@ -28,7 +30,7 @@ import fr.excilys.databasecomputer.service.CompanyService;
 import fr.excilys.databasecomputer.service.ComputerService;
 import fr.excilys.databasecomputer.validator.Validator;
 
-@Controller
+@RestController
 @RequestMapping(value = "/computers")
 public class ComputersController {
 
@@ -36,7 +38,6 @@ public class ComputersController {
 	private CompanyService companyService;
 	private ComputerMapper computerMapper;
 	private Validator validator;
-	private Page page;
 
 	@Autowired
 	public ComputersController(ComputerService computerService, CompanyService companyService,
@@ -45,26 +46,18 @@ public class ComputersController {
 		this.companyService = companyService;
 		this.computerMapper = computerMapper;
 		this.validator = validator;
-		this.page = page;
 	}
 
 	@GetMapping
-	protected ModelAndView getComputers(@RequestParam(value = "limite", defaultValue = "0") Integer limite,
-			@RequestParam(value = "page", defaultValue = "1") Integer actpage, @RequestParam(value = "order", defaultValue = "ASC") String order,
+	protected ModelAndView getComputers(Page page, @RequestParam(value = "order", defaultValue = "ASC") String order,
 			@RequestParam(value = "search", defaultValue = "") String search, Model model) {
 		ModelAndView mv = new ModelAndView();
-		if (limite == 10 || limite == 50 || limite == 100) {
-			page.setLimite(limite);
-		}
 
 		mv.addObject("search", search);
-		long nbComputer = computerService.nbComputerCompanyFindByName(search);
-		mv.addObject("listComputer", computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(actpage), order));
+		page.setNbComputer(computerService.nbComputerCompanyFindByName(search));
+		mv.addObject("listComputer", computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(), order));
 
-		mv.addObject("limite", page.getLimite());
-		mv.addObject("nbPage", page.nbPageMax(nbComputer));
-		mv.addObject("nbcomputer", nbComputer);
-		mv.addObject("actPage", actpage);
+		mv.addObject("page", page);
 		mv.addObject("order", order);
 		mv.setViewName("dashboard");
 		return mv;
@@ -85,10 +78,10 @@ public class ComputersController {
 	}
 
 	@GetMapping("/addComputer")
-	public String displayAddComputer(Model model) {
+	public List<Company> displayAddComputer(Model model) {
 		model.addAttribute("listCompany", companyService.displayAllCompany());
 		model.addAttribute("computer", new ComputerDTO());
-		return "addComputer";
+		return companyService.displayAllCompany();
 	}
 
 	@PostMapping("/addComputer")
