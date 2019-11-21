@@ -8,8 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "computer")
@@ -18,12 +20,13 @@ public class Computer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(name = "name")
+	@NotNull
 	private String name;
 	@Column(name = "introduced")
 	private LocalDate introduced;
 	@Column(name = "discontinued")
 	private LocalDate discontinued;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
 
