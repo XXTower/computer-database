@@ -4,20 +4,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.excilys.databasecomputer.dtos.CompanyDTO;
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
-import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
@@ -49,8 +50,8 @@ public class ComputersController {
 	}
 
 	@GetMapping
-	protected ModelAndView getComputers(Page page, @RequestParam(value = "order", defaultValue = "ASC") String order,
-			@RequestParam(value = "search", defaultValue = "") String search, Model model) {
+	protected List<ComputerDTO> getComputers(Page page, @RequestParam(value = "order", defaultValue = "ASC") String order,
+			@RequestParam(value = "search", defaultValue = "") String search) {
 		ModelAndView mv = new ModelAndView();
 
 		mv.addObject("search", search);
@@ -58,19 +59,14 @@ public class ComputersController {
 		mv.addObject("listComputer", computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(), order));
 
 		mv.addObject("page", page);
-		mv.addObject("order", order);
-		mv.setViewName("dashboard");
-		return mv;
+		return computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(), order);
 	}
 
-	@PostMapping("/delete")
-	protected String deleteComputer(HttpServletRequest request) {
-		String deletecomputer = request.getParameter("selection");
-		String[] listComputer = deletecomputer.split(",");
-		for (String id : listComputer) {
-			int idComputer = Integer.parseInt(id);
+	@DeleteMapping("/delete")
+	protected String deleteComputer(@RequestBody List<Integer> listComputer) {
+		for (Integer idComputer : listComputer) {
 			if (!computerService.deleteComputer(idComputer)) {
-				request.setAttribute("response", "Errors whith the delete");
+//				request.setAttribute("response", "Errors whith the delete");
 				return "redirect:/computers";
 			}
 		}
@@ -78,18 +74,16 @@ public class ComputersController {
 	}
 
 	@GetMapping("/addComputer")
-	public List<Company> displayAddComputer(Model model) {
-		model.addAttribute("listCompany", companyService.displayAllCompany());
-		model.addAttribute("computer", new ComputerDTO());
+	public List<CompanyDTO> displayAddComputer() {
 		return companyService.displayAllCompany();
 	}
 
 	@PostMapping("/addComputer")
-	public String addcomputer(@ModelAttribute("computer") ComputerDTO computerDto, Model model) {
+	public String addcomputer(@RequestBody ComputerDTO computerDto, Model model) {
 		Map<String, String> errors = new HashMap<String, String>();
 		Computer computer = null;
 		try {
-			computer = computerMapper.computerDtoToComputer(computerDto);
+			computer = computerMapper.ToComputer(computerDto);
 			validator.validationComputer(computer);
 		} catch (NameCheckException e) {
 				errors.put("computerName", e.getMessage());
@@ -118,26 +112,29 @@ public class ComputersController {
 		}
 	}
 
-	@GetMapping("/editComputer")
-	protected String displayEditComputer(@RequestParam(value = "computer") Integer idComputer, Model model) {
+	@GetMapping("/editComputer/{id}")
+	protected ComputerDTO displayEditComputer(@PathVariable Integer id, Model model) {
+		ModelAndView mv = new ModelAndView();
 		Computer computer = null;
 		try {
-			computer = computerService.displayOneComputeur(idComputer);
+			computer = computerService.displayOneComputeur(id);
 		} catch (SQLExceptionComputerNotFound e) {
-			model.addAttribute("message", e.getMessage());
-			return "500";
+			mv.addObject("message", e.getMessage());
+			mv.setViewName("500");
+//			return mv;
 		}
-		model.addAttribute("computer", computerMapper.computerToComputerDto(computer));
-		model.addAttribute("listCompany", companyService.displayAllCompany());
-		return "editComputer";
+		mv.addObject("computer", computerMapper.ToComputerDto(computer));
+		mv.addObject("listCompany", companyService.displayAllCompany());
+		mv.setViewName("editComputer");
+		return computerMapper.ToComputerDto(computer);
 	}
 
-	@PostMapping("/editComputer")
-	protected String editComputer(@ModelAttribute("computer") ComputerDTO computerDto, Model model) {
+	@PutMapping("/editComputer")
+	protected void editComputer(@RequestBody ComputerDTO computerDto) {
 		Map<String, String> errors = new HashMap<String, String>();
 		Computer computer = null;
 		try {
-			computer = computerMapper.computerDtoToComputer(computerDto);
+			computer = computerMapper.ToComputer(computerDto);
 			validator.validationComputer(computer);
 		} catch (NameCheckException e) {
 			errors.put("computerName", e.getMessage());
@@ -151,16 +148,15 @@ public class ComputersController {
 		if (errors.isEmpty()) {
 			try {
 				computerService.updateComputer(computer);
-				return "redirect:/computers";
+				
 			} catch (FailSaveComputer e) {
-				model.addAttribute("listCompany", companyService.displayAllCompany());
-				model.addAttribute("response", e);
-				return "editComputer";
+//				model.addAttribute("listCompany", companyService.displayAllCompany());
+//				model.addAttribute("response", e);
+				
 			}
 		} else {
-			model.addAttribute("listCompany", companyService.displayAllCompany());
-			model.addAttribute("errors", errors);
-			return "editComputer";
+//			model.addAttribute("listCompany", companyService.displayAllCompany());
+//			model.addAttribute("errors", errors);
 		}
 	}
 }
