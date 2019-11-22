@@ -20,7 +20,7 @@ public class ComputerMapper {
 		this.companyMapper = companyMapper;
 	}
 
-	public Computer ToComputer(ComputerDTO computerDto) throws DateFormatExeption {
+	public Computer toComputer(ComputerDTO computerDto) throws DateFormatExeption {
 		ComputerBuilder computer = new ComputerBuilder();
 		try {
 			computer.id(computerDto.getId()).name(computerDto.getName())
@@ -36,7 +36,7 @@ public class ComputerMapper {
 		return computer.build();
 	}
 
-	public ComputerDTO ToComputerDto(Computer computer) {
+	public ComputerDTO toComputerDto(Computer computer) {
 		ComputerDTO computerDto = new ComputerDTO();
 		computerDto.setId(computer.getId());
 		computerDto.setName(computer.getName());

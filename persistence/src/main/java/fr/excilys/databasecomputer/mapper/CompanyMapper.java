@@ -10,6 +10,9 @@ import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 public class CompanyMapper {
 
 	public CompanyDTO toCompanyDTO(Company company) {
+		if (company == null) {
+			return null;
+		}
 		CompanyDTO companyDTO = new CompanyDTO();
 		companyDTO.setId(company.getId());
 		companyDTO.setName(company.getName());
