@@ -14,13 +14,13 @@ import fr.excilys.databasecomputer.service.CompanyService;
 public class CompanysController {
 
 	private CompanyService companyService;
-	
+
 	public CompanysController(CompanyService companyService) {
 		this.companyService = companyService;
 	}
-	
+
 	@GetMapping
-	public List<CompanyDTO> getAll(){
+	public List<CompanyDTO> getAll() {
 		return companyService.displayAllCompany();
 	}
 }

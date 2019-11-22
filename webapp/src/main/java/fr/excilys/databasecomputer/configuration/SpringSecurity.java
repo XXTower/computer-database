@@ -20,7 +20,7 @@ import fr.excilys.databasecomputer.service.UsersService;
 public class SpringSecurity extends WebSecurityConfigurerAdapter {
 
 	private UsersService userService;
-	
+
 	@Autowired
 	SpringSecurity(UsersService userService) {
 		this.userService = userService;

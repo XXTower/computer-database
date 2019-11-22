@@ -49,8 +49,6 @@ public class ComputersController {
 			@RequestParam(value = "search", defaultValue = "") String search) {
 
 //		page.setNbComputer(computerService.nbComputerCompanyFindByName(search));
-		
-
 		return computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(), order);
 	}
 
@@ -100,7 +98,7 @@ public class ComputersController {
 
 		return ResponseEntity.ok(computerMapper.toComputerDto(computer));
 	}
-	
+
 	@DeleteMapping("/{id}")
 	protected void deleteComputerBiId(@PathVariable Integer id) {
 		computerService.deleteComputer(id);
