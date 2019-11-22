@@ -11,18 +11,18 @@ public class Page {
 
 	private Page() { }
 
-	public int getMaxPage() {
-		return maxPage;
-	}
-	
-	public long getNbComputer() {
-		return nbComputer;
-	}
+//	public int getMaxPage() {
+//		return maxPage;
+//	}
 
-	public void setNbComputer(long l) {
-		this.nbComputer = l;
-		nbPageMax();
-	}
+//	public long getNbComputer() {
+//		return nbComputer;
+//	}
+
+//	public void setNbComputer(long l) {
+//		this.nbComputer = l;
+//		nbPageMax();
+//	}
 
 	public int getActPage() {
 		return actPage;
@@ -40,9 +40,9 @@ public class Page {
 		this.limite = limite;
 	}
 
-	public void nbPageMax() {
-		maxPage = (int) Math.ceil(((double) nbComputer / (double) limite));
-	}
+//	public void nbPageMax() {
+//		maxPage = (int) Math.ceil(((double) nbComputer / (double) limite));
+//	}
 
 	public int calculeNewOffset() {
 		return actPage * limite - limite;
