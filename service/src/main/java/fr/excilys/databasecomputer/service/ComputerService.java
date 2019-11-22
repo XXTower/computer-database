@@ -57,7 +57,7 @@ public class ComputerService {
 
 	public List<ComputerDTO> findComputerCompanyByName(String name, int limite, int offset, String order) {
 		return computerDAO.findComputerByName(name, limite, offset, order).stream()
-				.map(computer -> computerMappeur.ToComputerDto(computer)).collect(Collectors.toList());
+				.map(computer -> computerMappeur.toComputerDto(computer)).collect(Collectors.toList());
 	}
 
 	public long nbComputerCompanyFindByName(String name) {
