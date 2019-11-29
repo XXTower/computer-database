@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,4 +40,15 @@ public class CompanysController {
 			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
 		}
 	}
+	
+	@PutMapping
+	public ResponseEntity<String> updateCompany(@RequestBody CompanyDTO companyDTO) {
+		try {
+			companyService.update(companyDTO);
+			return ResponseEntity.ok("Ordinateur modifié");
+		} catch (FailSaveComputer e) {
+			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+		}
+	}
+
 }

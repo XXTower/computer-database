@@ -43,6 +43,10 @@ public class CompanyService {
 	}
 	
 	public void addCompany(String name) throws FailSaveComputer {
-		companyDAO.addComputer(new CompanyBuilder().name(name).build());
+		companyDAO.addCompany(new CompanyBuilder().name(name).build());
+	}
+	
+	public void update(CompanyDTO companyDTO) throws FailSaveComputer {
+		companyDAO.update(companyMapper.toCompany(companyDTO));
 	}
 }
