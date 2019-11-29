@@ -45,11 +45,10 @@ public class ComputersController {
 	}
 
 	@GetMapping
-	protected PageDTO getComputers(Page page,
-			@RequestParam(value = "order", defaultValue = "ASC") String order,
+	protected PageDTO getComputers(Page page, @RequestParam(value = "order", defaultValue = "ASC") String order,
 			@RequestParam(value = "search", defaultValue = "") String search) {
 
-		return new PageDTO( computerService.nbComputerCompanyFindByName(search), 
+		return new PageDTO(computerService.nbComputerCompanyFindByName(search),
 				computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(), order));
 	}
 
@@ -127,7 +126,6 @@ public class ComputersController {
 				return ResponseEntity.ok("Ordinateur modifié");
 			} catch (FailSaveComputer e) {
 				return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
-
 			}
 		}
 		return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();

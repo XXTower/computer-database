@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,9 +29,9 @@ public class CompanysController {
 	public List<CompanyDTO> getAll() {
 		return companyService.displayAllCompany();
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<String> createCompany(@RequestBody String name){
+	public ResponseEntity<String> createCompany(@RequestBody String name) {
 		try {
 			companyService.addCompany(name);
 			return ResponseEntity.ok("Ordinateur modifié");
@@ -40,7 +39,7 @@ public class CompanysController {
 			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
 		}
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<String> updateCompany(@RequestBody CompanyDTO companyDTO) {
 		try {

@@ -61,7 +61,7 @@ public class CompanyDAO {
 		int result = computer.executeUpdate();
 		return result != 0;
 	}
-	
+
 	@Transactional
 	public void addCompany(Company company) throws FailSaveComputer {
 		try {
@@ -70,7 +70,7 @@ public class CompanyDAO {
 			throw new FailSaveComputer("Errors whith the save");
 		}
 	}
-	
+
 	@Transactional
 	public void update(Company company) throws FailSaveComputer {
 		try {

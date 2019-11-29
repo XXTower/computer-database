@@ -4,31 +4,31 @@ import java.util.List;
 
 public class PageDTO {
 
-	private long nb_computer;
-	private List<ComputerDTO> list_computer;
+	private long nbComputer;
+	private List<ComputerDTO> listComputer;
 
 	public PageDTO() {	}
 
-	public PageDTO(long nb_computer, List<ComputerDTO> list_computer) {
+	public PageDTO(long nbComputer, List<ComputerDTO> listComputer) {
 		super();
-		this.nb_computer = nb_computer;
-		this.list_computer = list_computer;
+		this.nbComputer = nbComputer;
+		this.listComputer = listComputer;
 	}
 
-	public long getNb_computer() {
-		return nb_computer;
+	public long getNbComputer() {
+		return nbComputer;
 	}
 
-	public void setNb_computer(long nb_computer) {
-		this.nb_computer = nb_computer;
+	public void setNbComputer(long nbComputer) {
+		this.nbComputer = nbComputer;
 	}
 
-	public List<ComputerDTO> getList_computer() {
-		return list_computer;
+	public List<ComputerDTO> getListComputer() {
+		return listComputer;
 	}
 
-	public void setList_computer(List<ComputerDTO> list_computer) {
-		this.list_computer = list_computer;
+	public void setListComputer(List<ComputerDTO> listComputer) {
+		this.listComputer = listComputer;
 	}
 
 }

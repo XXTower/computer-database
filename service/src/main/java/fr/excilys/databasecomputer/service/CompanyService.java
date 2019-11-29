@@ -41,11 +41,11 @@ public class CompanyService {
 	public boolean deleteCompany(String companyName) {
 		return companyDAO.deleteCompany(companyName);
 	}
-	
+
 	public void addCompany(String name) throws FailSaveComputer {
 		companyDAO.addCompany(new CompanyBuilder().name(name).build());
 	}
-	
+
 	public void update(CompanyDTO companyDTO) throws FailSaveComputer {
 		companyDAO.update(companyMapper.toCompany(companyDTO));
 	}
