@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,14 +19,18 @@ import fr.excilys.databasecomputer.service.UsersService;
 @EnableWebSecurity
 public class SpringSecurity extends WebSecurityConfigurerAdapter {
 
-	@Autowired
 	private UsersService userService;
+
+	@Autowired
+	SpringSecurity(UsersService userService) {
+		this.userService = userService;
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.addFilter(digestAuthenticationFilter()) // register digest entry point
-				.exceptionHandling().authenticationEntryPoint(digestEntryPoint())
-				.and().authorizeRequests().anyRequest()
+		http.csrf().ignoringAntMatchers("/**").and().addFilter(digestAuthenticationFilter()) // register digest entry
+																								// point
+				.exceptionHandling().authenticationEntryPoint(digestEntryPoint()).and().authorizeRequests().anyRequest()
 				.authenticated();
 
 	}
@@ -38,15 +43,15 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-    @Bean
-    public UserDetailsService userDetailsServiceBean() {
-        return userService;
-    }
+	@Bean
+	public UserDetailsService userDetailsServiceBean() {
+		return userService;
+	}
 
 	@Override
-    protected void configure(AuthenticationManagerBuilder registry) throws Exception {
-        registry.userDetailsService(userDetailsServiceBean());
-    }
+	protected void configure(AuthenticationManagerBuilder registry) throws Exception {
+		registry.userDetailsService(userDetailsServiceBean());
+	}
 
 	@Bean
 	DigestAuthenticationEntryPoint digestEntryPoint() {
@@ -54,6 +59,12 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
 		bauth.setRealmName("Digest WF Realm");
 		bauth.setKey("MySecureKey");
 		return bauth;
+	}
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
+				"/configuration/security", "/swagger-ui.html", "/webjars/**");
 	}
 
 	@Bean

@@ -6,7 +6,6 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
-import fr.excilys.databasecomputer.convertiseur.DateMapper;
 
 public class ValidatorCLI {
 	private static ValidatorCLI instance;
@@ -47,7 +46,7 @@ public class ValidatorCLI {
 		return name;
 	}
 
-	public LocalDate verificationEntreUserDate(Scanner scComputer) {
+	public String verificationEntreUserDate(Scanner scComputer) {
 		String date;
 		boolean verifRegex;
 		date = scComputer.nextLine().trim();
@@ -61,7 +60,7 @@ public class ValidatorCLI {
 			System.out.println("Veillez recommencer, vous n'avez pas rentrer une date correcte");
 			date = scComputer.nextLine().trim();
 		}
-		return DateMapper.changeToLocalDate(date);
+		return date;
 	}
 
 	public void verificationDateIntervale(ComputerBuilder updateComputer, LocalDate discontinuedDate, LocalDate dateinterruption) {

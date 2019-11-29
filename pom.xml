@@ -14,25 +14,42 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<junit.version>4.12</junit.version>
-		<hikari.version>3.4.1</hikari.version>
 		<mysql.version>8.0.18</mysql.version>
 		<mockito.version>3.1.0</mockito.version>
 		<h2.version>1.4.200</h2.version>
 		<spring.version>5.2.1.RELEASE</spring.version>
+		<springData.version>2.2.1.RELEASE</springData.version>
 		<selenium.version>3.141.59</selenium.version>
+		<apache.taglib.version>1.2.5</apache.taglib.version>
+		<jackson.version>2.10.1</jackson.version>
+		<swagger.version>2.9.2</swagger.version>
+		<commons-lang3.version>3.8.1</commons-lang3.version>
 	</properties>
 
 	<dependencies>
+
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>${spring.version}</version>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-			<version>${spring.version}</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
 
 		<dependency>
@@ -44,13 +61,25 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>2.2.1.RELEASE</version>
+			<version>${springData.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.0.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -72,12 +101,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>${hikari.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.25</version>
@@ -86,37 +109,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.taglibs</groupId>
-			<artifactId>taglibs-standard-spec</artifactId>
-			<version>1.2.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.taglibs</groupId>
-			<artifactId>taglibs-standard-impl</artifactId>
-			<version>1.2.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.1</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
 		</dependency>
 
 		<dependency>

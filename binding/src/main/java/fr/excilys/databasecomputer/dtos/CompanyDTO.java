@@ -1,5 +1,7 @@
 package fr.excilys.databasecomputer.dtos;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class CompanyDTO {
 	private int id;
 	private String name;
@@ -20,4 +22,8 @@ public class CompanyDTO {
 		this.name = name;
 	}
 
+	@Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }

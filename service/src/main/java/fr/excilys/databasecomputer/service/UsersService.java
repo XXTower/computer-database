@@ -1,6 +1,5 @@
 package fr.excilys.databasecomputer.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,8 +15,7 @@ public class UsersService implements UserDetailsService {
 
 	private UsersDAO userDAO;
 
-	@Autowired
-	private UsersService(UsersDAO userDAO) {
+	public UsersService(UsersDAO userDAO) {
 		this.userDAO = userDAO;
 	}
 
@@ -29,9 +27,9 @@ public class UsersService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Users user = userDAO.findUser(username);
 		if (user == null) {
-            throw new UsernameNotFoundException("UserName " + username + " not found");
-        } else {
-            return User.withUsername(user.getLogin()).password(user.getPassword()).roles("ADMIN").build();
-        }
+			throw new UsernameNotFoundException("UserName " + username + " not found");
+		} else {
+			return User.withUsername(user.getLogin()).password(user.getPassword()).roles("ADMIN").build();
+		}
 	}
 }

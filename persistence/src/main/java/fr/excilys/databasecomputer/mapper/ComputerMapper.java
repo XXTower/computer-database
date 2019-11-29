@@ -1,31 +1,34 @@
 package fr.excilys.databasecomputer.mapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
-import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.entity.Computer.ComputerBuilder;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 
 @Component
-public class ComputerMapper implements RowMapper<Computer> {
+public class ComputerMapper {
 
-	public Computer computerDtoToComputer(ComputerDTO computerDto) throws DateFormatExeption {
+	private CompanyMapper companyMapper;
+
+	public ComputerMapper(CompanyMapper companyMapper) {
+		this.companyMapper = companyMapper;
+	}
+
+	public Computer toComputer(ComputerDTO computerDto) throws DateFormatExeption {
 		ComputerBuilder computer = new ComputerBuilder();
 		try {
-			computer.id(computerDto.getId())
-			.name(computerDto.getName())
-			.introduced(computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getIntroduced()) : null)
-			.discontinued(computerDto.getDiscontinued() != "" ? LocalDate.parse(computerDto.getDiscontinued()) : null)
-			.company(computerDto.getCompanyId() == 0 ? null : new CompanyBuilder().id(computerDto.getCompanyId()).build());
+			computer.id(computerDto.getId()).name(computerDto.getName())
+					.introduced(computerDto.getIntroduced() != null ? LocalDate.parse(computerDto.getIntroduced()) : null)
+					.discontinued(
+							computerDto.getDiscontinued() != null ? LocalDate.parse(computerDto.getDiscontinued()) : null)
+					.company(computerDto.getCompanyDTO() == null ? null
+							: new CompanyBuilder().id(computerDto.getCompanyDTO().getId()).build());
 		} catch (DateTimeParseException e) {
 			throw new DateFormatExeption("Format date incorrect");
 		}
@@ -33,23 +36,14 @@ public class ComputerMapper implements RowMapper<Computer> {
 		return computer.build();
 	}
 
-	public ComputerDTO computerToComputerDto(Computer computer) {
+	public ComputerDTO toComputerDto(Computer computer) {
 		ComputerDTO computerDto = new ComputerDTO();
 		computerDto.setId(computer.getId());
 		computerDto.setName(computer.getName());
 		computerDto.setIntroduced(computer.getIntroduced() == null ? "" : computer.getIntroduced().toString());
 		computerDto.setDiscontinued(computer.getDiscontinued() == null ? "" : computer.getDiscontinued().toString());
-		computerDto.setCompanyId(computer.getCompany() == null ? 0 : computer.getCompany().getId());
+		computerDto.setCompanyDTO(companyMapper.toCompanyDTO(computer.getCompany()));
 		return computerDto;
 	}
 
-	@Override
-	public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
-		int id = rs.getInt("computer.id") != 0 ? rs.getInt("computer.id") : null;
-		String name = rs.getString("computer.name") != null ? rs.getString("computer.name") : null;
-		LocalDate introduced = rs.getTimestamp("computer.introduced") != null ? rs.getDate("computer.introduced").toLocalDate() : null;
-		LocalDate discontinued = rs.getTimestamp("computer.discontinued") != null ? rs.getDate("computer.discontinued").toLocalDate() : null;
-		Company company = new CompanyBuilder().id(rs.getInt("company.id")).name(rs.getString("company.name")).build();
-		return new ComputerBuilder().id(id).name(name).introduced(introduced).discontinued(discontinued).company(company).build();
-	}
 }
