@@ -3,10 +3,11 @@ package fr.excilys.databasecomputer.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.excilys.databasecomputer.dao.implement.CompanyDAO;
+import fr.excilys.databasecomputer.dao.implement.ComputerDAO;
 import fr.excilys.databasecomputer.dtos.CompanyDTO;
 import fr.excilys.databasecomputer.entity.Company;
 import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
@@ -18,11 +19,12 @@ public class CompanyService {
 
 	private CompanyDAO companyDAO;
 	private CompanyMapper companyMapper;
+	private ComputerDAO computerDAO;
 
-	@Autowired
-	private CompanyService(CompanyDAO companyDAO, CompanyMapper companyMapper) {
+	CompanyService(CompanyDAO companyDAO, CompanyMapper companyMapper, ComputerDAO computerDAO) {
 		this.companyDAO = companyDAO;
 		this.companyMapper = companyMapper;
+		this.computerDAO = computerDAO;
 	}
 
 	public List<CompanyDTO> displayAllCompany() {
@@ -48,5 +50,11 @@ public class CompanyService {
 
 	public void update(CompanyDTO companyDTO) throws FailSaveComputer {
 		companyDAO.update(companyMapper.toCompany(companyDTO));
+	}
+	
+	@Transactional
+	public void deleteCompany(CompanyDTO companyDTO) {
+		computerDAO.deleteComputerByCompanyId(companyMapper.toCompany(companyDTO));
+		companyDAO.deleteCompanyById(companyDTO.getId());
 	}
 }

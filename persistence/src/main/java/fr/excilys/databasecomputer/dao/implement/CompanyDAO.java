@@ -85,4 +85,13 @@ public class CompanyDAO {
 			throw new FailSaveComputer("Errors whith the save");
 		}
 	}
+	
+	public void deleteCompanyById(int id) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaDelete<Company> criteriaDelete = builder.createCriteriaDelete(Company.class);
+		Root<Company> root = criteriaDelete.from(Company.class);
+		criteriaDelete.where(builder.equal(root.get("id"), id));
+		Query computer = em.createQuery(criteriaDelete);
+		computer.executeUpdate();
+	}
 }

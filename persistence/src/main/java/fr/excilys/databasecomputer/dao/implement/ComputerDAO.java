@@ -113,16 +113,14 @@ public class ComputerDAO {
 		return computers.getResultList();
 	}
 
-	@Transactional
-	public boolean deleteComputerByCompanyName(String companyName) {
+	public void deleteComputerByCompanyId(Company company) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaDelete<Computer> criteriaDelete = builder.createCriteriaDelete(Computer.class);
 		Root<Computer> root = criteriaDelete.from(Computer.class);
-		Join<Computer, Company> company = root.join("company", JoinType.LEFT);
-		criteriaDelete.where(builder.like(company.get("name"), companyName));
+		//Join<Computer, Company> company = root.join("company", JoinType.LEFT);
+		criteriaDelete.where(builder.equal(root.get("company"), company));
 		Query computer = em.createQuery(criteriaDelete);
-		int result = computer.executeUpdate();
-		return result != 0;
+		computer.executeUpdate();
 	}
 
 	public List<Computer> findComputerByName(String name, int limite, int offset, String order) {
