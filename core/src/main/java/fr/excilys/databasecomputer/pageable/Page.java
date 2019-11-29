@@ -15,14 +15,13 @@ public class Page {
 //		return maxPage;
 //	}
 
-//	public long getNbComputer() {
-//		return nbComputer;
-//	}
+	public long getNbComputer() {
+		return nbComputer;
+	}
 
-//	public void setNbComputer(long l) {
-//		this.nbComputer = l;
-//		nbPageMax();
-//	}
+	public void setNbComputer(long l) {
+		this.nbComputer = l;
+	}
 
 	public int getActPage() {
 		return actPage;

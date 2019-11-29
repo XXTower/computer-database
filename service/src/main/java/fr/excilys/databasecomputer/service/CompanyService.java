@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import fr.excilys.databasecomputer.dao.implement.CompanyDAO;
 import fr.excilys.databasecomputer.dtos.CompanyDTO;
 import fr.excilys.databasecomputer.entity.Company;
+import fr.excilys.databasecomputer.entity.Company.CompanyBuilder;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 import fr.excilys.databasecomputer.mapper.CompanyMapper;
 
 @Service
@@ -36,7 +38,11 @@ public class CompanyService {
 		return companyDAO.nbCompany();
 	}
 
-	public boolean deleteCopany(String companyName) {
+	public boolean deleteCompany(String companyName) {
 		return companyDAO.deleteCompany(companyName);
+	}
+	
+	public void addCompany(String name) throws FailSaveComputer {
+		companyDAO.addComputer(new CompanyBuilder().name(name).build());
 	}
 }

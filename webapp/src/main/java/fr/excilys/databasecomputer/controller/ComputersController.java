@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
+import fr.excilys.databasecomputer.dtos.PageDTO;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
@@ -44,12 +45,12 @@ public class ComputersController {
 	}
 
 	@GetMapping
-	protected List<ComputerDTO> getComputers(Page page,
+	protected PageDTO getComputers(Page page,
 			@RequestParam(value = "order", defaultValue = "ASC") String order,
 			@RequestParam(value = "search", defaultValue = "") String search) {
 
-//		page.setNbComputer(computerService.nbComputerCompanyFindByName(search));
-		return computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(), order);
+		return new PageDTO( computerService.nbComputerCompanyFindByName(search), 
+				computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(), order));
 	}
 
 	@DeleteMapping

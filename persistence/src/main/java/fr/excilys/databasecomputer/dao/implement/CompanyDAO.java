@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.excilys.databasecomputer.entity.Company;
+import fr.excilys.databasecomputer.entity.Computer;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 
 @Repository
 public class CompanyDAO {
@@ -58,5 +60,14 @@ public class CompanyDAO {
 		Query computer = em.createQuery(criteriaDelete);
 		int result = computer.executeUpdate();
 		return result != 0;
+	}
+	
+	@Transactional
+	public void addComputer(Company company) throws FailSaveComputer {
+		try {
+			em.persist(company);
+		} catch (Exception e) {
+			throw new FailSaveComputer("Errors whith the save");
+		}
 	}
 }
