@@ -1,7 +1,7 @@
-package fr.excilys.databasecomputer.configuration;
-
-import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
-
-public class SpringSecurityInitializer extends AbstractSecurityWebApplicationInitializer {
-
-}
+//package fr.excilys.databasecomputer.configuration;
+//
+//import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+//
+//public class SpringSecurityInitializer extends AbstractSecurityWebApplicationInitializer {
+//
+//}
