@@ -85,7 +85,7 @@ public class CompanyDAO {
 			throw new FailSaveComputer("Errors whith the save");
 		}
 	}
-	
+
 	public void deleteCompanyById(int id) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaDelete<Company> criteriaDelete = builder.createCriteriaDelete(Company.class);

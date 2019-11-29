@@ -51,7 +51,7 @@ public class CompanyService {
 	public void update(CompanyDTO companyDTO) throws FailSaveComputer {
 		companyDAO.update(companyMapper.toCompany(companyDTO));
 	}
-	
+
 	@Transactional
 	public void deleteCompany(CompanyDTO companyDTO) {
 		computerDAO.deleteComputerByCompanyId(companyMapper.toCompany(companyDTO));

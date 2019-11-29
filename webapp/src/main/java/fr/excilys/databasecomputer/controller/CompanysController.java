@@ -50,7 +50,7 @@ public class CompanysController {
 			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
 		}
 	}
-	
+
 	@DeleteMapping
 	public void deleteCompanys(@RequestBody CompanyDTO companyDTO) {
 		companyService.deleteCompany(companyDTO);

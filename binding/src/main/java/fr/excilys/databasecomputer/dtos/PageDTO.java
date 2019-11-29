@@ -7,7 +7,7 @@ public class PageDTO {
 	private long nbComputer;
 	private List<ComputerDTO> listComputer;
 
-	public PageDTO() {	}
+	public PageDTO() { }
 
 	public PageDTO(long nbComputer, List<ComputerDTO> listComputer) {
 		super();

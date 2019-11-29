@@ -45,11 +45,10 @@ public class ComputersController {
 	}
 
 	@GetMapping
-	protected PageDTO getComputers(Page page, @RequestParam(value = "order", defaultValue = "ASC") String order,
-			@RequestParam(value = "search", defaultValue = "") String search) {
+	protected PageDTO getComputers(Page page, @RequestParam(value = "order", defaultValue = "ASC") String order) {
 
-		return new PageDTO(computerService.nbComputerCompanyFindByName(search),
-				computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(), order));
+		return new PageDTO(computerService.nbComputerCompanyFindByName(page.getSearch()),
+				computerService.findComputerCompanyByName(page.getSearch(), page.getLimite(), page.calculeNewOffset(), order));
 	}
 
 	@DeleteMapping
