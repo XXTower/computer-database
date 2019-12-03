@@ -23,7 +23,7 @@ public class UsersDAO {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Users> criteriaQuery = builder.createQuery(Users.class);
 		Root<Users> root = criteriaQuery.from(Users.class);
-		criteriaQuery.select(root).where(builder.like(root.get("login"), name));
+		criteriaQuery.select(root).where(builder.like(root.get("username"), name));
 		TypedQuery<Users> query = em.createQuery(criteriaQuery);
 		user = query.getSingleResult();
 

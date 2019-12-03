@@ -53,22 +53,24 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 		} else {
 			logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
 		}
-		
+
 		logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
-		
+
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.usersService.loadUserByUsername(username);
+			UserDetails userDetails = this.usersService.loadUserByUsername(username);
 
-            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            }
-        }
+			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+						userDetails, null, userDetails.getAuthorities());
+				usernamePasswordAuthenticationToken
+						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+			}
+		}
 
 		filterChain.doFilter(request, response);
-        
+
 	}
 
 }
