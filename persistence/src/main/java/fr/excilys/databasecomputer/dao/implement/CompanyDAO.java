@@ -9,12 +9,14 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.excilys.databasecomputer.entity.Company;
+import fr.excilys.databasecomputer.exception.FailSaveComputer;
 
 @Repository
 public class CompanyDAO {
@@ -58,5 +60,38 @@ public class CompanyDAO {
 		Query computer = em.createQuery(criteriaDelete);
 		int result = computer.executeUpdate();
 		return result != 0;
+	}
+
+	@Transactional
+	public void addCompany(Company company) throws FailSaveComputer {
+		try {
+			em.persist(company);
+		} catch (Exception e) {
+			throw new FailSaveComputer("Errors whith the save");
+		}
+	}
+
+	@Transactional
+	public void update(Company company) throws FailSaveComputer {
+		try {
+			CriteriaBuilder builder = em.getCriteriaBuilder();
+			CriteriaUpdate<Company> criteriaUpdate = builder.createCriteriaUpdate(Company.class);
+			Root<Company> root = criteriaUpdate.from(Company.class);
+			criteriaUpdate.set("name", company.getName());
+			criteriaUpdate.where(builder.equal(root.get("id"), company.getId()));
+			Query update = em.createQuery(criteriaUpdate);
+			update.executeUpdate();
+		} catch (Exception e) {
+			throw new FailSaveComputer("Errors whith the save");
+		}
+	}
+
+	public void deleteCompanyById(int id) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaDelete<Company> criteriaDelete = builder.createCriteriaDelete(Company.class);
+		Root<Company> root = criteriaDelete.from(Company.class);
+		criteriaDelete.where(builder.equal(root.get("id"), id));
+		Query computer = em.createQuery(criteriaDelete);
+		computer.executeUpdate();
 	}
 }
