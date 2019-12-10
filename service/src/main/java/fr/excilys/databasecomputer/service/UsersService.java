@@ -1,6 +1,5 @@
 package fr.excilys.databasecomputer.service;
 
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,7 +28,7 @@ public class UsersService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("UserName " + username + " not found");
 		} else {
-			return User.withUsername(user.getLogin()).password(user.getPassword()).roles("ADMIN").build();
+			return user;
 		}
 	}
 }

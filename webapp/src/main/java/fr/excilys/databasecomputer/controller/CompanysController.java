@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,13 +27,16 @@ public class CompanysController {
 		this.companyService = companyService;
 	}
 
+	@CrossOrigin
 	@GetMapping
 	public List<CompanyDTO> getAll() {
 		return companyService.displayAllCompany();
 	}
 
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<String> createCompany(@RequestBody String name) {
+		name = name.substring(0,name.length()-1);
 		try {
 			companyService.addCompany(name);
 			return ResponseEntity.ok("Ordinateur modifié");
@@ -41,6 +45,7 @@ public class CompanysController {
 		}
 	}
 
+	@CrossOrigin
 	@PutMapping
 	public ResponseEntity<String> updateCompany(@RequestBody CompanyDTO companyDTO) {
 		try {
@@ -51,6 +56,7 @@ public class CompanysController {
 		}
 	}
 
+	@CrossOrigin
 	@DeleteMapping
 	public void deleteCompanys(@RequestBody CompanyDTO companyDTO) {
 		companyService.deleteCompany(companyDTO);
