@@ -24,10 +24,10 @@ public class ComputerMapper {
 		ComputerBuilder computer = new ComputerBuilder();
 		try {
 			computer.id(computerDto.getId()).name(computerDto.getName())
-					.introduced(computerDto.getIntroduced() != null ? LocalDate.parse(computerDto.getIntroduced()) : null)
+					.introduced(computerDto.getIntroduced() != null && computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getIntroduced()) : null)
 					.discontinued(
-							computerDto.getDiscontinued() != null ? LocalDate.parse(computerDto.getDiscontinued()) : null)
-					.company(computerDto.getCompanyDTO() == null ? null
+							computerDto.getDiscontinued() != null && computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getDiscontinued()) : null)
+					.company(computerDto.getCompanyDTO() == null || computerDto.getCompanyDTO().getId() == 0 ? null
 							: new CompanyBuilder().id(computerDto.getCompanyDTO().getId()).build());
 		} catch (DateTimeParseException e) {
 			throw new DateFormatExeption("Format date incorrect");

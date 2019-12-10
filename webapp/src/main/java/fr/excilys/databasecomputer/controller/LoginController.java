@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,7 @@ public class LoginController {
 		this.jwtTokenUtil = jwtTokenUtil;
 	}
 
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<?> login(@RequestBody UserDTO authentificationRequest) throws AuthenticationException {
 		authenticate(authentificationRequest.getUsername(), authentificationRequest.getPassword());

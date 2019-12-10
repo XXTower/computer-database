@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class ComputersController {
 		this.validator = validator;
 	}
 
+	@CrossOrigin
 	@GetMapping
 	protected PageDTO getComputers(Page page, @RequestParam(value = "order", defaultValue = "ASC") String order) {
 
@@ -51,6 +53,7 @@ public class ComputersController {
 				computerService.findComputerCompanyByName(page.getSearch(), page.getLimite(), page.calculeNewOffset(), order));
 	}
 
+	@CrossOrigin
 	@DeleteMapping
 	protected void deleteComputer(@RequestBody List<Integer> listComputer) {
 		for (Integer idComputer : listComputer) {
@@ -58,6 +61,7 @@ public class ComputersController {
 		}
 	}
 
+	@CrossOrigin
 	@PostMapping
 	public String createComputer(@RequestBody ComputerDTO computerDto) {
 		Map<String, String> errors = new HashMap<String, String>();
@@ -86,6 +90,7 @@ public class ComputersController {
 		}
 	}
 
+	@CrossOrigin
 	@GetMapping("/{id}")
 	protected ResponseEntity<ComputerDTO> getComputerBiId(@PathVariable Integer id) {
 		Computer computer = null;
@@ -98,11 +103,13 @@ public class ComputersController {
 		return ResponseEntity.ok(computerMapper.toComputerDto(computer));
 	}
 
+	@CrossOrigin
 	@DeleteMapping("/{id}")
 	protected void deleteComputerBiId(@PathVariable Integer id) {
 		computerService.deleteComputer(id);
 	}
 
+	@CrossOrigin
 	@PutMapping
 	public ResponseEntity<String> update(@RequestBody ComputerDTO computerDto) {
 		Map<String, String> errors = new HashMap<String, String>();
