@@ -26,7 +26,7 @@ public class ComputerMapper {
 			computer.id(computerDto.getId()).name(computerDto.getName())
 					.introduced(computerDto.getIntroduced() != null && computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getIntroduced()) : null)
 					.discontinued(
-							computerDto.getDiscontinued() != null && computerDto.getIntroduced() != "" ? LocalDate.parse(computerDto.getDiscontinued()) : null)
+							computerDto.getDiscontinued() != null && computerDto.getDiscontinued() != "" ? LocalDate.parse(computerDto.getDiscontinued()) : null)
 					.company(computerDto.getCompanyDTO() == null || computerDto.getCompanyDTO().getId() == 0 ? null
 							: new CompanyBuilder().id(computerDto.getCompanyDTO().getId()).build());
 		} catch (DateTimeParseException e) {
