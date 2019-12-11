@@ -35,11 +35,10 @@ public class CompanysController {
 
 	@CrossOrigin
 	@PostMapping
-	public ResponseEntity<String> createCompany(@RequestBody String name) {
-		name = name.substring(0,name.length()-1);
+	public ResponseEntity<String> createCompany(@RequestBody CompanyDTO companyDTO) {
 		try {
-			companyService.addCompany(name);
-			return ResponseEntity.ok("Ordinateur modifié");
+			companyService.addCompany(companyDTO.getName());
+			return ResponseEntity.ok("Ordinateur ajouter");
 		} catch (FailSaveComputer e) {
 			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
 		}
