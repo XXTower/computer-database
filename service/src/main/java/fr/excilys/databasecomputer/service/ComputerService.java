@@ -51,10 +51,6 @@ public class ComputerService {
 		return computerDAO.nbComputer();
 	}
 
-	public boolean deleteComputerByCompanyName(String companyName) {
-		return computerDAO.deleteComputerByCompanyName(companyName);
-	}
-
 	public List<ComputerDTO> findComputerCompanyByName(String name, int limite, int offset, String order) {
 		return computerDAO.findComputerByName(name, limite, offset, order).stream()
 				.map(computer -> computerMappeur.toComputerDto(computer)).collect(Collectors.toList());

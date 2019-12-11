@@ -6,23 +6,9 @@ import org.springframework.stereotype.Component;
 public class Page {
 	private int limite = 10;
 	private int actPage = 1;
-	private long nbComputer = 0;
-	private int maxPage = 0;
+	private String search = "";
 
 	private Page() { }
-
-//	public int getMaxPage() {
-//		return maxPage;
-//	}
-
-//	public long getNbComputer() {
-//		return nbComputer;
-//	}
-
-//	public void setNbComputer(long l) {
-//		this.nbComputer = l;
-//		nbPageMax();
-//	}
 
 	public int getActPage() {
 		return actPage;
@@ -40,12 +26,16 @@ public class Page {
 		this.limite = limite;
 	}
 
-//	public void nbPageMax() {
-//		maxPage = (int) Math.ceil(((double) nbComputer / (double) limite));
-//	}
-
 	public int calculeNewOffset() {
 		return actPage * limite - limite;
+	}
+
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
 	}
 
 }

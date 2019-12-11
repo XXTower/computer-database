@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.excilys.databasecomputer.dtos.ComputerDTO;
+import fr.excilys.databasecomputer.dtos.PageDTO;
 import fr.excilys.databasecomputer.entity.Computer;
 import fr.excilys.databasecomputer.exception.DateFormatExeption;
 import fr.excilys.databasecomputer.exception.DateIntevaleExecption;
@@ -43,15 +45,15 @@ public class ComputersController {
 		this.validator = validator;
 	}
 
+	@CrossOrigin
 	@GetMapping
-	protected List<ComputerDTO> getComputers(Page page,
-			@RequestParam(value = "order", defaultValue = "ASC") String order,
-			@RequestParam(value = "search", defaultValue = "") String search) {
+	protected PageDTO getComputers(Page page, @RequestParam(value = "order", defaultValue = "ASC") String order) {
 
-//		page.setNbComputer(computerService.nbComputerCompanyFindByName(search));
-		return computerService.findComputerCompanyByName(search, page.getLimite(), page.calculeNewOffset(), order);
+		return new PageDTO(computerService.nbComputerCompanyFindByName(page.getSearch()),
+				computerService.findComputerCompanyByName(page.getSearch(), page.getLimite(), page.calculeNewOffset(), order));
 	}
 
+	@CrossOrigin
 	@DeleteMapping
 	protected void deleteComputer(@RequestBody List<Integer> listComputer) {
 		for (Integer idComputer : listComputer) {
@@ -59,6 +61,7 @@ public class ComputersController {
 		}
 	}
 
+	@CrossOrigin
 	@PostMapping
 	public String createComputer(@RequestBody ComputerDTO computerDto) {
 		Map<String, String> errors = new HashMap<String, String>();
@@ -87,6 +90,7 @@ public class ComputersController {
 		}
 	}
 
+	@CrossOrigin
 	@GetMapping("/{id}")
 	protected ResponseEntity<ComputerDTO> getComputerBiId(@PathVariable Integer id) {
 		Computer computer = null;
@@ -99,11 +103,13 @@ public class ComputersController {
 		return ResponseEntity.ok(computerMapper.toComputerDto(computer));
 	}
 
+	@CrossOrigin
 	@DeleteMapping("/{id}")
 	protected void deleteComputerBiId(@PathVariable Integer id) {
 		computerService.deleteComputer(id);
 	}
 
+	@CrossOrigin
 	@PutMapping
 	public ResponseEntity<String> update(@RequestBody ComputerDTO computerDto) {
 		Map<String, String> errors = new HashMap<String, String>();
@@ -126,7 +132,6 @@ public class ComputersController {
 				return ResponseEntity.ok("Ordinateur modifié");
 			} catch (FailSaveComputer e) {
 				return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
-
 			}
 		}
 		return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
