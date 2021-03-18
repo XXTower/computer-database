@@ -21,7 +21,7 @@
 		<springData.version>2.2.1.RELEASE</springData.version>
 		<selenium.version>3.141.59</selenium.version>
 		<apache.taglib.version>1.2.5</apache.taglib.version>
-		<jackson.version>2.10.1</jackson.version>
+		<jackson.version>2.12.1</jackson.version>
 		<swagger.version>2.9.2</swagger.version>
 		<commons-lang3.version>3.8.1</commons-lang3.version>
 	</properties>
