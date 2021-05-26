@@ -17,7 +17,7 @@
 		<mysql.version>8.0.18</mysql.version>
 		<mockito.version>3.1.0</mockito.version>
 		<h2.version>1.4.200</h2.version>
-		<spring.version>5.2.1.RELEASE</spring.version>
+		<spring.version>5.2.10.RELEASE</spring.version>
 		<springData.version>2.2.1.RELEASE</springData.version>
 		<selenium.version>3.141.59</selenium.version>
 		<apache.taglib.version>1.2.5</apache.taglib.version>
